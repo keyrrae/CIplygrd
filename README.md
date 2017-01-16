@@ -1,3 +1,3 @@
-# s16cv
+# Continuous Integration Playground
 
-computer vision homeworks
+wercker
