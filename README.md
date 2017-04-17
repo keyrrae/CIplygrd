@@ -1,3 +1,3 @@
-# Continuous Integration Playground
+# Monimenta Project
 
-wercker
+An Android project
