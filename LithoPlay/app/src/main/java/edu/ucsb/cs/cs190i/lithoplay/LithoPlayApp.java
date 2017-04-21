@@ -11,6 +11,8 @@ package edu.ucsb.cs.cs190i.lithoplay;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.litho.LithoWebKitInspector;
 import com.facebook.soloader.SoLoader;
 import com.facebook.stetho.Stetho;
 
@@ -21,7 +23,12 @@ import com.facebook.stetho.Stetho;
 public class LithoPlayApp extends Application {
     public void onCreate() {
         super.onCreate();
-        Stetho.initializeWithDefaults(this);
+
+        Fresco.initialize(this);
         SoLoader.init(this, false);
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableWebKitInspector(new LithoWebKitInspector(this))
+                        .build());
     }
 }
