@@ -12,6 +12,8 @@ package edu.ucsb.cs.cs190i.monimenta.application;
 import android.app.Activity;
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -24,19 +26,25 @@ public class Monimenta extends Application {
 
     private static Map<String, Activity> destoryMap = new HashMap<>();
 
+    @Override public void onCreate() {
+        super.onCreate();
+        Stetho.initializeWithDefaults(this);
+
+    }
+
      /**
      * Add to destroy map
      *
      * @param activity the activity to finish
      */
 
-    public static void addDestoryActivity(String activityName, Activity activity) {
+    public static void addDestroyActivity(String activityName, Activity activity) {
         destoryMap.put(activityName, activity);
     }
     /**
-     *销毁指定Activity
+     *destroy an activity
      */
-    public static void destoryActivity(String activityName) {
+    public static void destroyActivity(String activityName) {
         destoryMap.get(activityName).finish();
         destoryMap.remove(activityName);
     }

@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +40,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.facebook.android.crypto.keychain.AndroidConceal;
+import com.facebook.android.crypto.keychain.SharedPrefsBackedKeyChain;
+import com.facebook.crypto.Crypto;
+import com.facebook.crypto.CryptoConfig;
+import com.facebook.crypto.Entity;
+import com.facebook.crypto.keychain.KeyChain;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Crypto mCrypto;
+    private Entity mEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +118,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        // Creates a new Crypto object with default implementations of a key chain
+        KeyChain keyChain = new SharedPrefsBackedKeyChain(getApplicationContext(), CryptoConfig.KEY_256);
+        mCrypto = AndroidConceal.get().createDefaultCrypto(keyChain);
+        mEntity = Entity.create("entity_id");
+        // Check for whether the crypto functionality is available
+        // This might fail if Android does not load libaries correctly.
+
+        if(mCrypto.isAvailable()) {
+            try{
+                byte[] cipherText = mCrypto.encrypt("Hello".getBytes(), mEntity);
+                byte[] plainText = mCrypto.decrypt(cipherText, Entity.create("entity_id"));
+                int i = 0;
+            } catch (Exception e){
+                Log.e("Login", e.toString());
+            }
+
+        }
+
     }
 
     private void populateAutoComplete() {
@@ -335,12 +364,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     if(pieces[1].equals(mPassword)) {
-                        Monimenta.destoryActivity("SPLASH_ACTIVITY");
+                        Monimenta.destroyActivity("SPLASH_ACTIVITY");
 
                         Intent intentStartGeo = new Intent(LoginActivity.this, GeoActivity.class);
                         startActivity(intentStartGeo);
 
-                        // TODO: write to persistent storage
+                        // TODO: write encrypted login credentials to persistent storage
+
                         return true;
                     } else {
                         return false;
@@ -349,6 +379,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
+
+
             Intent intent = new Intent("finish_splash_activity");
             sendBroadcast(intent);
             return true;

@@ -9,11 +9,7 @@
 
 package edu.ucsb.cs.cs190i.monimenta.splash;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +20,6 @@ import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
 import edu.ucsb.cs.cs190i.monimenta.login.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +27,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         Button loginButton = (Button) findViewById(R.id.button_login);
 
-        Monimenta.addDestoryActivity("SPLASH_ACTIVITY", this);
+        Monimenta.addDestroyActivity("SPLASH_ACTIVITY", this);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
