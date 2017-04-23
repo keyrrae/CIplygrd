@@ -47,14 +47,12 @@ import com.facebook.crypto.CryptoConfig;
 import com.facebook.crypto.Entity;
 import com.facebook.crypto.keychain.KeyChain;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.monimenta.R;
 import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
-import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
-import edu.ucsb.cs.cs190i.monimenta.splash.SplashScreenActivity;
+import edu.ucsb.cs.cs190i.monimenta.story.StoryActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -366,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if(pieces[1].equals(mPassword)) {
                         Monimenta.destroyActivity("SPLASH_ACTIVITY");
 
-                        Intent intentStartGeo = new Intent(LoginActivity.this, GeoActivity.class);
+                        Intent intentStartGeo = new Intent(LoginActivity.this, StoryActivity.class);
                         startActivity(intentStartGeo);
 
                         // TODO: write encrypted login credentials to persistent storage

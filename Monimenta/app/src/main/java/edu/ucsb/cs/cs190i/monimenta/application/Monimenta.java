@@ -23,29 +23,28 @@ import java.util.Set;
  */
 
 public class Monimenta extends Application {
+  private static Map<String, Activity> destoryMap = new HashMap<>();
 
-    private static Map<String, Activity> destoryMap = new HashMap<>();
+  @Override public void onCreate() {
+    super.onCreate();
+    Stetho.initializeWithDefaults(this);
 
-    @Override public void onCreate() {
-        super.onCreate();
-        Stetho.initializeWithDefaults(this);
+  }
 
-    }
+  /**
+   * Add to destroy map
+   *
+   * @param activity the activity to finish
+   */
 
-     /**
-     * Add to destroy map
-     *
-     * @param activity the activity to finish
-     */
-
-    public static void addDestroyActivity(String activityName, Activity activity) {
-        destoryMap.put(activityName, activity);
-    }
-    /**
-     *destroy an activity
-     */
-    public static void destroyActivity(String activityName) {
-        destoryMap.get(activityName).finish();
-        destoryMap.remove(activityName);
-    }
+  public static void addDestroyActivity(String activityName, Activity activity) {
+    destoryMap.put(activityName, activity);
+  }
+  /**
+   *destroy an activity
+   */
+  public static void destroyActivity(String activityName) {
+    destoryMap.get(activityName).finish();
+    destoryMap.remove(activityName);
+  }
 }
