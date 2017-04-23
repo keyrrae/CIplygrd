@@ -13,8 +13,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".application.Monimenta"
@@ -24,7 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity android:name=".splash.SplashScreenActivity">
             <intent-filter>
@@ -40,13 +41,8 @@
             android:name=".signup.SignupActivity"
             android:label="@string/title_activity_signup" />
         <activity
-            android:name=".story.StoryActivity"
-            android:label="@string/title_activity_geo"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".newstory.NewStoryActivity"
-            android:label="@string/title_activity_new_story"></activity>
-
+            android:label="@string/title_activity_new_story" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -57,6 +53,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".geo.GeoActivity"></activity>
+
+
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import edu.ucsb.cs.cs190i.monimenta.R;
 import edu.ucsb.cs.cs190i.monimenta.application.AppConstants;
 import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
-import edu.ucsb.cs.cs190i.monimenta.story.StoryActivity;
+import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.monimenta.login.LoginActivity;
 import edu.ucsb.cs.cs190i.monimenta.signup.SignupActivity;
 
@@ -90,7 +90,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // App code
         Log.d("Splash", "success");
 
-        Intent geoIntent = new Intent(SplashScreenActivity.this, StoryActivity.class);
+        Intent geoIntent = new Intent(SplashScreenActivity.this, GeoActivity.class);
         startActivity(geoIntent);
         SharedPreferences sharedPreferences =
             getSharedPreferences(AppConstants.PREF_NAME, MODE_PRIVATE);
@@ -124,7 +124,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       Runnable mLaunchTask = new Runnable() {
         public void run() {
           //will launch the activity
-          Intent intent = new Intent(getApplicationContext(), StoryActivity.class);
+          Intent intent = new Intent(getApplicationContext(), GeoActivity.class);
           startActivity(intent);
           finish();
         }

@@ -52,7 +52,7 @@ import java.util.List;
 
 import edu.ucsb.cs.cs190i.monimenta.R;
 import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
-import edu.ucsb.cs.cs190i.monimenta.story.StoryActivity;
+import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -364,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if(pieces[1].equals(mPassword)) {
                         Monimenta.destroyActivity("SPLASH_ACTIVITY");
 
-                        Intent intentStartGeo = new Intent(LoginActivity.this, StoryActivity.class);
+                        Intent intentStartGeo = new Intent(LoginActivity.this, GeoActivity.class);
                         startActivity(intentStartGeo);
 
                         // TODO: write encrypted login credentials to persistent storage
