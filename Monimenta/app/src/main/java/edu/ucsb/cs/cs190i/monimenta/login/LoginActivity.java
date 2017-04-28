@@ -13,7 +13,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.android.crypto.keychain.AndroidConceal;
 import com.facebook.android.crypto.keychain.SharedPrefsBackedKeyChain;
@@ -46,15 +49,33 @@ import com.facebook.crypto.Crypto;
 import com.facebook.crypto.CryptoConfig;
 import com.facebook.crypto.Entity;
 import com.facebook.crypto.keychain.KeyChain;
+import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.monimenta.R;
 import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
+import edu.ucsb.cs.cs190i.monimenta.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
+import edu.ucsb.cs.cs190i.monimenta.models.User;
+import edu.ucsb.cs.cs190i.monimenta.signup.SignupActivity;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.CRED;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.EMAIL;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.ENDPOINT;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.JSON_BODY;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.PREF_NAME;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.UID;
 
 /**
  * A login screen that offers login via email/password.
@@ -90,11 +111,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        /*
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -104,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
                 return false;
             }
-        });
+        });*/
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -117,22 +140,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         // Creates a new Crypto object with default implementations of a key chain
-        KeyChain keyChain = new SharedPrefsBackedKeyChain(getApplicationContext(), CryptoConfig.KEY_256);
-        mCrypto = AndroidConceal.get().createDefaultCrypto(keyChain);
-        mEntity = Entity.create("entity_id");
-        // Check for whether the crypto functionality is available
-        // This might fail if Android does not load libaries correctly.
-
-        if(mCrypto.isAvailable()) {
-            try{
-                byte[] cipherText = mCrypto.encrypt("Hello".getBytes(), mEntity);
-                byte[] plainText = mCrypto.decrypt(cipherText, Entity.create("entity_id"));
-                int i = 0;
-            } catch (Exception e){
-                Log.e("Login", e.toString());
-            }
-
-        }
 
     }
 
@@ -336,10 +343,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 
         private final String mEmail;
         private final String mPassword;
+        private String encryptedPassword = "";
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -347,53 +355,107 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Integer doInBackground(Void... params) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new BasicAuthInterceptor("admin", "admin"))
+                .build();
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+                md.update(mPassword.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+                byte[] digest = md.digest();
+                encryptedPassword = String.format("%064x", new java.math.BigInteger(1, digest));
+            } catch (Exception e){
+                Log.e("error", e.toString());
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    if(pieces[1].equals(mPassword)) {
-                        Monimenta.destroyActivity("SPLASH_ACTIVITY");
+            String jsonRequest = "{ \"email\": \"" + mEmail + "\", \"cred\": \"" + encryptedPassword + "\" }";
 
-                        Intent intentStartGeo = new Intent(LoginActivity.this, GeoActivity.class);
-                        startActivity(intentStartGeo);
+            Log.d("request", jsonRequest);
 
-                        // TODO: write encrypted login credentials to persistent storage
+            RequestBody body = RequestBody.create(JSON_BODY, jsonRequest);
+            Request request = new Request.Builder()
+                .url(ENDPOINT + "auth")
+                .post(body)
+                .build();
 
-                        return true;
-                    } else {
-                        return false;
-                    }
+            try {
+                Response response = client.newCall(request).execute();
+
+                if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    // Run view-related code back on the main thread
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return response.code();
                 }
+
+                if(response.code() == HttpURLConnection.HTTP_NOT_FOUND){
+                    // Run view-related code back on the main thread
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "Email not in database", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return response.code();
+                }
+
+                if(response.code() == HttpURLConnection.HTTP_OK){
+                    final Gson gson = new Gson();
+                    // Get a handler that can be used to post to the main thread
+                    // Parse response using gson deserializer
+                    // Process the data on the worker thread
+                    final User user = gson.fromJson(response.body().charStream(), User.class);
+
+                    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+                    editor.putString(UID, user.id);
+                    editor.putString(EMAIL, mEmail);
+                    editor.putString(CRED, encryptedPassword);
+                    editor.commit();
+
+                    return response.code();
+                }
+            } catch (IOException e){
+                Log.e("error", e.toString());
             }
 
-            // TODO: register the new account here.
-
-
+            return HttpURLConnection.HTTP_OK;
+/*
             Intent intent = new Intent("finish_splash_activity");
             sendBroadcast(intent);
-            return true;
+            return true;*/
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer statusCode) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+            switch (statusCode) {
+                case HttpURLConnection.HTTP_OK:
+                    // start geo activity
+                    Intent intent = new Intent(LoginActivity.this, GeoActivity.class);
+                    startActivity(intent);
+
+                    // finish splash screen
+                    ((ResultReceiver)getIntent().getParcelableExtra("finisher")).send(1, new Bundle());
+
+                    // finish login activity
+                    finish();
+                    break;
+                case HttpURLConnection.HTTP_UNAUTHORIZED:
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                    break;
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    mEmailView.setError(getString(R.string.error_email_not_exist));
+                    mEmailView.requestFocus();
+                    break;
             }
         }
 

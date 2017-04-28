@@ -12,7 +12,10 @@ package edu.ucsb.cs.cs190i.monimenta.signup;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,13 +41,45 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.android.crypto.keychain.AndroidConceal;
+import com.facebook.android.crypto.keychain.SharedPrefsBackedKeyChain;
+import com.facebook.crypto.Crypto;
+import com.facebook.crypto.CryptoConfig;
+import com.facebook.crypto.Entity;
+import com.facebook.crypto.keychain.KeyChain;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import edu.ucsb.cs.cs190i.monimenta.R;
+import edu.ucsb.cs.cs190i.monimenta.auth.BasicAuthInterceptor;
+import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
+import edu.ucsb.cs.cs190i.monimenta.login.LoginActivity;
+import edu.ucsb.cs.cs190i.monimenta.models.User;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.CRED;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.EMAIL;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.ENDPOINT;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.HOST_NAME_HEROKU;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.HOST_NAME_LOCAL;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.JSON_BODY;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.PREF_NAME;
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.UID;
 
 /**
  * A login screen that offers login via email/password.
@@ -70,6 +106,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mReenterPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -82,6 +119,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        /*
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -92,6 +130,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
         });
+*/
+        mReenterPasswordView = (EditText) findViewById(R.id.reenter_password);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -162,10 +202,12 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mReenterPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String reenterPassword = mReenterPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -183,8 +225,14 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
+            cancel = true;
+        }
+
+        if (!password.equals(reenterPassword)) {
+            mReenterPasswordView.setError(getString(R.string.error_password_not_match));
+            focusView = mReenterPasswordView;
             cancel = true;
         }
 
@@ -309,6 +357,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
         private final String mEmail;
         private final String mPassword;
+        String encryptedPassword = "";
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -317,37 +366,84 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new BasicAuthInterceptor("admin", "admin"))
+                .build();
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+                md.update(mPassword.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+                byte[] digest = md.digest();
+                encryptedPassword = String.format("%064x", new java.math.BigInteger(1, digest));
+            } catch (Exception e){
+                Log.e("error", e.toString());
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            String jsonRequest = "{ \"email\": \"" + mEmail + "\", \"cred\": \"" + encryptedPassword + "\" }";
+
+            Log.d("request", jsonRequest);
+
+            RequestBody body = RequestBody.create(JSON_BODY, jsonRequest);
+            Request request = new Request.Builder()
+                .url(ENDPOINT + "user")
+                .post(body)
+                .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if(response.code() == 409){
+                    // Run view-related code back on the main thread
+                    SignupActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SignupActivity.this, "Email exists", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return false;
                 }
+
+                if(response.code() == 201){
+                    final Gson gson = new Gson();
+                    // Get a handler that can be used to post to the main thread
+                    // Parse response using gson deserializer
+                    // Process the data on the worker thread
+                    final User user = gson.fromJson(response.body().charStream(), User.class);
+
+                    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+                    editor.putString(UID, user.id);
+                    editor.putString(EMAIL, mEmail);
+                    editor.putString(CRED, encryptedPassword);
+                    editor.commit();
+
+                    // Run view-related code back on the main thread
+                    SignupActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SignupActivity.this, user.id, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return true;
+                }
+            } catch (IOException e){
+                Log.e("error", e.toString());
             }
 
-            // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(Boolean success) {
             mAuthTask = null;
             showProgress(false);
 
             if (success) {
+                Intent intent = new Intent(SignupActivity.this, GeoActivity.class);
+                startActivity(intent);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                mEmailView.setError(getString(R.string.error_email_exists));
+                mEmailView.requestFocus();
             }
         }
 

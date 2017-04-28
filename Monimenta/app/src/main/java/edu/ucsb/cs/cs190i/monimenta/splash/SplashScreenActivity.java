@@ -12,6 +12,7 @@ package edu.ucsb.cs.cs190i.monimenta.splash;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,8 @@ import edu.ucsb.cs.cs190i.monimenta.application.Monimenta;
 import edu.ucsb.cs.cs190i.monimenta.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.monimenta.login.LoginActivity;
 import edu.ucsb.cs.cs190i.monimenta.signup.SignupActivity;
+
+import static edu.ucsb.cs.cs190i.monimenta.application.AppConstants.EMAIL;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -60,8 +63,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     loginButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+
         Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-        startActivity(intent);
+        intent.putExtra("finisher", new ResultReceiver(null) {
+          @Override
+          protected void onReceiveResult(int resultCode, Bundle resultData) {
+            SplashScreenActivity.this.finish();
+          }
+        });
+        startActivityForResult(intent,1);
       }
     });
 
@@ -70,7 +80,13 @@ public class SplashScreenActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         Intent intent = new Intent(SplashScreenActivity.this, SignupActivity.class);
-        startActivity(intent);
+        intent.putExtra("finisher", new ResultReceiver(null) {
+          @Override
+          protected void onReceiveResult(int resultCode, Bundle resultData) {
+            SplashScreenActivity.this.finish();
+          }
+        });
+        startActivityForResult(intent,1);
       }
     });
 
@@ -90,11 +106,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         // App code
         Log.d("Splash", "success");
 
+        // TODO: create credentials from login result
+
         Intent geoIntent = new Intent(SplashScreenActivity.this, GeoActivity.class);
         startActivity(geoIntent);
         SharedPreferences sharedPreferences =
             getSharedPreferences(AppConstants.PREF_NAME, MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(AppConstants.LOGGED_IN, true).apply();
+        //sharedPreferences.edit().putBoolean(AppConstants.LOGGED_IN, true).apply();
         finish();
       }
 
@@ -107,14 +125,13 @@ public class SplashScreenActivity extends AppCompatActivity {
       public void onError(FacebookException exception) {
         // App code
       }
-
     });
 
     SharedPreferences sharedPreferences =
         getSharedPreferences(AppConstants.PREF_NAME, MODE_PRIVATE);
 
-    boolean loggedIn = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false);
-    if(loggedIn){
+    String email = sharedPreferences.getString(EMAIL, "");
+    if(!email.equals("")){
       signupButton.setVisibility(View.GONE);
       loginButton.setVisibility(View.GONE);
       facebookLogin.setVisibility(View.GONE);
@@ -130,11 +147,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
       };
 
-      //the button's onclick method
+      // do the splash
       mHandler.postDelayed(mLaunchTask, 3000);
     }
-
-    Monimenta.addDestroyActivity("SPLASH_ACTIVITY", this);
   }
 
   @Override

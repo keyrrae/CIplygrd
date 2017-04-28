@@ -84,17 +84,13 @@ public class HttpClientSingleton {
     if(customTm != null) {
       okHttpClient = new OkHttpClient.Builder()
           // TODO: how to distinguish localhost and remote server?
-          /*.sslSocketFactory(
-              SSLContextHolder
-                  .getInstance(context)
-                  .getSocketFactory(), customTm)*/
           .hostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
               Log.d("hostname", hostname);
               return hostname.startsWith(HOST_NAME_LOCAL) || hostname.equals(HOST_NAME_HEROKU);
             }
-          }).addInterceptor(new BasicAuthInterceptor("signup", "signup"))
+          }).addInterceptor(new BasicAuthInterceptor("admin", "admin"))
           .build();
 
     } else {
