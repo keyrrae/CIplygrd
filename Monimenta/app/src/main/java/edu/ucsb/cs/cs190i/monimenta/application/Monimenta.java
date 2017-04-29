@@ -9,14 +9,9 @@
 
 package edu.ucsb.cs.cs190i.monimenta.application;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by xuanwang on 4/21/17.

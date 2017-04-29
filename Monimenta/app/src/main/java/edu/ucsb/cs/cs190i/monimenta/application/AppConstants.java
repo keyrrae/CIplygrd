@@ -23,13 +23,9 @@ public class AppConstants {
 
   public static final String HOST_NAME_LOCAL = "monimenta.herokuapp.com";
   public static final String HOST_NAME_HEROKU = "monimenta.herokuapp.com";
-  //public static final String ENDPOINT = "https://10.0.3.2:5000/";
-
   public static final String ENDPOINT = "https://monimenta.herokuapp.com/";
 
   public static final MediaType JSON_BODY
       = MediaType.parse("application/json; charset=utf-8");
-
-
 
 }
