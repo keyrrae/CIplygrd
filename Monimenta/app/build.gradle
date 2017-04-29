@@ -73,12 +73,12 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxjava:2.0.9'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.microsoft.thrifty:thrifty-runtime:0.4.1'
 
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     //annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
-
 
     testCompile 'junit:junit:4.12'
 }
