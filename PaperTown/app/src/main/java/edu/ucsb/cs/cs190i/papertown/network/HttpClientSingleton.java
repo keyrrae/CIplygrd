@@ -38,7 +38,7 @@ public class HttpClientSingleton {
   private static HttpClientSingleton mInstance;
   private final OkHttpClient okHttpClient;
 
-  private HttpClientSingleton(Context context){
+  private HttpClientSingleton(Context context, String uid, String token){
 
     // REF: http://stackoverflow.com/questions/19005318/implementing-x509trustmanager-passing-on-part-of-the-verification-to-existing
     X509TrustManager customTm = null;
@@ -90,7 +90,7 @@ public class HttpClientSingleton {
               Log.d("hostname", hostname);
               return hostname.startsWith(HOST_NAME_LOCAL) || hostname.equals(HOST_NAME_HEROKU);
             }
-          }).addInterceptor(new BasicAuthInterceptor("admin", "admin"))
+          }).addInterceptor(new BasicAuthInterceptor(uid, token))
           .build();
 
     } else {
@@ -112,12 +112,15 @@ public class HttpClientSingleton {
 
   public static synchronized HttpClientSingleton getInstance(Context context) {
     if(mInstance == null){
-      mInstance = new HttpClientSingleton(context.getApplicationContext());
+      mInstance = new HttpClientSingleton(context.getApplicationContext(), "admin", "admin");
     }
     return mInstance;
   }
 
-  public OkHttpClient getClient() {
-    return okHttpClient;
+  public static synchronized HttpClientSingleton initializeInstance(Context context,  String uid, String token){
+    if(mInstance == null){
+      mInstance = new HttpClientSingleton(context.getApplicationContext(), uid, token);
+    }
+    return mInstance;
   }
 }

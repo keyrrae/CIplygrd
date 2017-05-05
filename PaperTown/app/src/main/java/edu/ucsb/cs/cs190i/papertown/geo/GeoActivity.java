@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -43,11 +44,19 @@ import com.google.android.gms.maps.model.LatLng;
 import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.R;
 
+import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 @RuntimePermissions
 public class GeoActivity extends AppCompatActivity implements
@@ -91,7 +100,18 @@ public class GeoActivity extends AppCompatActivity implements
             Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
             startActivity(townListIntent);
             break;
-
+          case R.id.action_settings:
+            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+            editor.remove(TOKEN);
+            editor.remove(TOKEN_TIME);
+            editor.remove(USERID);
+            editor.remove(EMAIL);
+            editor.remove(CRED);
+            editor.commit();
+            Intent splashIntent = new Intent(GeoActivity.this, SplashScreenActivity.class);
+            startActivity(splashIntent);
+            finish();
+            break;
         }
         return true;
       }

@@ -19,7 +19,11 @@ public class AppConstants {
   public static final String PREF_NAME = "SharedPreference";
   public static final String EMAIL = "Email";
   public static final String CRED = "Credential";
-  public static final String UID = "UserID";
+  public static final String USERID = "UserID";
+  public static final String TOKEN = "Token";
+  public static final String TOKEN_TIME = "Token_time";
+  public static final int TOKEN_LIFETIME = 86400;
+
 
   public static final String HOST_NAME_LOCAL = "monimenta.herokuapp.com";
   public static final String HOST_NAME_HEROKU = "monimenta.herokuapp.com";

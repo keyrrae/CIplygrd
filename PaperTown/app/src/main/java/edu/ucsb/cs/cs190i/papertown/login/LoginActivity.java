@@ -48,12 +48,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.User;
+import edu.ucsb.cs.cs190i.papertown.models.UserToken;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -65,7 +67,9 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.ENDPOINT;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.JSON_BODY;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.UID;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 /**
  * A login screen that offers login via email/password.
@@ -375,17 +379,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
 
                 if(response.code() == HttpURLConnection.HTTP_OK){
-                    //final Gson gson = new Gson();
+                    final Gson gson = new Gson();
                     // Get a handler that can be used to post to the main thread
                     // Parse response using gson deserializer
                     // Process the data on the worker thread
-                    //final User user = gson.fromJson(response.body().charStream(), User.class);
+
+                    final UserToken ut = gson.fromJson(response.body().string(), UserToken.class);
 
                     SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                    editor.putString(UID, response.body().string());
                     editor.putString(EMAIL, mEmail);
+                    editor.putString(USERID, ut.getId());
+                    editor.putString(TOKEN, ut.getToken());
                     editor.putString(CRED, encryptedPassword);
-                    editor.commit();
+
+                    Calendar c = Calendar.getInstance();
+                    int now = c.get(Calendar.SECOND);
+                  editor.putInt(TOKEN_TIME, now);
+
+                  editor.commit();
 
                     return response.code();
                 }
