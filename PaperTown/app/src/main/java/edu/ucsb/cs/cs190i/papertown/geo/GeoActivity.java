@@ -18,10 +18,14 @@ import android.location.Location;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
-
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -36,8 +40,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.R;
 
+import edu.ucsb.cs.cs190i.papertown.newtown.NewTownActivity;
+import edu.ucsb.cs.cs190i.papertown.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -55,7 +62,7 @@ public class GeoActivity extends AppCompatActivity implements
   private long UPDATE_INTERVAL = 60000;  /* 60 secs */
   private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
-  /*
+   /*
    * Define a request code to send to Google Play services This code is
    * returned in Activity.onActivityResult
    */
@@ -65,6 +72,29 @@ public class GeoActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_geo);
+    ButterKnife.bind(this);
+
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setTitle("");
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+
+        switch(item.getItemId()){
+          case R.id.add_town:
+            Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
+            startActivity(newTownIntent);
+            break;
+          case R.id.list_view:
+            Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
+            startActivity(townListIntent);
+            break;
+        }
+        return true;
+      }
+    });
 
     if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
       throw new IllegalStateException("You forgot to supply a Google Maps API key");
@@ -81,12 +111,29 @@ public class GeoActivity extends AppCompatActivity implements
     } else {
       Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
     }
+
+    SearchView searchView = (SearchView) findViewById(R.id.search);
+    searchView.setQueryHint("Where to");
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        Toast.makeText(GeoActivity.this, query, Toast.LENGTH_SHORT).show();
+        return true;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        return true;
+      }
+    });
   }
 
   protected void loadMap(GoogleMap googleMap) {
     map = googleMap;
     if (map != null) {
       // Map is ready
+      map.setBuildingsEnabled(true);
+      map.setIndoorEnabled(true);
       Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
       GeoActivityPermissionsDispatcher.getMyLocationWithCheck(this);
     } else {
@@ -106,6 +153,7 @@ public class GeoActivity extends AppCompatActivity implements
     if (map != null) {
       // Now that map has loaded, let's get our location!
       map.setMyLocationEnabled(true);
+      map.getUiSettings().setCompassEnabled(true);
       mGoogleApiClient = new GoogleApiClient.Builder(this)
           .addApi(LocationServices.API)
           .addConnectionCallbacks(this)
@@ -198,7 +246,7 @@ public class GeoActivity extends AppCompatActivity implements
    * finishes successfully. At this point, you can request the current
    * location or start periodic updates
    */
-
+  @SuppressWarnings("all")
   @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
   @Override
   public void onConnected(Bundle dataBundle) {
@@ -215,6 +263,7 @@ public class GeoActivity extends AppCompatActivity implements
     startLocationUpdates();
   }
 
+  @SuppressWarnings("all")
   @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
   protected void startLocationUpdates() {
     mLocationRequest = new LocationRequest();
@@ -301,8 +350,12 @@ public class GeoActivity extends AppCompatActivity implements
     }
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_geo, menu);
+
+    return true;
+  }
 }
-
-
-
 

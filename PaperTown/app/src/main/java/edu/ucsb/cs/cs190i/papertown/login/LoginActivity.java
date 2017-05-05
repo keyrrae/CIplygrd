@@ -87,8 +87,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private Crypto mCrypto;
-    private Entity mEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         // Creates a new Crypto object with default implementations of a key chain
-
     }
 
     private void populateAutoComplete() {
@@ -378,14 +375,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
 
                 if(response.code() == HttpURLConnection.HTTP_OK){
-                    final Gson gson = new Gson();
+                    //final Gson gson = new Gson();
                     // Get a handler that can be used to post to the main thread
                     // Parse response using gson deserializer
                     // Process the data on the worker thread
-                    final User user = gson.fromJson(response.body().charStream(), User.class);
+                    //final User user = gson.fromJson(response.body().charStream(), User.class);
 
                     SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                    editor.putString(UID, user.id);
+                    editor.putString(UID, response.body().string());
                     editor.putString(EMAIL, mEmail);
                     editor.putString(CRED, encryptedPassword);
                     editor.commit();

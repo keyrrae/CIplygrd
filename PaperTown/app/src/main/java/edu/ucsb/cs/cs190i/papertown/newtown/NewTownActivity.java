@@ -7,7 +7,7 @@
  *
  */
 
-package edu.ucsb.cs.cs190i.papertown.newstory;
+package edu.ucsb.cs.cs190i.papertown.newtown;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 
-public class NewStoryActivity extends AppCompatActivity {
+public class NewTownActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 

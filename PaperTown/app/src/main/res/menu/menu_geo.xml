@@ -11,6 +11,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="edu.ucsb.cs.cs190i.papertown.story.StoryActivity">
+
+
+    <item android:id="@+id/add_town"
+          android:title="@string/add_location_title"
+          android:icon="@drawable/ic_add_location_black_24dp"
+          app:showAsAction="collapseActionView|ifRoom"
+        />
+
+    <item android:id="@+id/list_view"
+          android:title="@string/list_view"
+          android:icon="@drawable/ic_view_list_black_24dp"
+          app:showAsAction="collapseActionView|ifRoom"
+        />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
