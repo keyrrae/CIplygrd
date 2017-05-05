@@ -7,7 +7,7 @@
  *
  */
 
-package edu.ucsb.cs.cs190i.papertown.townlist;
+package edu.ucsb.cs.cs190i.papertown.town.townlist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

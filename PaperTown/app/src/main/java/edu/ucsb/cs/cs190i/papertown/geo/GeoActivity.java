@@ -43,8 +43,8 @@ import com.google.android.gms.maps.model.LatLng;
 import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.R;
 
-import edu.ucsb.cs.cs190i.papertown.newtown.NewTownActivity;
-import edu.ucsb.cs.cs190i.papertown.townlist.TownListActivity;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
+import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -91,6 +91,7 @@ public class GeoActivity extends AppCompatActivity implements
             Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
             startActivity(townListIntent);
             break;
+
         }
         return true;
       }
@@ -358,4 +359,3 @@ public class GeoActivity extends AppCompatActivity implements
     return true;
   }
 }
-

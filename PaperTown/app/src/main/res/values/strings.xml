@@ -49,6 +49,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="google_maps_api_key">AIzaSyB4_2HK9SLmM4iAagFgK_t1i7TgZlXlUm0</string>
     <string name="title_activity_cc">CCActivity</string>
+    <string name="title_activity_new_town">NewTownActivity</string>
 
 
 </resources>

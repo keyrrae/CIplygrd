@@ -14,8 +14,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.ucsb.cs.cs190i.papertown.CCActivity"
-    tools:showIn="@layout/activity_cc">
+    tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
 </android.support.constraint.ConstraintLayout>
