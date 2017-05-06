@@ -12,10 +12,12 @@ package edu.ucsb.cs.cs190i.papertown.geo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,9 +43,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.R;
 
+import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
@@ -56,6 +62,7 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOWN_IMAGE_LIST;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 @RuntimePermissions
@@ -68,6 +75,7 @@ public class GeoActivity extends AppCompatActivity implements
   private GoogleMap map;
   private GoogleApiClient mGoogleApiClient;
   private LocationRequest mLocationRequest;
+  private static final int PICK_IMAGE = 1234;
   private long UPDATE_INTERVAL = 60000;  /* 60 secs */
   private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
@@ -95,19 +103,22 @@ public class GeoActivity extends AppCompatActivity implements
           case R.id.add_town:
             Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
             startActivity(newTownIntent);
+            /*
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);*/
             break;
           case R.id.list_view:
             Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
             startActivity(townListIntent);
             break;
           case R.id.action_settings:
-            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-            editor.remove(TOKEN);
-            editor.remove(TOKEN_TIME);
-            editor.remove(USERID);
-            editor.remove(EMAIL);
-            editor.remove(CRED);
-            editor.commit();
+            cleanSharedPreferences();
             Intent splashIntent = new Intent(GeoActivity.this, SplashScreenActivity.class);
             startActivity(splashIntent);
             finish();
@@ -138,6 +149,7 @@ public class GeoActivity extends AppCompatActivity implements
     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
       @Override
       public boolean onQueryTextSubmit(String query) {
+        //TODO: perform the search
         Toast.makeText(GeoActivity.this, query, Toast.LENGTH_SHORT).show();
         return true;
       }
@@ -147,6 +159,16 @@ public class GeoActivity extends AppCompatActivity implements
         return true;
       }
     });
+  }
+
+  private void cleanSharedPreferences(){
+    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+    editor.remove(TOKEN);
+    editor.remove(TOKEN_TIME);
+    editor.remove(USERID);
+    editor.remove(EMAIL);
+    editor.remove(CRED);
+    editor.commit();
   }
 
   protected void loadMap(GoogleMap googleMap) {
@@ -228,7 +250,28 @@ public class GeoActivity extends AppCompatActivity implements
             mGoogleApiClient.connect();
             break;
         }
-
+        break;
+      case PICK_IMAGE:
+        ArrayList<Uri> res = new ArrayList<>();
+        if(resultCode == RESULT_OK){
+          if(data.getData() != null) {
+            Uri uri = data.getData();
+            res.add(uri);
+          } else {
+            ClipData clipData = data.getClipData();
+            if(clipData != null){
+              for (int i = 0; i < clipData.getItemCount(); i++) {
+                ClipData.Item item = clipData.getItemAt(i);
+                Uri uri = item.getUri();
+                res.add(uri);
+              }
+            }
+          }
+          Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
+          newTownIntent.putParcelableArrayListExtra(TOWN_IMAGE_LIST, res);
+          startActivity(newTownIntent);
+        }
+        break;
     }
   }
 

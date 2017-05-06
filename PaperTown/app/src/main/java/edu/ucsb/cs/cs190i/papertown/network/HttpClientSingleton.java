@@ -12,6 +12,7 @@ package edu.ucsb.cs.cs190i.papertown.network;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.File;
 import java.security.KeyStore;
 
 import javax.net.ssl.HostnameVerifier;
@@ -25,8 +26,10 @@ import java.security.cert.X509Certificate;
 
 import edu.ucsb.cs.cs190i.papertown.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.papertown.auth.SSLContextHolder;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
+import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CACHE_SIZE;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.HOST_NAME_HEROKU;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.HOST_NAME_LOCAL;
 
@@ -82,15 +85,12 @@ public class HttpClientSingleton {
     }
 
     if(customTm != null) {
+      File cacheDirectory = new File(context.getCacheDir(), "HttpResponseCache");
+      Cache cache = new Cache(cacheDirectory, CACHE_SIZE);
+
       okHttpClient = new OkHttpClient.Builder()
-          // TODO: how to distinguish localhost and remote server?
-          .hostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-              Log.d("hostname", hostname);
-              return hostname.startsWith(HOST_NAME_LOCAL) || hostname.equals(HOST_NAME_HEROKU);
-            }
-          }).addInterceptor(new BasicAuthInterceptor(uid, token))
+          .addInterceptor(new BasicAuthInterceptor(uid, token))
+          .cache(cache)
           .build();
 
     } else {

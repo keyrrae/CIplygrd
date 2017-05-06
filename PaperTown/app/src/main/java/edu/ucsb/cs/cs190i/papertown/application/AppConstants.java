@@ -23,7 +23,8 @@ public class AppConstants {
   public static final String TOKEN = "Token";
   public static final String TOKEN_TIME = "Token_time";
   public static final int TOKEN_LIFETIME = 86400;
-
+  public static final int CACHE_SIZE = 10 * 1024 * 1024; // 10 MiB
+  public static final String TOWN_IMAGE_LIST = "Town_image_list";
 
   public static final String HOST_NAME_LOCAL = "monimenta.herokuapp.com";
   public static final String HOST_NAME_HEROKU = "monimenta.herokuapp.com";
