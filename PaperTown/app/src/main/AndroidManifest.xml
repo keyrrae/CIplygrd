@@ -96,6 +96,8 @@
         </activity>
         <activity android:name=".town.towndetail.TownDetailActivity">
         </activity>
+        <activity android:name=".town.newtown.EditInfoActivity">
+        </activity>
     </application>
 
 </manifest>
