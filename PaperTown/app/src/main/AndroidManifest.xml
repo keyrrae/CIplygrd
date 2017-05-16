@@ -96,8 +96,12 @@
         </activity>
         <activity android:name=".town.towndetail.TownDetailActivity">
         </activity>
-        <activity android:name=".town.newtown.EditInfoActivity">
-        </activity>
+
+        <activity android:name=".town.newtown.NewTitleActivity" />
+        <activity android:name=".town.newtown.NewAddressActivity" />
+        <activity android:name=".town.newtown.NewCategoryActivity" />
+        <activity android:name=".town.newtown.NewDescriptionActivity" />
+        <activity android:name=".town.newtown.NewInformationActivity" />
     </application>
 
 </manifest>

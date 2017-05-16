@@ -66,9 +66,11 @@ dependencies {
     
     // For integration with Fresco
     
-    // For testing
+    // For testin
+    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
+
     compile 'com.facebook.soloader:soloader:0.2.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
