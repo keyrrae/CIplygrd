@@ -21,6 +21,8 @@ import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -28,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -47,11 +50,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 
+import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
 import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
@@ -85,6 +92,9 @@ public class GeoActivity extends AppCompatActivity implements
    */
   private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
+  public List<Town> towns;
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -103,15 +113,6 @@ public class GeoActivity extends AppCompatActivity implements
           case R.id.add_town:
             Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
             startActivity(newTownIntent);
-            /*
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-            intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);*/
             break;
           case R.id.list_view:
             Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
@@ -159,6 +160,35 @@ public class GeoActivity extends AppCompatActivity implements
         return true;
       }
     });
+
+
+    RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
+
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+    mRecyclerView.setLayoutManager(linearLayoutManager);
+
+    initData();
+
+    GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns);
+    mRecyclerView.setAdapter(mAdapter);
+
+    mRecyclerView.addOnItemTouchListener(
+
+        new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+
+          @Override
+          public void onItemClick(View view, int position) {
+            Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+            startActivity(intent);
+          }
+
+          @Override
+          public void onLongItemClick(View view, int position) {
+          }
+
+        })
+    );
+
   }
 
   private void cleanSharedPreferences(){
@@ -420,5 +450,65 @@ public class GeoActivity extends AppCompatActivity implements
     inflater.inflate(R.menu.menu_geo, menu);
 
     return true;
+  }
+
+  private void initData() {
+    towns = new ArrayList<>();
+
+    List<String> imgs1 = new ArrayList<>();
+    imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
+
+    List<String> imgs2 = new ArrayList<>();
+    imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
+
+    List<String> imgs3 = new ArrayList<>();
+    imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
+
+
+    Town t1 = new Town.Builder()
+        .setTitle("Mother Susanna Monument")
+        .setCategory("Place")
+        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+        .setAddress("6510 El Colegio Rd Apt 1223")
+        .setLat(35.594559f)
+        .setLng(-117.899149f)
+        .setUserId("theUniqueEye")
+        .setImages(imgs1)
+        .setSketch("")
+        .build();
+
+    Town t2 = new Town.Builder()
+        .setTitle("Father Crowley Monument")
+        .setCategory("Place")
+        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+        .setAddress("6510 El Colegio Rd Apt 1223")
+        .setLat(35.594559f)
+        .setLng(-117.899149f)
+        .setUserId("theUniqueEye")
+        .setImages(imgs2)
+        .setSketch("")
+        .build();
+
+    Town t3 = new Town.Builder()
+        .setTitle("Wonder Land")
+        .setCategory("Creature")
+        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+        .setAddress("Rabbit Hole 1901C")
+        .setLat(35.594559f)
+        .setLng(-117.899149f)
+        .setUserId("Sams to Go")
+        .setImages(imgs3)
+        .setSketch("")
+        .build();
+
+    towns.add(t1);
+    towns.add(t2);
+    towns.add(t3);
+    towns.add(t1);
+    towns.add(t2);
+    towns.add(t3);
+    towns.add(t1);
+    towns.add(t2);
+    towns.add(t3);
   }
 }

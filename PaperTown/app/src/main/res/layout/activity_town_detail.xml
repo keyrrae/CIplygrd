@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Xuan Wang
   ~  All rights reserved.
   ~
@@ -8,12 +7,134 @@
   ~
   -->
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/detail_town_image"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:contentDescription="town image"
+            android:scaleType="center"
+            android:src="@drawable/corridor" />
+
+        <TextView
+            android:id="@+id/detail_town_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_town_image"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="Roboto"
+            android:text="Town A"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_town_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_town_title"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="Roboto"
+            android:text="Place"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/detail_town_visit_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_town_title"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/detail_town_category"
+            android:fontFamily="Roboto"
+            android:text="75 visits"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/detail_town_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_town_category"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="Roboto"
+            android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
+            android:textColor="@android:color/background_dark"
+            android:textSize="14dp" />
+
+        <fragment
+            android:id="@+id/detail_map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@id/detail_town_description"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/detail_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_map"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="Roboto"
+            android:text="Address"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/detail_town_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_address"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="Roboto"
+            android:text="Address here. Olancha, CA 93549 >>"
+            android:textColor="@android:color/background_dark"
+            android:textSize="14dp" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/detail_town_navi"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/detail_address"-->
+            <!--android:layout_marginLeft="4dp"-->
+            <!--android:layout_toRightOf="@+id/detail_town_address"-->
+            <!--android:src="@drawable/ic_navigation_black_18dp" />-->
+
+        <GridView
+            android:id="@+id/detail_image_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:numColumns="4"
+            android:verticalSpacing="2dp"
+            android:horizontalSpacing="2dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+
+            android:layout_below="@+id/detail_town_address"
+            android:layout_marginTop="8dp"
+            />
+
+
+    </RelativeLayout>
+
+</ScrollView>

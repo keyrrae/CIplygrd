@@ -15,19 +15,21 @@
 
     <item android:id="@+id/add_town"
           android:title="@string/add_location_title"
-          android:icon="@drawable/ic_add_location_black_24dp"
+          android:icon="@drawable/ic_add_white_24dp"
           app:showAsAction="collapseActionView|ifRoom"
         />
+
+
+
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never" />-->
 
     <item android:id="@+id/list_view"
-          android:title="@string/list_view"
-          android:icon="@drawable/ic_view_list_black_24dp"
-          app:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/list_view"
+        android:icon="@drawable/ic_view_list_white_24dp"
+        app:showAsAction="collapseActionView|ifRoom"
         />
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 </menu>
