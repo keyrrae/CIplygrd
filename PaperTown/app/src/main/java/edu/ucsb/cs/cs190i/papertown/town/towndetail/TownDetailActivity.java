@@ -177,10 +177,7 @@ public class TownDetailActivity extends AppCompatActivity {
           //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
 
           if (map != null) {
-            map.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -117.839406), 15));  //gps and zoom level
-
-            ////mMap.animateCamera(zoom);  //add animation
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -117.839406), 15));  //add animation
           }
 
 
