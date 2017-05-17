@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -266,6 +267,27 @@ public class NewTownActivity extends AppCompatActivity implements
           Log.i("onClick", "Submit!");
 
             //passing data to detailView
+
+
+            Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+            intent.putExtra("dataToD", "asdf");  //passing data...
+
+
+            intent.putExtra("title", title);  //passing data...
+            intent.putExtra("address", address);  //passing data...
+            intent.putExtra("description", description);  //passing data...
+            intent.putExtra("category", category);  //passing data...
+            intent.putExtra("information", information);  //passing data...
+//            intent.putExtra("uriList", uriList);  //passing data...
+
+
+
+            //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
+            startActivity (intent);
+//            overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+
+
+
         }
 
 
