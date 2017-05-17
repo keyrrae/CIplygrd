@@ -8,7 +8,10 @@
 
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -115,6 +126,74 @@ public class TownDetailActivity extends AppCompatActivity {
         this.imageGrid.setAdapter(new ImageAdapter(this, this.uriList));
       }
     }
+
+
+
+
+    //handle the google Maps
+
+    SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+
+    if (mapFragment != null) {
+      mapFragment.getMapAsync(new OnMapReadyCallback() {
+        @Override
+        public void onMapReady(GoogleMap map) {
+          //enable myLocationButton
+          if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                  Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+            //map.getUiSettings().setMyLocationButtonEnabled(true);
+          }
+          else {
+            Log.i("manu", "Error - checkSelfPermission!!");
+          }
+          //end of enabling myLocationButton
+
+//          BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker);
+//          BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
+//          BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
+//
+//
+//          //add markers
+//          map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
+//                  .title("Ohh!")
+//                  .snippet("TsadADSadsA")
+//                  .icon(icon1));
+//
+//          map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
+//                  .title("Underclass beauty")
+//                  .snippet("Get sunburn in my head")
+//                  .icon(icon2));
+//
+//          map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
+//                  .title("Big thing!")
+//                  .snippet("Meat carnival")
+//                  .icon(icon3));
+//
+//          //end of adding markers
+
+
+          //camera animation
+          //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
+
+          if (map != null) {
+            map.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -117.839406), 15));  //gps and zoom level
+
+            ////mMap.animateCamera(zoom);  //add animation
+          }
+
+
+          //end of camera animation
+
+
+        }
+      });
+    } else {
+
+      Log.i("manu", "Error - Map Fragment was null!!");
+    }
+
 
 
 
