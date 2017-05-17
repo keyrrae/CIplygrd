@@ -48,6 +48,9 @@ public class TownDetailActivity extends AppCompatActivity {
   String information = "";
   ArrayList<String> uriStringArrayList;
 
+  float lat = 34.415320f;
+  float lng = -119.84023f;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +100,19 @@ public class TownDetailActivity extends AppCompatActivity {
       detail_town_description.setText(address);
     }
 
+    //processing address to latlng
+//    String CurrentString = "Fruit: they taste good";
+//    String[] separated = address.split(":");
+//    separated[0]; // this will contain "Fruit"
+//    separated[1]; // this will contain " they taste good"
+
     //load description
     if(description!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
       detail_town_description.setText(description);
     }
+
+
 
     //load category
     if(category!=null) {
@@ -154,30 +165,34 @@ public class TownDetailActivity extends AppCompatActivity {
           BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
 
 
-          //add markers
-          map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
-                  .title("Ohh!")
-                  .snippet("TsadADSadsA")
-                  .icon(icon1));
+          if(category.equals(R.string.town_category_place)) {
+            //add markers
+            map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
+                    .title("Ohh!")
+                    .snippet("TsadADSadsA")
+                    .icon(icon1));
+          }
+          else if(category.equals(R.string.town_category_creature)) {
 
           map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
                   .title("Underclass beauty")
                   .snippet("Get sunburn in my head")
                   .icon(icon2));
-
+          }
+          else if(category.equals(R.string.town_category_event)) {
           map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
                   .title("Big thing!")
                   .snippet("Meat carnival")
                   .icon(icon3));
 
           //end of adding markers
-
+          }
 
           //camera animation
           //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
 
           if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -117.839406), 15));  //add animation
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -118.839406), 15));  //add animation
           }
 
 

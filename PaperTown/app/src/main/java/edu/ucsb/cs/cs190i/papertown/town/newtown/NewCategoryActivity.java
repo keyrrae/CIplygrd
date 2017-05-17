@@ -33,7 +33,7 @@ public class NewCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","place");
+                returnIntent.putExtra("result",R.string.town_category_place);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
@@ -45,7 +45,7 @@ public class NewCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","creature");
+                returnIntent.putExtra("result",R.string.town_category_creature);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
@@ -57,7 +57,7 @@ public class NewCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","event");
+                returnIntent.putExtra("result",R.string.town_category_event);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
