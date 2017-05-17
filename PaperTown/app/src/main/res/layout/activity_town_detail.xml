@@ -26,6 +26,12 @@
             android:scaleType="center"
             android:src="@drawable/corridor" />
 
+        <Button
+            android:id="@+id/button_test_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
         <TextView
             android:id="@+id/detail_town_information"
             android:layout_width="match_parent"

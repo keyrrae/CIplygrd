@@ -15,6 +15,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class TownDetailActivity extends AppCompatActivity {
 
@@ -65,6 +68,38 @@ public class TownDetailActivity extends AppCompatActivity {
     this.uriList = new ArrayList<Uri>();
 //    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
 //    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+
+
+      Button button_test_detail = (Button) findViewById(R.id.button_test_detail);
+      button_test_detail.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              Log.i("dataToD", "button_test_detail OnClickListener");
+
+
+
+              Town testTown = new  Town.Builder()
+                      .setTitle(title)
+                      .setAddress(address)
+                      .setCategory(category)
+                      .setDescription(description)
+                      .setLat(lat)
+                      .setLng(lng)
+                      .setImages(uriStringArrayList)
+                      .build();
+
+
+              Log.i("dataToD", "button_test_detail OnClickListener");
+                      //.setInformation   ???
+
+
+
+
+
+
+          }
+      });
+
 
     String s = getIntent().getStringExtra("dataToD");
     Log.i("dataToD", "data = "+s);
@@ -98,12 +133,14 @@ public class TownDetailActivity extends AppCompatActivity {
     if(address!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
       detail_town_description.setText(address);
+
+        //processing address to latlng
+        String[] separated = address.split(",");
+        lat = Float.parseFloat(separated[0]);
+        lng = Float.parseFloat(separated[1]);
     }
 
-    //processing address to latlng
-    String[] separated = address.split(",");
-    lat = Float.parseFloat(separated[0]);
-    lng = Float.parseFloat(separated[1]);
+
 
     //load description
     if(description!=null) {
@@ -164,27 +201,27 @@ public class TownDetailActivity extends AppCompatActivity {
           BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
 
 
-          if(category.equals("place")) {
-            //add markers
-            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                    .title("Ohh!")
-                    .snippet("TsadADSadsA")
-                    .icon(icon1));
-          }
-          else if(category.equals("creature")) {
+          if(category!=null&&!category.isEmpty()) {
+            if (category.equals("place")) {
+              //add markers
+              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                      .title("Ohh!")
+                      .snippet("TsadADSadsA")
+                      .icon(icon1));
+            } else if (category.equals("creature")) {
 
-          map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                  .title("Underclass beauty")
-                  .snippet("Get sunburn in my head")
-                  .icon(icon2));
-          }
-          else if(category.equals("event")) {
-          map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                  .title("Big thing!")
-                  .snippet("Meat carnival")
-                  .icon(icon3));
+              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                      .title("Underclass beauty")
+                      .snippet("Get sunburn in my head")
+                      .icon(icon2));
+            } else if (category.equals("event")) {
+              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                      .title("Big thing!")
+                      .snippet("Meat carnival")
+                      .icon(icon3));
 
-          //end of adding markers
+              //end of adding markers
+            }
           }
 
           //camera animation
