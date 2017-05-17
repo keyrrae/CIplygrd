@@ -149,28 +149,28 @@ public class TownDetailActivity extends AppCompatActivity {
           }
           //end of enabling myLocationButton
 
-//          BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker);
-//          BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
-//          BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
-//
-//
-//          //add markers
-//          map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
-//                  .title("Ohh!")
-//                  .snippet("TsadADSadsA")
-//                  .icon(icon1));
-//
-//          map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
-//                  .title("Underclass beauty")
-//                  .snippet("Get sunburn in my head")
-//                  .icon(icon2));
-//
-//          map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
-//                  .title("Big thing!")
-//                  .snippet("Meat carnival")
-//                  .icon(icon3));
-//
-//          //end of adding markers
+          BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker);
+          BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
+          BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
+
+
+          //add markers
+          map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
+                  .title("Ohh!")
+                  .snippet("TsadADSadsA")
+                  .icon(icon1));
+
+          map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
+                  .title("Underclass beauty")
+                  .snippet("Get sunburn in my head")
+                  .icon(icon2));
+
+          map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
+                  .title("Big thing!")
+                  .snippet("Meat carnival")
+                  .icon(icon3));
+
+          //end of adding markers
 
 
           //camera animation
