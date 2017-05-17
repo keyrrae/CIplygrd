@@ -264,7 +264,7 @@ public class NewTownActivity extends AppCompatActivity implements
           Toast.makeText(getApplicationContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
         }
         else{
-          Log.i("onClick", "Submit!");
+          Log.i("onClick", "Preview !");
 
             //passing data to detailView
 
@@ -278,7 +278,7 @@ public class NewTownActivity extends AppCompatActivity implements
             intent.putExtra("description", description);  //passing data...
             intent.putExtra("category", category);  //passing data...
             intent.putExtra("information", information);  //passing data...
-
+            intent.putExtra("mode", "preview");  //passing data...
 
             //process Uri array data
             ArrayList<String> uriStringArrayList = new ArrayList<>();
@@ -712,7 +712,7 @@ public class NewTownActivity extends AppCompatActivity implements
     //change color of submission button
     Button button_step_left = (Button) findViewById(R.id.button_step_left);
     button_step_left.setBackgroundColor(Color.rgb(29,191,151));
-    button_step_left.setText("SUBMIT !");
+    button_step_left.setText("PREVIEW !");
 
 
     //change the color of the progress bar

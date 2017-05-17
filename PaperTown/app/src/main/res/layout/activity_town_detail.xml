@@ -6,18 +6,13 @@
   ~  LICENSE file in the root directory of this source tree.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:fillViewport="true">
+
 
 
     <LinearLayout
@@ -135,16 +130,10 @@
             android:textColor="@android:color/background_dark"
             android:textSize="14dp" />
 
-        <!--<ImageView-->
-            <!--android:id="@+id/detail_town_navi"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/detail_address"-->
-            <!--android:layout_marginLeft="4dp"-->
-            <!--android:layout_toRightOf="@+id/detail_town_address"-->
-            <!--android:src="@drawable/ic_navigation_black_18dp" />-->
 
-        <GridView
+
+
+        <edu.ucsb.cs.cs190i.papertown.town.newtown.WrappingGridView
             android:id="@+id/detail_image_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,18 +146,18 @@
             android:layout_marginTop="8dp"
             />
 
+        <Button
+            android:id="@+id/button_test_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Button" />
+
 
     </LinearLayout>
 
-    </ScrollView>
 
-    <Button
-        android:id="@+id/button_test_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="@android:color/darker_gray"
-        android:gravity="center"
-        android:text="Button" />
 
-</LinearLayout>
+
+
+</ScrollView>

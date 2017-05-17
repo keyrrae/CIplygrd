@@ -10,12 +10,14 @@ package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -43,6 +45,7 @@ public class TownDetailActivity extends AppCompatActivity {
   private GridView imageGrid;
   private ArrayList<Uri> uriList;
 
+    private String mode = "detail";
 
   String title = "";
   String address = "";
@@ -89,16 +92,21 @@ public class TownDetailActivity extends AppCompatActivity {
                       .build();
 
 
+              if(mode.equals("preview")){
+                  Log.i("dataToD", "SUBMIT!");
+              }
+              else{
+                  finish();
+              }
+
+
+
               Log.i("dataToD", "button_test_detail OnClickListener");
                       //.setInformation   ???
-
-
-
-
-
-
           }
       });
+
+
 
 
     String s = getIntent().getStringExtra("dataToD");
@@ -110,6 +118,25 @@ public class TownDetailActivity extends AppCompatActivity {
     category = getIntent().getStringExtra("category");
     information = getIntent().getStringExtra("information");
     uriStringArrayList = getIntent().getStringArrayListExtra("uriStringArrayList");
+      mode = getIntent().getStringExtra("mode");
+      if(mode==null){
+          mode = "detail";
+      }
+
+
+
+      //change button color
+      if(mode!=null&&mode.equals("preview")) {
+          //change color of submission button
+          button_test_detail.setBackgroundColor(Color.rgb(29, 191, 151));
+          button_test_detail.setText("SUBMIT !");
+      }
+      else{
+          //change color of submission button
+          button_test_detail.setBackgroundColor(Color.rgb(96, 157, 255));
+          button_test_detail.setText("DONE");
+      }
+
 
     //process uriStringArrayList, put data into uriList
     if(uriStringArrayList!=null&&uriStringArrayList.size()>0) {
@@ -121,6 +148,11 @@ public class TownDetailActivity extends AppCompatActivity {
       Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
       this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
       this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+
     }
 
     //load title
@@ -173,6 +205,11 @@ public class TownDetailActivity extends AppCompatActivity {
         this.imageGrid.setAdapter(new ImageAdapter(this, this.uriList));
       }
     }
+
+
+
+    //adjust the gridView hright
+
 
 
 
