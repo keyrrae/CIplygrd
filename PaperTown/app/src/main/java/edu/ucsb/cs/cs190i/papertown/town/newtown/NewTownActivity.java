@@ -48,7 +48,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class NewTownActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory{
-  static ListView listview;
+//  static ListView listview;
   private ImageSwitcher mSwitcher;
 
   final int NEW_TITLE_REQUEST = 0;
@@ -64,6 +64,7 @@ public class NewTownActivity extends AppCompatActivity implements
   String category = "";
   String description = "";
   String information = "";
+  Uri[] uriList;
   Uri imageUri = null;
 
   static int imageCount = 0;
@@ -462,7 +463,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
       if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
         ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
-        final Uri[] uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+        uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
         //String result = data.getStringExtra("result");
         //Log.i("onActivityResult", "result = " + result);
 
@@ -634,6 +635,16 @@ public class NewTownActivity extends AppCompatActivity implements
               information);
     }
 
+    if(uriList!=null) {
+      Log.i("checkAllInformation", "uriList!=null");
+      counter++;
+      //setChecked(listview.getChildAt(4),information);
+      setChecked((TextView) findViewById(R.id.title_image),
+              null,
+              (ImageView) findViewById(R.id.checkbox_0),
+              information);
+    }
+
     if(imageUri!=null) {
       Log.i("checkAllInformation", "information!=null");
       counter++;
@@ -693,8 +704,10 @@ public class NewTownActivity extends AppCompatActivity implements
     //TextView title = (TextView) view.findViewById(R.id.title1);
     t1.setTextColor(Color.rgb(29,191,151));
 
-    //TextView description = (TextView) view.findViewById(R.id.description);
-    t2.setText(desctiption_in);
+    if(t2!=null) {
+      //TextView description = (TextView) view.findViewById(R.id.description);
+      t2.setText(desctiption_in);
+    }
   }
 
 
