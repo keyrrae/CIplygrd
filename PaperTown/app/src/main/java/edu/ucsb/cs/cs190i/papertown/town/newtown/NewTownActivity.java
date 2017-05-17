@@ -187,7 +187,11 @@ public class NewTownActivity extends AppCompatActivity implements
     title_title.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
+        Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
+        //intent.putExtra(EXTRA_MESSAGE, "asdf");
+        startActivityForResult(intent, NEW_TITLE_REQUEST);
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+        //finish();// kill current activity
 
       }
     });
