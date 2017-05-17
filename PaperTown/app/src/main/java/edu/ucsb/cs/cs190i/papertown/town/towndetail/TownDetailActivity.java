@@ -101,10 +101,9 @@ public class TownDetailActivity extends AppCompatActivity {
     }
 
     //processing address to latlng
-//    String CurrentString = "Fruit: they taste good";
-//    String[] separated = address.split(":");
-//    separated[0]; // this will contain "Fruit"
-//    separated[1]; // this will contain " they taste good"
+    String[] separated = address.split(",");
+    lat = Float.parseFloat(separated[0]);
+    lng = Float.parseFloat(separated[1]);
 
     //load description
     if(description!=null) {
@@ -165,22 +164,22 @@ public class TownDetailActivity extends AppCompatActivity {
           BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
 
 
-          if(category.equals(R.string.town_category_place)) {
+          if(category.equals("place")) {
             //add markers
-            map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
+            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                     .title("Ohh!")
                     .snippet("TsadADSadsA")
                     .icon(icon1));
           }
-          else if(category.equals(R.string.town_category_creature)) {
+          else if(category.equals("creature")) {
 
-          map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
+          map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                   .title("Underclass beauty")
                   .snippet("Get sunburn in my head")
                   .icon(icon2));
           }
-          else if(category.equals(R.string.town_category_event)) {
-          map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
+          else if(category.equals("event")) {
+          map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                   .title("Big thing!")
                   .snippet("Meat carnival")
                   .icon(icon3));
@@ -192,7 +191,7 @@ public class TownDetailActivity extends AppCompatActivity {
           //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
 
           if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.414913, -118.839406), 15));  //add animation
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
           }
 
 

@@ -480,7 +480,7 @@ public class NewTownActivity extends AppCompatActivity implements
         Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
         startActivityForResult(intent, NEW_PHOTO_REQUEST);
-        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+        //overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
         //finish();// kill current activity
 
 

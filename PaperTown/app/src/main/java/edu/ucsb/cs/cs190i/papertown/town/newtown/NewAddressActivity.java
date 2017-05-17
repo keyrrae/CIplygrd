@@ -82,7 +82,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
 
-                    returnIntent.putExtra("result", latitude + ", " + longitude);
+                    returnIntent.putExtra("result", latitude + "," + longitude);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
