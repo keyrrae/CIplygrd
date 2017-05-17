@@ -1,5 +1,3 @@
-
-
 /*
  *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
@@ -9,6 +7,11 @@
  */
 
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import edu.ucsb.cs.cs190i.papertown.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,40 +31,36 @@ import edu.ucsb.cs.cs190i.papertown.R;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-/**
- * Created by Zhenyu on 2017-05-17.
- */
-
 public class SelectImageActivity extends AppCompatActivity
 
-    {
+{
 
-        Uri[] imageUris;
-        final int NEW_PHOTO_REQUEST = 5;
-        GridView grid;
-        String[] web = {
-                "Google"
-        } ;
-        int[] imageId = {
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test,
-                R.drawable.test
+    Uri[] imageUris;
+    final int NEW_PHOTO_REQUEST = 5;
+    GridView grid;
+    String[] web = {
+            "Google"
+    } ;
+    int[] imageId = {
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test,
+            R.drawable.test
 
-        };
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    };
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
 
@@ -134,8 +133,8 @@ public class SelectImageActivity extends AppCompatActivity
 
     }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
 
 
@@ -161,7 +160,7 @@ public class SelectImageActivity extends AppCompatActivity
 
     }
 
-        Uri[] addUri(Uri[] urilist, Uri in) {
+    Uri[] addUri(Uri[] urilist, Uri in) {
         if(urilist!=null) {
             Uri[] output = new Uri[urilist.length+1];
 
@@ -180,4 +179,4 @@ public class SelectImageActivity extends AppCompatActivity
 
     }
 
-    }
+}
