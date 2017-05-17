@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (c) 2017 - present, Xuan Wang
+  ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
   ~  This source code is licensed under the BSD-style license found in the
   ~  LICENSE file in the root directory of this source tree.
-  ~
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <ImageView
@@ -26,11 +34,24 @@
             android:scaleType="center"
             android:src="@drawable/corridor" />
 
+
+
+        <TextView
+            android:id="@+id/detail_town_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="Roboto"
+            android:text="Author"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/detail_town_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_town_image"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:fontFamily="Roboto"
@@ -39,36 +60,43 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/detail_town_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_town_title"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="Roboto"
-            android:text="Place"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="10dp" />
 
-        <TextView
-            android:id="@+id/detail_town_visit_count"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_town_title"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/detail_town_category"
-            android:fontFamily="Roboto"
-            android:text="75 visits"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="10dp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/detail_town_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="Roboto"
+                android:text="Place"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/detail_town_visit_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/detail_town_category"
+                android:fontFamily="Roboto"
+                android:text="75 visits"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/detail_town_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detail_town_category"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
@@ -82,14 +110,12 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_below="@id/detail_town_description"
             android:layout_marginTop="16dp" />
 
         <TextView
             android:id="@+id/detail_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detail_map"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:fontFamily="Roboto"
@@ -101,7 +127,6 @@
             android:id="@+id/detail_town_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detail_address"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="4dp"
@@ -129,12 +154,21 @@
             android:horizontalSpacing="2dp"
             android:stretchMode="columnWidth"
             android:gravity="center"
-
-            android:layout_below="@+id/detail_town_address"
             android:layout_marginTop="8dp"
             />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button_test_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:text="Button" />
+
+</LinearLayout>

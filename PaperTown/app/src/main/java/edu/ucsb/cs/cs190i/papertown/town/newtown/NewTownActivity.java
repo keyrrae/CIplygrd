@@ -1,10 +1,11 @@
+
+
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
@@ -23,24 +24,33 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
-public class NewTownActivity extends AppCompatActivity {
-  static ListView listview;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
+public class NewTownActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory{
+//  static ListView listview;
+  private ImageSwitcher mSwitcher;
 
   final int NEW_TITLE_REQUEST = 0;
   final int NEW_ADDRESS_REQUEST = 1;
@@ -55,9 +65,18 @@ public class NewTownActivity extends AppCompatActivity {
   String category = "";
   String description = "";
   String information = "";
+  Uri[] uriList;
   Uri imageUri = null;
 
+  static int imageCount = 0;
+
   int itemLeft = 6;
+
+
+  private Integer[] mImageIds = {
+          R.drawable.door, R.drawable.light, R.drawable.corner,
+          R.drawable.mc, R.drawable.light, R.drawable.door,
+          R.drawable.light, R.drawable.corner};
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +96,32 @@ public class NewTownActivity extends AppCompatActivity {
 
 
 
+
+
+    //setup switcher
+    mSwitcher = (ImageSwitcher) findViewById(R.id.switcher);
+    mSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+      @Override
+      public View makeView() {
+        ImageView myView = new ImageView(getApplicationContext());
+        myView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        myView.setLayoutParams(new
+                ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        return myView;
+      }
+    });
+    mSwitcher.setInAnimation(AnimationUtils.loadAnimation(this,
+            android.R.anim.fade_in));
+    mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
+            android.R.anim.fade_out));
+
+    mSwitcher.setImageDrawable(getResources().getDrawable(R.drawable.brick));
+
+
     //set up imageview onclick
-    ImageView selectImage = (ImageView) findViewById(R.id.imageView);
-    selectImage.setOnClickListener(new View.OnClickListener() {
+    //ImageView selectImage = (ImageView) findViewById(R.id.imageView);
+    mSwitcher.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Log.i("onClick", "selectImage click");
@@ -89,7 +131,7 @@ public class NewTownActivity extends AppCompatActivity {
 
         //stat camera rool
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , NEW_PHOTO_REQUEST);//one can be replaced with any action code
 
 //                //start camera roll for multiple images
@@ -112,16 +154,16 @@ public class NewTownActivity extends AppCompatActivity {
 
     //listview = (ListView) findViewById(R.id.listView);
     String[] values = new String[]{"Add Title",
-        "Set Address",
-        "Select Category",
-        "Add Description",
-        "Your Information"};
+            "Set Address",
+            "Select Category",
+            "Add Description",
+            "Your Information"};
 
     String[] decriptions = new String[]{"Give a name to the item",
-        "Where did you find the item",
-        "What is the type of the item",
-        "Be precise, concise and professional",
-        "Required to keep track of the item"};
+            "Where did you find the item",
+            "What is the type of the item",
+            "Be precise, concise and professional",
+            "Required to keep track of the item"};
 
 //        boolean[] checked = new boolean[]{false,
 //                false,
@@ -147,7 +189,6 @@ public class NewTownActivity extends AppCompatActivity {
     title_title.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.i("onClick", "selectImage click");
         Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
         //intent.putExtra(EXTRA_MESSAGE, "asdf");
         startActivityForResult(intent, NEW_TITLE_REQUEST);
@@ -166,6 +207,8 @@ public class NewTownActivity extends AppCompatActivity {
         startActivityForResult(intent, NEW_ADDRESS_REQUEST);
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
         //finish();// kill current activity
+
+
 
       }
     });
@@ -222,13 +265,39 @@ public class NewTownActivity extends AppCompatActivity {
         }
         else{
           Log.i("onClick", "Submit!");
+
+            //passing data to detailView
+
+
+            Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+            intent.putExtra("dataToD", "asdf");  //passing data...
+
+
+            intent.putExtra("title", title);  //passing data...
+            intent.putExtra("address", address);  //passing data...
+            intent.putExtra("description", description);  //passing data...
+            intent.putExtra("category", category);  //passing data...
+            intent.putExtra("information", information);  //passing data...
+
+
+            //process Uri array data
+            ArrayList<String> uriStringArrayList = new ArrayList<>();
+            for(int i = 0; i<uriList.length;i++){
+                uriStringArrayList.add(uriList[i].toString());
+            }
+            intent.putStringArrayListExtra("uriStringArrayList", uriStringArrayList);  //passing Uri array data...
+
+
+
+            //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
+            startActivity (intent);
+//            overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+
+            finish();
+
         }
 
-//                Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
-//                //intent.putExtra(EXTRA_MESSAGE, "asdf");
-//                startActivityForResult(intent, NEW_TITLE_REQUEST);
-//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-//                //finish();// kill current activity
+
 
       }
     });
@@ -236,55 +305,98 @@ public class NewTownActivity extends AppCompatActivity {
 
   }
 
-  private void animate(final ImageView imageView, final Uri images[], final int imageIndex, final boolean forever) {
+//    private void animate4Swicher() {
+//
+//        int fadeInDuration = 500; // Configure time values here
+//        int timeBetween = 3000;
+//        int fadeOutDuration = 1000;
+//
+//
+//        Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+//        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+//        fadeIn.setDuration(fadeInDuration);
+//
+//        Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+//        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+//        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+//        fadeOut.setDuration(fadeOutDuration);
+//
+//
+//        AnimationSet animation = new AnimationSet(false); // change to false
+//        animation.addAnimation(fadeIn);
+//        animation.addAnimation(fadeOut);
+//        animation.setRepeatCount(1);
+//
+//        animation.setAnimationListener(new Animation.AnimationListener() {
+//            public void onAnimationEnd(Animation animation) {
+//                if (images.length - 1 > imageIndex) {
+//                    animate(imageView, images, imageIndex + 1,forever); //Calls itself until it gets to the end of the array
+//                }
+//                else {
+//                    if (forever == true){
+//                        animate(imageView, images, 0,forever);  //Calls itself to start the animation all over again in a loop if forever = true
+//                    }
+//                }
+//            }
+//            public void onAnimationRepeat(Animation animation) {
+//                // TODO Auto-generated method stub
+//            }
+//            public void onAnimationStart(Animation animation) {
+//                // TODO Auto-generated method stub
+//            }
+//        });
+//
+//    }
 
-    //imageView <-- The View which displays the images
-    //images[] <-- Holds R references to the images to display
-    //imageIndex <-- index of the first image to show in images[]
-    //forever <-- If equals true then after the last image it starts all over again with the first image resulting in an infinite loop. You have been warned.
-
-    int fadeInDuration = 500; // Configure time values here
-    int timeBetween = 3000;
-    int fadeOutDuration = 1000;
-
-    imageView.setVisibility(View.INVISIBLE);    //Visible or invisible by default - this will apply when the animation ends
-    // imageView.setImageResource(images[imageIndex]);
-    imageView.setImageURI(images[imageIndex]); // use Uri as resource
-
-    Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-    fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
-    fadeIn.setDuration(fadeInDuration);
-
-    Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-    fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
-    fadeOut.setStartOffset(fadeInDuration + timeBetween);
-    fadeOut.setDuration(fadeOutDuration);
-
-    AnimationSet animation = new AnimationSet(false); // change to false
-    animation.addAnimation(fadeIn);
-    animation.addAnimation(fadeOut);
-    animation.setRepeatCount(1);
-    imageView.setAnimation(animation);
-
-    animation.setAnimationListener(new Animation.AnimationListener() {
-      public void onAnimationEnd(Animation animation) {
-        if (images.length - 1 > imageIndex) {
-          animate(imageView, images, imageIndex + 1,forever); //Calls itself until it gets to the end of the array
-        }
-        else {
-          if (forever == true){
-            animate(imageView, images, 0,forever);  //Calls itself to start the animation all over again in a loop if forever = true
-          }
-        }
-      }
-      public void onAnimationRepeat(Animation animation) {
-        // TODO Auto-generated method stub
-      }
-      public void onAnimationStart(Animation animation) {
-        // TODO Auto-generated method stub
-      }
-    });
-  }
+//    private void animate(final ImageView imageView, final Uri images[], final int imageIndex, final boolean forever) {
+//
+//        //imageView <-- The View which displays the images
+//        //images[] <-- Holds R references to the images to display
+//        //imageIndex <-- index of the first image to show in images[]
+//        //forever <-- If equals true then after the last image it starts all over again with the first image resulting in an infinite loop. You have been warned.
+//
+//        int fadeInDuration = 500; // Configure time values here
+//        int timeBetween = 3000;
+//        int fadeOutDuration = 1000;
+//
+//        imageView.setVisibility(View.INVISIBLE);    //Visible or invisible by default - this will apply when the animation ends
+//       // imageView.setImageResource(images[imageIndex]);
+//        imageView.setImageURI(images[imageIndex]); // use Uri as resource
+//
+//        Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+//        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+//        fadeIn.setDuration(fadeInDuration);
+//
+//        Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+//        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+//        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+//        fadeOut.setDuration(fadeOutDuration);
+//
+//        AnimationSet animation = new AnimationSet(false); // change to false
+//        animation.addAnimation(fadeIn);
+//        animation.addAnimation(fadeOut);
+//        animation.setRepeatCount(1);
+//        imageView.setAnimation(animation);
+//
+//        animation.setAnimationListener(new Animation.AnimationListener() {
+//            public void onAnimationEnd(Animation animation) {
+//                if (images.length - 1 > imageIndex) {
+//                    animate(imageView, images, imageIndex + 1,forever); //Calls itself until it gets to the end of the array
+//                }
+//                else {
+//                    if (forever == true){
+//                        animate(imageView, images, 0,forever);  //Calls itself to start the animation all over again in a loop if forever = true
+//                    }
+//                }
+//            }
+//            public void onAnimationRepeat(Animation animation) {
+//                // TODO Auto-generated method stub
+//            }
+//            public void onAnimationStart(Animation animation) {
+//                // TODO Auto-generated method stub
+//            }
+//        });
+//    }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -365,13 +477,10 @@ public class NewTownActivity extends AppCompatActivity {
 //                ImageView selectImage = (ImageView) findViewById(R.id.imageView);
 //                selectImage.setImageURI(selectedImageURI);
 
-        /*
         Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
         startActivityForResult(intent, NEW_PHOTO_REQUEST);
-        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-        //finish();// kill current activity
-*/
+
 
 
 
@@ -379,23 +488,90 @@ public class NewTownActivity extends AppCompatActivity {
 
       if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
         ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
-        Uri[] uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+        uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
         //String result = data.getStringExtra("result");
         //Log.i("onActivityResult", "result = " + result);
 
-
+        Log.i("mSwitcher", "uriList[0] = "+uriList[0].toString());
 
 
         //set Uri list as resource
-        ImageView selectImage = (ImageView) findViewById(R.id.imageView);
+        //ImageView selectImage = (ImageView) findViewById(R.id.imageView);
         //selectImage.setImageURI(Uri.parse(result));
         //imageUri = Uri.parse(result);
         ImageView c = (ImageView) findViewById(R.id.checkbox_0);
-        c.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
+        c.setImageResource(R.drawable.ic_check_box_white_24dp);
 
-        int imagesToShow[] = { R.drawable.door, R.drawable.corner,R.drawable.light };
-        animate(selectImage, uriList, 0,true);  //start animation
 
+        //start animation
+
+        (new Thread(new Runnable()
+        {
+
+          @Override
+          public void run()
+          {
+            while (!Thread.interrupted())
+              try
+              {
+                Thread.sleep(3000);  //3s
+                runOnUiThread(new Runnable() // start actions in UI thread
+                {
+
+                  @Override
+                  public void run()
+                  {
+                    Log.i("mSwitcher", "imageCount outside = "+imageCount);
+                    if(imageCount<uriList.length) {
+                      Log.i("mSwitcher", "imageCount = "+imageCount);
+                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
+                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
+                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                      mSwitcher.setImageURI(uriList[imageCount]);
+                      imageCount++;
+                    }
+                    else{
+                      imageCount = 0;
+                      Log.i("mSwitcher", "imageCount = "+imageCount);
+                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
+                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
+                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                      mSwitcher.setImageURI(uriList[imageCount]);
+                      imageCount++;
+                    }
+
+//                                        //displayData(); // this action have to be in UI thread
+//                                        if(imageCount==0) {
+//                                            mSwitcher.setImageResource(R.drawable.door);
+//                                            imageCount++;
+//                                        }
+//                                        else if(imageCount==1){
+//                                            mSwitcher.setImageResource(R.drawable.light);
+//                                            imageCount++;
+//                                        }
+//                                        else if(imageCount==2){
+//                                            mSwitcher.setImageResource(R.drawable.corner);
+//                                            imageCount++;
+//                                        }
+//                                        else if(imageCount==3){
+//                                            mSwitcher.setImageResource(R.drawable.mc);
+//                                            imageCount++;
+//                                        }
+//                                        else{
+//                                            imageCount = 0;
+//                                        }
+
+                  }
+                });
+              }
+              catch (InterruptedException e)
+              {
+                // ooops
+              }
+          }
+        })).start(); // the while thread will start in BG thread
+
+        //end of animation
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
@@ -439,9 +615,9 @@ public class NewTownActivity extends AppCompatActivity {
       counter++;
       //setChecked(listview.getChildAt(0),title);
       setChecked((TextView) findViewById(R.id.title_title),
-          (TextView) findViewById(R.id.description_title),
-          (ImageView) findViewById(R.id.checkbox1),
-          title);
+              (TextView) findViewById(R.id.description_title),
+              (ImageView) findViewById(R.id.checkbox1),
+              title);
     }
 
     if(address!=null&&!address.isEmpty()) {
@@ -449,9 +625,9 @@ public class NewTownActivity extends AppCompatActivity {
       counter++;
       //setChecked(listview.getChildAt(1),address);
       setChecked((TextView) findViewById(R.id.title_address),
-          (TextView) findViewById(R.id.description_address),
-          (ImageView) findViewById(R.id.checkbox2),
-          address);
+              (TextView) findViewById(R.id.description_address),
+              (ImageView) findViewById(R.id.checkbox2),
+              address);
     }
 
     if(category!=null&&!category.isEmpty()) {
@@ -459,9 +635,9 @@ public class NewTownActivity extends AppCompatActivity {
       counter++;
       //setChecked(listview.getChildAt(2),category);
       setChecked((TextView) findViewById(R.id.title_cate),
-          (TextView) findViewById(R.id.description_cate),
-          (ImageView) findViewById(R.id.checkbox3),
-          category);
+              (TextView) findViewById(R.id.description_cate),
+              (ImageView) findViewById(R.id.checkbox3),
+              category);
     }
 
     if(description!=null&&!description.isEmpty()) {
@@ -469,9 +645,9 @@ public class NewTownActivity extends AppCompatActivity {
       counter++;
       //setChecked(listview.getChildAt(3),description);
       setChecked((TextView) findViewById(R.id.title_description),
-          (TextView) findViewById(R.id.description_description),
-          (ImageView) findViewById(R.id.checkbox4),
-          description);
+              (TextView) findViewById(R.id.description_description),
+              (ImageView) findViewById(R.id.checkbox4),
+              description);
     }
 
     if(information!=null&&!information.isEmpty()) {
@@ -479,9 +655,19 @@ public class NewTownActivity extends AppCompatActivity {
       counter++;
       //setChecked(listview.getChildAt(4),information);
       setChecked((TextView) findViewById(R.id.title_information),
-          (TextView) findViewById(R.id.description_information),
-          (ImageView) findViewById(R.id.checkbox5),
-          information);
+              (TextView) findViewById(R.id.description_information),
+              (ImageView) findViewById(R.id.checkbox5),
+              information);
+    }
+
+    if(uriList!=null) {
+      Log.i("checkAllInformation", "uriList!=null");
+      counter++;
+      //setChecked(listview.getChildAt(4),information);
+      setChecked((TextView) findViewById(R.id.title_image),
+              null,
+              (ImageView) findViewById(R.id.checkbox_0),
+              information);
     }
 
     if(imageUri!=null) {
@@ -543,8 +729,46 @@ public class NewTownActivity extends AppCompatActivity {
     //TextView title = (TextView) view.findViewById(R.id.title1);
     t1.setTextColor(Color.rgb(29,191,151));
 
-    //TextView description = (TextView) view.findViewById(R.id.description);
-    t2.setText(desctiption_in);
+    if(t2!=null) {
+      //TextView description = (TextView) view.findViewById(R.id.description);
+      t2.setText(desctiption_in);
+    }
+  }
+
+
+//
+//  void setChecked(View view,String in) {
+//    ImageView c = (ImageView) view.findViewById(R.id.imageView_check);
+//    c.setImageResource(R.drawable.ic_check_box_black_24dp);
+//
+//    TextView title = (TextView) view.findViewById(R.id.title1);
+//    title.setTextColor(Color.rgb(29,191,151));
+//
+//    TextView description = (TextView) view.findViewById(R.id.description);
+//    description.setText(in);
+//  }
+
+//  void setUnchecked(View view) {
+//    ImageView c = (ImageView) view.findViewById(R.id.imageView_check);
+//    c.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
+//
+//    TextView title = (TextView) view.findViewById(R.id.title1);
+//    title.setTextColor(Color.GRAY);
+//  }
+
+  @Override
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    mSwitcher.setImageResource(mImageIds[position]);
+  }
+
+  @Override
+  public void onNothingSelected(AdapterView<?> parent) {
+
+  }
+
+  @Override
+  public View makeView() {
+    return null;
   }
 
 
@@ -574,7 +798,32 @@ public class NewTownActivity extends AppCompatActivity {
   }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+
 }
+
 
 
 

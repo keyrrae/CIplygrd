@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="BSD_claim">
+  <settings default="BSD_claim_ZHENYU_YANG_BUP">
     <module2copyright>
-      <element module="All" copyright="BSD_claim" />
+      <element module="All" copyright="BSD_claim_ZHENYU_YANG_BUP" />
     </module2copyright>
   </settings>
 </component>

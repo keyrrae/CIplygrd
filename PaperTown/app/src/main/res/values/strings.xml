@@ -1,10 +1,9 @@
 <!--
-  ~  Copyright (c) 2017 - present, Xuan Wang
+  ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
   ~  This source code is licensed under the BSD-style license found in the
   ~  LICENSE file in the root directory of this source tree.
-  ~
   -->
 
 <resources>
@@ -50,6 +49,10 @@
     <string name="google_maps_api_key">AIzaSyB4_2HK9SLmM4iAagFgK_t1i7TgZlXlUm0</string>
     <string name="title_activity_cc">CCActivity</string>
     <string name="title_activity_new_town">NewTownActivity</string>
+
+    <string name="town_category_place">place</string>
+    <string name="town_category_creature">creature</string>
+    <string name="town_category_event">event</string>
 
 
 </resources>

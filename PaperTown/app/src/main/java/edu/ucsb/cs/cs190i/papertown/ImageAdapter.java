@@ -1,10 +1,9 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown;
@@ -54,7 +53,7 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(this.context);
-            imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+            imageView.setLayoutParams(new GridView.LayoutParams(280, 280));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
