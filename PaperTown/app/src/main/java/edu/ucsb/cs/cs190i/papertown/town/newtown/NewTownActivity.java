@@ -264,13 +264,11 @@ public class NewTownActivity extends AppCompatActivity implements
         }
         else{
           Log.i("onClick", "Submit!");
+
+            //passing data to detailView
         }
 
-//                Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
-//                //intent.putExtra(EXTRA_MESSAGE, "asdf");
-//                startActivityForResult(intent, NEW_TITLE_REQUEST);
-//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-//                //finish();// kill current activity
+
 
       }
     });

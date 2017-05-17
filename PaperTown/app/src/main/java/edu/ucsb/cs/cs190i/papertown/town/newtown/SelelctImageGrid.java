@@ -122,11 +122,10 @@ public class SelelctImageGrid extends BaseAdapter {
                     else{
                         Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
                         //normal request goes here
-                        imageView.setImageURI(ImageUris[position]);
-//                Picasso.with(mContext).load(ImageUris[position])
-//                        .resize(20,20)
-//                        .fit()
-//                        .into(imageView);
+                        //imageView.setImageURI(ImageUris[position]);
+                Picasso.with(mContext).load(ImageUris[position])
+                        .fit()
+                        .into(imageView);
                     }
                 }
 

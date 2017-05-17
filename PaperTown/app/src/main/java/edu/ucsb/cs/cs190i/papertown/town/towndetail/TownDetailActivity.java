@@ -1,10 +1,9 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
@@ -13,6 +12,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,10 @@ public class TownDetailActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_town_detail);
+
+
+    ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
+    //detail_town_image.
 
     this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
     this.uriList = new ArrayList<Uri>();
