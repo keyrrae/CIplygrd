@@ -104,7 +104,7 @@ public class NewTownActivity extends AppCompatActivity implements
       @Override
       public View makeView() {
         ImageView myView = new ImageView(getApplicationContext());
-        myView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        myView.setScaleType(ImageView.ScaleType.FIT_XY);
         myView.setLayoutParams(new
                 ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -525,7 +525,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     if(imageCount<uriList.length) {
                       Log.i("mSwitcher", "imageCount = "+imageCount);
                       Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
-                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
+                      getApplicationContext().grantUriPermission("edu.ucsb.cs.cs190i.papertown.town.newtown", uriList[imageCount],
                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
                       mSwitcher.setImageURI(uriList[imageCount]);
                       imageCount++;
@@ -534,7 +534,7 @@ public class NewTownActivity extends AppCompatActivity implements
                       imageCount = 0;
                       Log.i("mSwitcher", "imageCount = "+imageCount);
                       Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
-                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
+                      getApplicationContext().grantUriPermission("edu.ucsb.cs.cs190i.papertown.town.newtown", uriList[imageCount],
                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
                       mSwitcher.setImageURI(uriList[imageCount]);
                       imageCount++;

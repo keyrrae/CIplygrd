@@ -144,6 +144,7 @@
             android:stretchMode="columnWidth"
             android:gravity="center"
             android:layout_marginTop="8dp"
+            android:padding="10sp"
             />
 
         <Button
