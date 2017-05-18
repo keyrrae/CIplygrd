@@ -8,7 +8,7 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#cecece</color>
-    <color name="colorPrimaryDark">#cc0000</color>
+    <color name="colorPrimary">#0019ff</color>
+    <color name="colorPrimaryDark">#00ff37</color>
     <color name="colorAccent">#ff3838</color>
 </resources>

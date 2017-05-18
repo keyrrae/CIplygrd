@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -716,14 +717,14 @@ public class NewTownActivity extends AppCompatActivity implements
 
     //change color of submission button
     Button button_step_left = (Button) findViewById(R.id.button_step_left);
-    button_step_left.setBackgroundColor(Color.rgb(29,191,151));
+    button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
     button_step_left.setText("PREVIEW !");
 
 
     //change the color of the progress bar
     ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);
     pb.setProgress(0);  //only show background
-    pb.setBackgroundColor(Color.rgb(29,191,151));
+    pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
 
   }
 
@@ -732,7 +733,7 @@ public class NewTownActivity extends AppCompatActivity implements
     i1.setImageResource(R.drawable.ic_check_box_black_24dp);
 
     //TextView title = (TextView) view.findViewById(R.id.title1);
-    t1.setTextColor(Color.rgb(29,191,151));
+    t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
 
     if(t2!=null) {
       //TextView description = (TextView) view.findViewById(R.id.description);

@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -131,12 +132,12 @@ public class TownDetailActivity extends AppCompatActivity {
       //change button color
       if(mode!=null&&mode.equals("preview")) {
           //change color of submission button
-          button_test_detail.setBackgroundColor(Color.rgb(29, 191, 151));
+          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
           button_test_detail.setText("SUBMIT !");
       }
       else{
           //change color of submission button
-          button_test_detail.setBackgroundColor(Color.rgb(96, 157, 255));
+          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
           button_test_detail.setText("DONE");
       }
 
