@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2017 - present, Zhenyu Yang
+  ~  All rights reserved.
+  ~
+  ~  This source code is licensed under the BSD-style license found in the
+  ~  LICENSE file in the root directory of this source tree.
+  -->
+
 <resources>
     <color name="colorPrimary">#cecece</color>
-    <color name="colorPrimaryDark">#939393</color>
+    <color name="colorPrimaryDark">#cc0000</color>
     <color name="colorAccent">#ff3838</color>
 </resources>

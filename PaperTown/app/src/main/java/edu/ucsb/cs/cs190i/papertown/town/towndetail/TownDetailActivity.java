@@ -142,6 +142,7 @@ public class TownDetailActivity extends AppCompatActivity {
     if(uriStringArrayList!=null&&uriStringArrayList.size()>0) {
       for (int i = 0; i < uriStringArrayList.size(); i++) {
         uriList.add(Uri.parse(uriStringArrayList.get(i)));
+        Log.i("manu", "uriList["+i+"] = "+uriList.get(i));
       }
     }
     else{
@@ -202,7 +203,7 @@ public class TownDetailActivity extends AppCompatActivity {
         Picasso.with(this).load(uriList.get(0))
                 .fit()
                 .into(detail_town_image);
-        this.imageGrid.setAdapter(new ImageAdapter(this, this.uriList));
+        this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
       }
     }
 

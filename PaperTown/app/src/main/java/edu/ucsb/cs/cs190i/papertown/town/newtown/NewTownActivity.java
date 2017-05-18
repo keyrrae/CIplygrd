@@ -130,7 +130,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
         //stat camera rool
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+        Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , NEW_PHOTO_REQUEST);//one can be replaced with any action code
 
@@ -293,7 +293,7 @@ public class NewTownActivity extends AppCompatActivity implements
             startActivity (intent);
 //            overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
-            finish();
+           // finish();
 
         }
 
@@ -528,6 +528,11 @@ public class NewTownActivity extends AppCompatActivity implements
                       getApplicationContext().grantUriPermission("edu.ucsb.cs.cs190i.papertown.town.newtown", uriList[imageCount],
                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
                       mSwitcher.setImageURI(uriList[imageCount]);
+
+
+
+
+
                       imageCount++;
                     }
                     else{

@@ -93,7 +93,7 @@ public class SelectImageActivity extends AppCompatActivity
                     Log.i("addOnItemTouchListener", "last one!");
 
 //                    //stat camera roll
-//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
 //                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) , NEW_PHOTO_REQUEST);//one can be replaced with any action code
 
@@ -121,7 +121,7 @@ public class SelectImageActivity extends AppCompatActivity
                         else{
                             Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
                             //normal request goes here
-                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                         }
                     }
@@ -207,7 +207,7 @@ public class SelectImageActivity extends AppCompatActivity
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE2");
 
                     //to start activity after the first time asking for permission
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
