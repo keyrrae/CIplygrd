@@ -1,23 +1,23 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown.models;
 
 import android.icu.util.ULocale;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by xuanwang on 5/4/17.
  */
 
-public class Town {
+public class Town implements Serializable {
   private String id = "";
   private String title;
   private String category;

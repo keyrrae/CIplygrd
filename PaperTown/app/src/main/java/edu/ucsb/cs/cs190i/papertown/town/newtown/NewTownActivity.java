@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -305,10 +306,30 @@ public class NewTownActivity extends AppCompatActivity implements
             intent.putStringArrayListExtra("uriStringArrayList", uriStringArrayList);  //passing Uri array data...
 
 
+            //pass town as an object
+            //processing address to latlng
+            String[] separated = address.split(",");
+            float lat = Float.parseFloat(separated[0]);
+            float lng = Float.parseFloat(separated[1]);
+
+            Town testTown = new  Town.Builder()
+                    .setTitle(title)
+                    .setAddress(address)
+                    .setCategory(category)
+                    .setDescription(description)
+                    .setLat(lat)
+                    .setLng(lng)
+                    .setImages(uriStringArrayList)
+                    .build();
+
+            intent.putExtra("town", testTown);
 
             //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
             startActivity (intent);
 //            overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+
+
+
 
            // finish();
 
