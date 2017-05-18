@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="zhenyuyang.cec150.ece.ucsb.edu.project.newTown">
+    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

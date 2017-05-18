@@ -23,10 +23,6 @@ import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
-/**
- * Created by EYE on 07/05/2017.
- */
-
 public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.GeoTownListViewHolder>{
     public List<Town> towns;
 
