@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,38 +31,15 @@ import com.facebook.login.widget.LoginButton;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.security.MessageDigest;
-import java.util.Calendar;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.application.AppConstants;
-import edu.ucsb.cs.cs190i.papertown.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.login.LoginActivity;
-import edu.ucsb.cs.cs190i.papertown.models.UserToken;
-import edu.ucsb.cs.cs190i.papertown.network.HttpClientSingleton;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.signup.SignupActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.ENDPOINT;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.JSON_BODY;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_LIFETIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 public class SplashScreenActivity extends AppCompatActivity {
   private FirebaseAuth mAuth;
@@ -146,9 +122,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         Intent geoIntent = new Intent(SplashScreenActivity.this, GeoActivity.class);
         startActivity(geoIntent);
-        SharedPreferences sharedPreferences =
-            getSharedPreferences(AppConstants.PREF_NAME, MODE_PRIVATE);
-        //sharedPreferences.edit().putBoolean(AppConstants.LOGGED_IN, true).apply();
         finish();
       }
 
@@ -193,6 +166,12 @@ public class SplashScreenActivity extends AppCompatActivity {
       // authenticate with your backend server, if you have one. Use
       // FirebaseUser.getToken() instead.
       String uid = user.getUid();
+
+      UserSingleton curUser = UserSingleton.getInstance();
+      curUser.setEmail(email);
+      curUser.setName(name);
+      curUser.setPhotoUrl(photoUrl);
+      curUser.setUid(uid);
 
       loginButton.setVisibility(View.GONE);
       signupButton.setVisibility(View.GONE);

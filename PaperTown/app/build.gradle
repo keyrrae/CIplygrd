@@ -67,8 +67,7 @@ dependencies {
     // For testin
 
 
-    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
-    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
+
     compile 'com.facebook.soloader:soloader:0.2.0'
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -95,7 +94,8 @@ dependencies {
     compile 'com.facebook.litho:litho-fresco:0.2.0'
     compile 'com.google.firebase:firebase-auth:10.2.4'
     compile 'com.google.firebase:firebase-core:10.2.4'
-
+    compile 'com.google.firebase:firebase-storage:10.2.4'
+    compile 'com.google.firebase:firebase-database:10.2.4'
     testCompile 'junit:junit:4.12'
     testCompile 'com.facebook.litho:litho-testing:0.2.0'
     annotationProcessor 'com.facebook.litho:litho-processor:0.2.0'

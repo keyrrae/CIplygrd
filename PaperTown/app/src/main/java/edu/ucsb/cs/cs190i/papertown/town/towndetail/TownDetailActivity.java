@@ -37,12 +37,12 @@ import java.util.ArrayList;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 
 public class TownDetailActivity extends AppCompatActivity {
 
   private GridView imageGrid;
   private ArrayList<Uri> uriList;
-
 
   String title = "";
   String address = "";
@@ -76,9 +76,7 @@ public class TownDetailActivity extends AppCompatActivity {
           public void onClick(View v) {
               Log.i("dataToD", "button_test_detail OnClickListener");
 
-
-
-              Town testTown = new  Town.Builder()
+              Town testTown = new TownBuilder()
                       .setTitle(title)
                       .setAddress(address)
                       .setCategory(category)
@@ -91,10 +89,6 @@ public class TownDetailActivity extends AppCompatActivity {
 
               Log.i("dataToD", "button_test_detail OnClickListener");
                       //.setInformation   ???
-
-
-
-
 
 
           }

@@ -12,12 +12,9 @@ package edu.ucsb.cs.cs190i.papertown.geo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +42,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,23 +58,17 @@ import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 
 import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
-import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
+import edu.ucsb.cs.cs190i.papertown.utils.GeoHash;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOWN_IMAGE_LIST;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 @RuntimePermissions
 public class GeoActivity extends AppCompatActivity implements
@@ -82,17 +80,18 @@ public class GeoActivity extends AppCompatActivity implements
   private GoogleMap map;
   private GoogleApiClient mGoogleApiClient;
   private LocationRequest mLocationRequest;
-  private static final int PICK_IMAGE = 1234;
+  private GeoTownListAdapter mAdapter;
   private long UPDATE_INTERVAL = 60000;  /* 60 secs */
   private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
+  LatLng currLoc = new LatLng(0.0, 0.0);
    /*
    * Define a request code to send to Google Play services This code is
    * returned in Activity.onActivityResult
    */
   private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-  public List<Town> towns;
+  public List<Town> towns = new ArrayList<>();
 
 
   @Override
@@ -112,6 +111,8 @@ public class GeoActivity extends AppCompatActivity implements
         switch(item.getItemId()){
           case R.id.add_town:
             Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
+            newTownIntent.putExtra("LAT", currLoc.latitude);
+            newTownIntent.putExtra("LNG", currLoc.longitude);
             startActivity(newTownIntent);
             break;
           case R.id.list_view:
@@ -119,7 +120,7 @@ public class GeoActivity extends AppCompatActivity implements
             startActivity(townListIntent);
             break;
           case R.id.action_settings:
-            cleanSharedPreferences();
+            FirebaseAuth.getInstance().signOut();
             Intent splashIntent = new Intent(GeoActivity.this, SplashScreenActivity.class);
             startActivity(splashIntent);
             finish();
@@ -161,7 +162,6 @@ public class GeoActivity extends AppCompatActivity implements
       }
     });
 
-
     RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -169,7 +169,7 @@ public class GeoActivity extends AppCompatActivity implements
 
     initData();
 
-    GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns);
+    mAdapter = new GeoTownListAdapter(towns);
     mRecyclerView.setAdapter(mAdapter);
 
     mRecyclerView.addOnItemTouchListener(
@@ -191,22 +191,51 @@ public class GeoActivity extends AppCompatActivity implements
 
   }
 
-  private void cleanSharedPreferences(){
-    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-    editor.remove(TOKEN);
-    editor.remove(TOKEN_TIME);
-    editor.remove(USERID);
-    editor.remove(EMAIL);
-    editor.remove(CRED);
-    editor.commit();
-  }
-
   protected void loadMap(GoogleMap googleMap) {
     map = googleMap;
     if (map != null) {
       // Map is ready
       map.setBuildingsEnabled(true);
       map.setIndoorEnabled(true);
+      map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+        @Override
+        public void onCameraIdle() {
+          LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+          double neLat = bounds.northeast.latitude;
+          double swLat = bounds.southwest.latitude;
+          double neLng = bounds.northeast.longitude;
+          double swLng = bounds.southwest.longitude;
+
+          if(neLat - swLat > 5 || neLng - swLng > 5){
+            // dont update when zoomed out
+            return;
+          }
+
+          towns.clear();
+          List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
+          FirebaseDatabase database = FirebaseDatabase.getInstance();
+          if (database != null) {
+
+            for(String code: allGeoCodes){
+              Query query = database.getReference("towns").orderByChild("geoHash").equalTo(code);
+              query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                  for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Town town = ds.getValue(Town.class);
+                    towns.add(town);
+                  }
+                  mAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+              });
+            }
+          }
+        }
+      });
       Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
       GeoActivityPermissionsDispatcher.getMyLocationWithCheck(this);
     } else {
@@ -281,27 +310,6 @@ public class GeoActivity extends AppCompatActivity implements
             break;
         }
         break;
-      case PICK_IMAGE:
-        ArrayList<Uri> res = new ArrayList<>();
-        if(resultCode == RESULT_OK){
-          if(data.getData() != null) {
-            Uri uri = data.getData();
-            res.add(uri);
-          } else {
-            ClipData clipData = data.getClipData();
-            if(clipData != null){
-              for (int i = 0; i < clipData.getItemCount(); i++) {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
-                res.add(uri);
-              }
-            }
-          }
-          Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
-          newTownIntent.putParcelableArrayListExtra(TOWN_IMAGE_LIST, res);
-          startActivity(newTownIntent);
-        }
-        break;
     }
   }
 
@@ -348,8 +356,8 @@ public class GeoActivity extends AppCompatActivity implements
     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     if (location != null) {
       Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-      LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+      currLoc = new LatLng(location.getLatitude(), location.getLongitude());
+      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
       map.animateCamera(cameraUpdate);
     } else {
       Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
@@ -375,7 +383,7 @@ public class GeoActivity extends AppCompatActivity implements
         Double.toString(location.getLatitude()) + "," +
         Double.toString(location.getLongitude());
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
+    currLoc = new LatLng(location.getLatitude(), location.getLongitude());
   }
 
   /*
@@ -465,7 +473,7 @@ public class GeoActivity extends AppCompatActivity implements
     imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
 
 
-    Town t1 = new Town.Builder()
+    Town t1 = new TownBuilder()
         .setTitle("Mother Susanna Monument")
         .setCategory("Place")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
@@ -477,7 +485,7 @@ public class GeoActivity extends AppCompatActivity implements
         .setSketch("")
         .build();
 
-    Town t2 = new Town.Builder()
+    Town t2 = new TownBuilder()
         .setTitle("Father Crowley Monument")
         .setCategory("Place")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
@@ -489,7 +497,7 @@ public class GeoActivity extends AppCompatActivity implements
         .setSketch("")
         .build();
 
-    Town t3 = new Town.Builder()
+    Town t3 = new TownBuilder()
         .setTitle("Wonder Land")
         .setCategory("Creature")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")

@@ -14,16 +14,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
+
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,11 +33,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -70,6 +80,11 @@ public class NewTownActivity extends AppCompatActivity implements
 
   int itemLeft = 6;
 
+  private TownBuilder townBuilder = new TownBuilder();
+  private List<String> remoteImageUrls = new ArrayList<>();
+  private FirebaseStorage storage;
+  private FirebaseDatabase database;
+  private DatabaseReference townRef;
 
   private Integer[] mImageIds = {
           R.drawable.door, R.drawable.light, R.drawable.corner,
@@ -91,7 +106,6 @@ public class NewTownActivity extends AppCompatActivity implements
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
 
 
 
@@ -300,7 +314,15 @@ public class NewTownActivity extends AppCompatActivity implements
       }
     });
 
+    Intent intent = getIntent();
+    double lat = intent.getDoubleExtra("LAT", 0.0);
+    double lng = intent.getDoubleExtra("LNG", 0.0);
+    townBuilder.setLatLng(lat, lng);
+    townBuilder.setUserId(UserSingleton.getInstance().getUid());
 
+    storage = FirebaseStorage.getInstance();
+    database = FirebaseDatabase.getInstance();
+    townRef = database.getReference("towns");
   }
 
 //    private void animate4Swicher() {
@@ -397,7 +419,7 @@ public class NewTownActivity extends AppCompatActivity implements
 //    }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
     // Check which request we're responding to
 
 
@@ -407,6 +429,7 @@ public class NewTownActivity extends AppCompatActivity implements
         String result = data.getStringExtra("result");
         Log.i("onActivityResult", "result = " + result);
         title = result;
+        townBuilder.setTitle(result);
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
@@ -421,6 +444,7 @@ public class NewTownActivity extends AppCompatActivity implements
         String result = data.getStringExtra("result");
         Log.i("onActivityResult", "result = " + result);
         address = result;
+        townBuilder.setAddress(result);
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
@@ -434,6 +458,7 @@ public class NewTownActivity extends AppCompatActivity implements
         String result = data.getStringExtra("result");
         Log.i("onActivityResult", "result = " + result);
         category = result;
+        townBuilder.setCategory(result);
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
@@ -447,18 +472,21 @@ public class NewTownActivity extends AppCompatActivity implements
         String result = data.getStringExtra("result");
         Log.i("onActivityResult", "result = " + result);
         description = result;
+        townBuilder.setDescription(result);
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
         //Write your code if there's no result
       }
     }
+
     if (requestCode == NEW_INFORMATION_REQUEST) {
       // Make sure the request was successful
       if (resultCode == RESULT_OK) {
         String result = data.getStringExtra("result");
         Log.i("onActivityResult", "result = " + result);
         information = result;
+        townBuilder.setUserAlias(result);
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
@@ -479,13 +507,10 @@ public class NewTownActivity extends AppCompatActivity implements
         intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
         startActivityForResult(intent, NEW_PHOTO_REQUEST);
 
-
-
-
       }
 
       if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
-        ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
+        final ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
         uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
         //String result = data.getStringExtra("result");
         //Log.i("onActivityResult", "result = " + result);
@@ -712,6 +737,55 @@ public class NewTownActivity extends AppCompatActivity implements
     button_step_left.setBackgroundColor(Color.rgb(29,191,151));
     button_step_left.setText("SUBMIT !");
 
+
+    button_step_left.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if(storage != null) {
+          StorageReference storageRef = storage.getReference();
+
+          for(Uri uri: uriList) {
+            StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
+            UploadTask uploadTask = riversRef.putFile(uri);
+
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+              }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+              @Override
+              public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                @SuppressWarnings("VisibleForTests")
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                if(downloadUrl != null) {
+                  remoteImageUrls.add(downloadUrl.toString());
+                  if(remoteImageUrls.size() == uriList.length){
+                    townBuilder.setImages(remoteImageUrls);
+                    DatabaseReference newTown = townRef.child(townBuilder.getId());
+                    Town town = townBuilder.build();
+                    newTown.setValue(townBuilder.build(), new DatabaseReference.CompletionListener() {
+                      @Override
+                      public void onComplete(DatabaseError databaseError,
+                                             DatabaseReference databaseReference) {
+                        Toast.makeText(
+                            NewTownActivity.this,
+                            "Successfully submitted",
+                            Toast.LENGTH_SHORT
+                        ).show();
+                        finish();
+                      }
+                    });
+                  }
+                }
+              }
+            });
+          }
+        }
+      }
+    });
 
     //change the color of the progress bar
     ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);

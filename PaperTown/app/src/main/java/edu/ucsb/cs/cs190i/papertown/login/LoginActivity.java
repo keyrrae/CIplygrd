@@ -61,6 +61,7 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.User;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.models.UserToken;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -191,6 +192,24 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Authentication Failed",
                     Toast.LENGTH_SHORT).show();
               } else {
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                // Name, email address, and profile photo Url
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+
+                // The user's ID, unique to the Firebase project. Do NOT use this value to
+                // authenticate with your backend server, if you have one. Use
+                // FirebaseUser.getToken() instead.
+                String uid = user.getUid();
+
+                UserSingleton curUser = UserSingleton.getInstance();
+                curUser.setEmail(email);
+                curUser.setName(name);
+                curUser.setPhotoUrl(photoUrl);
+                curUser.setUid(uid);
+
                 Intent intent = new Intent(LoginActivity.this, GeoActivity.class);
                 startActivity(intent);
                 finish();
