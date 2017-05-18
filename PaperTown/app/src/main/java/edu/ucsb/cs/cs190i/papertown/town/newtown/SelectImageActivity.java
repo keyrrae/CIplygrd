@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,6 +67,36 @@ public class SelectImageActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_selectimg);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_check_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                Log.i("dataToD", "setNavigationOnClickListener");
+                Intent returnIntent = new Intent();
+
+                ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
+                Log.i("mSwitcher", "imageUris[0] = "+imageUris[0].toString());
+                returnIntent.putParcelableArrayListExtra    ("multipleImage", uriList);
+                //returnIntent.putExtra("result", imageUris[0].toString());
+                setResult(Activity.RESULT_FIRST_USER, returnIntent);
+                finish();
+
+                //if don't want to return data:
+//                Intent returnIntent = new Intent();
+//                setResult(Activity.RESULT_CANCELED, returnIntent);
+//                finish();
+            }
+        });
+
+
 
         String s = getIntent().getStringExtra(EXTRA_MESSAGE);
         Log.i("onActivityResult", "getStringExtra = " + s);
@@ -140,31 +171,17 @@ public class SelectImageActivity extends AppCompatActivity
 
 
 
-        //add button
-        Button button = (Button) findViewById(R.id.button_new_image_done);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent returnIntent = new Intent();
-
-                ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
-                Log.i("mSwitcher", "imageUris[0] = "+imageUris[0].toString());
-                returnIntent.putParcelableArrayListExtra    ("multipleImage", uriList);
-                //returnIntent.putExtra("result", imageUris[0].toString());
-                setResult(Activity.RESULT_FIRST_USER, returnIntent);
-                finish();
-
-
-
-                //if don't want to return data:
-//                Intent returnIntent = new Intent();
-//                setResult(Activity.RESULT_CANCELED, returnIntent);
-//                finish();
-
-            }
-
-        });
+//        //add button
+//        Button button = (Button) findViewById(R.id.button_new_image_done);
+//        button.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//
+//
+//            }
+//
+//        });
 
     }
 

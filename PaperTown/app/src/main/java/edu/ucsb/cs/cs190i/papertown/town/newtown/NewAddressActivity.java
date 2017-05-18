@@ -18,10 +18,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +41,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import edu.ucsb.cs.cs190i.papertown.R;
 
 public class NewAddressActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks {
@@ -48,6 +53,32 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_address);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_address);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_check_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+
+                if(location!=null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    returnIntent.putExtra("result", latitude + "," + longitude);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Location unset!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //set up the textView
         TextView tv = ((TextView)findViewById(R.id.textView_new_address));
@@ -69,36 +100,6 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             Log.i("manu", "Error - Map Fragment was null!!");
         }
 
-
-        //add button
-        Button button = (Button) findViewById(R.id.button_new_address_done);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent returnIntent = new Intent();
-
-                if(location!=null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-
-                    returnIntent.putExtra("result", latitude + "," + longitude);
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Location unset!", Toast.LENGTH_SHORT).show();
-                }
-
-
-                //if don't want to return data:
-//                Intent returnIntent = new Intent();
-//                setResult(Activity.RESULT_CANCELED, returnIntent);
-//                finish();
-
-            }
-
-        });
     }
 
 

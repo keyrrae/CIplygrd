@@ -6,12 +6,37 @@
   ~  LICENSE file in the root directory of this source tree.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView_detail"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_detail"
+            android:layout_width="match_parent"
+            app:theme="@style/ToolBarStyle"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
 
 
@@ -138,13 +163,11 @@
             android:id="@+id/detail_image_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="4"
+            android:numColumns="3"
             android:verticalSpacing="15dp"
             android:horizontalSpacing="15dp"
-            android:stretchMode="columnWidth"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:padding="10sp"
+            android:padding="5sp"
             />
 
         <Button
@@ -159,6 +182,6 @@
 
 
 
+    </ScrollView>
 
-
-</ScrollView>
+</LinearLayout>

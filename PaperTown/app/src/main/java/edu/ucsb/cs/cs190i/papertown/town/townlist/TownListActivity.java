@@ -1,10 +1,9 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown.town.townlist;
@@ -17,9 +16,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -27,10 +28,12 @@ import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
@@ -61,6 +64,26 @@ public class TownListActivity extends AppCompatActivity {
 
     ListTownAdapter mAdapter = new ListTownAdapter(towns);
     mRecyclerView.setAdapter(mAdapter);
+
+    mRecyclerView.addOnItemTouchListener(
+            new RecyclerItemClickListener(getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+              @Override public void onItemClick(View view, int position) {
+                Log.i("RecyclerItemClr", "onItemClick");
+
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                startActivity(intent);
+
+
+                // do whatever
+              }
+
+              @Override public void onLongItemClick(View view, int position) {
+                Log.i("RecyclerItemClr", "onLongItemClick");
+                // do whatever
+              }
+            })
+    );
+
 
     //
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -68,6 +69,21 @@ public class TownDetailActivity extends AppCompatActivity {
     setContentView(R.layout.activity_town_detail);
 
 
+
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setTitle(null);
+    toolbar.setTitle("");
+    toolbar.setSubtitle("");
+    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+//        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        Log.i("dataToD", "setNavigationOnClickListener");
+        finish();
+      }
+    });
 
 
 
@@ -137,8 +153,9 @@ public class TownDetailActivity extends AppCompatActivity {
       }
       else{
           //change color of submission button
-          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-          button_test_detail.setText("DONE");
+//          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+//          button_test_detail.setText("DONE");
+        button_test_detail.setVisibility(Button.INVISIBLE);
       }
 
 

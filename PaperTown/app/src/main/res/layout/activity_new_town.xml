@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="zhenyuyang.cec150.ece.ucsb.edu.project.newTown">
+    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,11 +22,11 @@
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_newTown_done"
             android:layout_width="match_parent"
             app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
@@ -57,9 +57,10 @@
                 android:layout_height="wrap_content">
 
 
-                <ImageSwitcher
-                    android:id="@+id/switcher"
+                <ImageView
+                    android:id="@+id/imageView_newTown"
                     android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
                     android:layout_height="200sp" />
 
 
