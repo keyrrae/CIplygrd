@@ -10,6 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView_detail"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
 
@@ -102,9 +103,9 @@
 
         <fragment
             android:id="@+id/detail_map"
-            class="com.google.android.gms.maps.SupportMapFragment"
+            class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:layout_marginTop="16dp" />
 
         <TextView

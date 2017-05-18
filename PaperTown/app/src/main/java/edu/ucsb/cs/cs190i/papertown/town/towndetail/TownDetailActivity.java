@@ -16,11 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ import java.util.ArrayList;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 
 public class TownDetailActivity extends AppCompatActivity {
 
@@ -217,7 +220,7 @@ public class TownDetailActivity extends AppCompatActivity {
 
     //handle the google Maps
 
-    SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+    myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
 
     if (mapFragment != null) {
       mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -275,6 +278,16 @@ public class TownDetailActivity extends AppCompatActivity {
 
         }
       });
+
+      mapFragment.setListener(new myMapFragment.OnTouchListener() {
+        @Override
+        public void onTouch() {
+          ScrollView mScrollView = (ScrollView)findViewById(R.id.scrollView_detail);
+          mScrollView.requestDisallowInterceptTouchEvent(true);
+        }
+      });
+
+
     } else {
 
       Log.i("manu", "Error - Map Fragment was null!!");
@@ -286,4 +299,11 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
   }
+
+
+
+
+
+
+
 }
