@@ -51,18 +51,21 @@
         android:id="@+id/button_cate1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="A Place" />
 
     <Button
         android:id="@+id/button_cate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="A Creature" />
 
     <Button
         android:id="@+id/button_cate3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="An Event" />
 
 </LinearLayout>

@@ -312,17 +312,17 @@ public class NewTownActivity extends AppCompatActivity implements
             float lat = Float.parseFloat(separated[0]);
             float lng = Float.parseFloat(separated[1]);
 
-            Town testTown = new  Town.Builder()
-                    .setTitle(title)
-                    .setAddress(address)
-                    .setCategory(category)
-                    .setDescription(description)
-                    .setLat(lat)
-                    .setLng(lng)
-                    .setImages(uriStringArrayList)
-                    .build();
+//            Town testTown = new  Town.Builder()
+//                    .setTitle(title)
+//                    .setAddress(address)
+//                    .setCategory(category)
+//                    .setDescription(description)
+//                    .setLat(lat)
+//                    .setLng(lng)
+//                    .setImages(uriStringArrayList)
+//                    .build();
 
-            intent.putExtra("town", testTown);
+//            intent.putExtra("town", testTown);
 
             //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
             startActivity (intent);

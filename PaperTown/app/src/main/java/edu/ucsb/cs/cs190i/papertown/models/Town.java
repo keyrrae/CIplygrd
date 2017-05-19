@@ -19,15 +19,17 @@ import java.util.List;
 
 public class Town implements Serializable {
   private String id = "";
+  private String geoHash = "";
   private String title;
   private String category;
   private String description;
   private String address;
-  private float lat;
-  private float lng;
+  private double lat;
+  private double lng;
   private String userId;
   private List<String> imageUrls;
   private String sketch;
+  private String userAlias;
 
   public String getId() {
     return id;
@@ -37,17 +39,32 @@ public class Town implements Serializable {
     this.id = id;
   }
 
-  private Town(
-       String title,
-       String category,
-       String description,
-       String address,
-       float lat,
-       float lng,
-       String userId,
-       List<String> imageUrls,
-       String sketch
+  public Town(){}
+
+  public String getGeoHash() {
+    return geoHash;
+  }
+
+  public void setGeoHash(String geoHash) {
+    this.geoHash = geoHash;
+  }
+
+  public Town(
+          String id,
+          String geoHash,
+          String title,
+          String category,
+          String description,
+          String address,
+          double lat,
+          double lng,
+          String userId,
+          List<String> imageUrls,
+          String sketch,
+          String ual
   ){
+    this.id = id;
+    this.geoHash = geoHash;
     this.title = title;
     this.category = category;
     this.description = description;
@@ -57,6 +74,7 @@ public class Town implements Serializable {
     this.userId = userId;
     this.imageUrls = imageUrls;
     this.sketch = sketch;
+    this.userAlias = ual;
   }
 
   public String getTitle() {
@@ -91,7 +109,7 @@ public class Town implements Serializable {
     this.address = address;
   }
 
-  public float getLat() {
+  public double getLat() {
     return lat;
   }
 
@@ -99,7 +117,7 @@ public class Town implements Serializable {
     this.lat = lat;
   }
 
-  public float getLng() {
+  public double getLng() {
     return lng;
   }
 
@@ -131,82 +149,11 @@ public class Town implements Serializable {
     this.sketch = sketch;
   }
 
-  public static class Builder{
+  public String getUserAlias() {
+    return userAlias;
+  }
 
-    private String title;
-    private String category;
-    private String description;
-    private String address;
-    private float lat;
-    private float lng;
-    private String userId;
-    private List<String> imageUrls;
-    private String sketch;
-
-    public Builder(){
-
-    }
-
-    public Builder setTitle(String title){
-      this.title = title;
-      return this;
-    }
-
-    public Builder setCategory(String category) {
-      this.category = category;
-      return this;
-    }
-
-    public Builder setLat(float lat) {
-      this.lat = lat;
-      return this;
-
-    }
-
-    public Builder setLng(float lng) {
-      this.lng = lng;
-      return this;
-
-    }
-
-    public Builder setUserId(String userId) {
-      this.userId = userId;
-      return this;
-    }
-
-    public Builder setDescription(String des){
-      this.description = des;
-      return this;
-    }
-
-    public Builder setAddress(String address){
-      this.address = address;
-      return this;
-    }
-
-    public Builder setImages(List<String> imageUrls){
-      this.imageUrls = imageUrls;
-      return this;
-    }
-
-    public Builder setSketch(String sk){
-      this.sketch = sk;
-      return this;
-    }
-
-    public Town build(){
-      return
-          new Town(
-            this.title,
-            this.category,
-            this.description,
-            this.address,
-            this.lat,
-            this.lng,
-            this.userId,
-            this.imageUrls,
-            this.sketch
-          );
-    }
+  public void setUserAlias(String userAlias) {
+    this.userAlias = userAlias;
   }
 }
