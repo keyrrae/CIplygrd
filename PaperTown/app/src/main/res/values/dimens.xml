@@ -13,4 +13,21 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="fab_l">100dp</dimen>
+    <dimen name="fab_m">40dp</dimen>
+
+    <dimen name="xs">4dp</dimen>
+    <dimen name="s">8dp</dimen>
+    <dimen name="m">16dp</dimen>
+    <dimen name="l">32dp</dimen>
+    <dimen name="xl">48dp</dimen>
+
+    <dimen name="ssT">12sp</dimen>
+    <dimen name="sT">16sp</dimen>
+    <dimen name="mT">24sp</dimen>
+    <dimen name="lT">32sp</dimen>
+    <dimen name="xlT">48sp</dimen>
+
+
 </resources>

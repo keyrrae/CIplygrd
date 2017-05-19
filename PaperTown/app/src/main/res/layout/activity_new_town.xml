@@ -20,13 +20,12 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/Almost_White"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
@@ -36,7 +35,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="3sp"
-        android:background="#80FFFFFF"
+        android:background="@color/Gray"
         android:progressDrawable="@drawable/customprogressbar" />
 
 
@@ -51,20 +50,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
                 <ImageSwitcher
                     android:id="@+id/switcher"
                     android:layout_width="match_parent"
                     android:layout_height="200sp" />
-
-
-
-
                 <TextView
                     android:id="@+id/title_image"
                     android:layout_width="wrap_content"
@@ -73,7 +66,8 @@
                     android:text="Add Photos"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="10dp"
-                    android:textSize="20sp"></TextView>
+                    android:textSize="20sp"
+                    android:layout_marginLeft="@dimen/s"/>
 
                 <ImageView
                     android:id="@+id/checkbox_0"
@@ -81,226 +75,165 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginRight="@dimen/s"
                     app:srcCompat="@drawable/ic_check_box_outline_blank_white_24dp" />
-
 
             </FrameLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/s"
+                android:layout_marginLeft="@dimen/s">
                     <TextView
                         android:id="@+id/title_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Add Title"
-                        android:textSize="20sp"></TextView>
-
-
+                        android:textColor="@color/Medium_Green"
+                        android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Give a name to the item"
-                        android:textSize="10sp"></TextView>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical">
-
+                        android:textSize="12sp"
+                        android:layout_below="@id/title_title"
+                        android:textColor="@color/colorPrimaryDark"/>
                     <ImageView
                         android:id="@+id/checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
+                        android:layout_alignParentRight="true" />
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/s"
+                android:layout_marginLeft="@dimen/s">
                     <TextView
                         android:id="@+id/title_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Set Address"
-                        android:textSize="20sp"></TextView>
-
+                        android:textColor="@color/Medium_Green"
+                        android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Where did you find the item"
-                        android:textSize="10sp"></TextView>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical">
-
+                        android:textSize="12sp"
+                        android:layout_below="@id/title_address"
+                        android:textColor="@color/colorPrimaryDark"/>
                     <ImageView
                         android:id="@+id/checkbox2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
+                        android:layout_alignParentRight="true"/>
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/s"
+                android:layout_marginLeft="@dimen/s">
                     <TextView
                         android:id="@+id/title_cate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Select Category"
-                        android:textSize="20sp"></TextView>
-
+                        android:textColor="@color/Medium_Green"
+                        android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_cate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="What is the type of the item"
-                        android:textSize="10sp"></TextView>
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical">
-
+                        android:textSize="12sp"
+                        android:layout_below="@id/title_cate"
+                        android:textColor="@color/colorPrimaryDark" />
                     <ImageView
                         android:id="@+id/checkbox3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
+                        android:layout_alignParentRight="true"/>
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/s"
+                android:layout_marginLeft="@dimen/s">
                     <TextView
                         android:id="@+id/title_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Add Description"
-                        android:textSize="20sp"></TextView>
-
+                        android:textColor="@color/Medium_Green"
+                        android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Be precise, concise and professional"
-                        android:textSize="10sp"></TextView>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical">
-
+                        android:textSize="12sp"
+                        android:layout_below="@id/title_description"
+                        android:textColor="@color/colorPrimaryDark"/>
                     <ImageView
                         android:id="@+id/checkbox4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
+                        android:layout_alignParentRight="true"/>
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/s"
+                android:layout_marginLeft="@dimen/s">
                     <TextView
                         android:id="@+id/title_information"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Your Information"
-                        android:textSize="20sp"></TextView>
-
+                        android:textColor="@color/Medium_Green"
+                        android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_information"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Required to keep track of the item"
-                        android:textSize="10sp"></TextView>
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical">
-
+                        android:textSize="12sp"
+                        android:layout_below="@id/title_information"
+                        android:textColor="@color/colorPrimaryDark"/>
                     <ImageView
                         android:id="@+id/checkbox5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
+                        android:layout_alignParentRight="true"/>
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -310,8 +243,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="@android:color/darker_gray"
+        android:background="@color/Gray"
         android:gravity="center"
-        android:text="6 step left" />
+        android:text="6 steps to finish" />
 
 </LinearLayout>

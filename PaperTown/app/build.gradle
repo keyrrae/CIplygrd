@@ -105,4 +105,4 @@ dependencies {
     provided 'com.facebook.litho:litho-annotations:0.2.0'
 }
 
-apply plugin: 'com.google.gms.google-services'
+

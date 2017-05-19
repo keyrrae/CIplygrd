@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/Gray"
     tools:context="zhenyuyang.cec150.ece.ucsb.edu.project.NewDescriptionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:elevation="@dimen/s">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -20,19 +23,19 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/Almost_White"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
             <Button
                 android:id="@+id/button_new_description_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_check_box_black_24dp"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="@dimen/m"
+                android:drawableLeft="@drawable/ic_check_black_24dp"
                 android:gravity="left|center_vertical"
                 android:textColor="#000000"
-                android:textSize="15dp"
-                android:background="?attr/colorPrimary"
+                android:textSize="14dp"
                 android:text="Done" />
-
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -40,15 +43,18 @@
         android:id="@+id/textView_new_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20sp"
-        android:paddingTop="10sp"
+        android:layout_marginTop="50dp"
         android:text="Description"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textSize="@dimen/mT"/>
 
     <EditText
         android:id="@+id/editText_new_description"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/m"
+        android:background="@color/Almost_White"
+        android:padding="@dimen/s"
         android:hint="Describe the item with a precise, concise, and professional tone." />
 
 

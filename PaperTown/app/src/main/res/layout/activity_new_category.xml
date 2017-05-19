@@ -13,12 +13,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/Gray"
     tools:context="zhenyuyang.cec150.ece.ucsb.edu.project.NewCategoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:elevation="@dimen/s">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -28,17 +30,18 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/Almost_White"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
             <Button
                 android:id="@+id/button_new_category_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_check_box_black_24dp"
+                android:drawableLeft="@drawable/ic_check_black_24dp"
                 android:gravity="left|center_vertical"
                 android:textColor="#000000"
-                android:textSize="15dp"
-                android:background="?attr/colorPrimary"
+                android:textSize="14dp"
+                android:layout_marginLeft="@dimen/m"
+                android:background="@android:color/transparent"
                 android:text="CANCEL" />
 
         </FrameLayout>
@@ -55,28 +58,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="15dp"
-            android:text="What type of secret item do you want to add?"
-            tools:layout_editor_absoluteX="178dp"
-            tools:layout_editor_absoluteY="128dp" />
+            android:textSize="@dimen/mT"
+            android:gravity="center_horizontal"
+            android:text="What type of secret item \n do you want to add?"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/button_cate1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A Place" />
+        android:text="A Place"
+        android:background="@color/Almost_White">
+        </Button>
 
     <Button
         android:id="@+id/button_cate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A Creature" />
+        android:text="A Creature"
+        android:background="@color/Almost_White"/>
 
     <Button
         android:id="@+id/button_cate3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="An Event" />
+        android:text="An Event"
+        android:background="@color/Almost_White"
+        />
 
 </LinearLayout>
