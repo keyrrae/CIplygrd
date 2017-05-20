@@ -34,7 +34,7 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
-import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.PreviewNewTownActivity;
 
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
@@ -71,7 +71,7 @@ public class TownListActivity extends AppCompatActivity {
               @Override public void onItemClick(View view, int position) {
                 Log.i("RecyclerItemClr", "onItemClick");
 
-                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PreviewNewTownActivity.class);
                 startActivity(intent);
 
 

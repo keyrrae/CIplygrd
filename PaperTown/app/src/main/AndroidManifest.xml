@@ -89,7 +89,7 @@
             android:name=".town.newtown.NewTownActivity"
             android:label="@string/title_activity_new_town"
             android:theme="@style/AppTheme"></activity>
-        <activity android:name=".town.towndetail.TownDetailActivity"></activity>
+        <activity android:name=".town.newtown.PreviewNewTownActivity"></activity>
         <activity android:name=".town.newtown.NewTitleActivity" />
         <activity android:name=".town.newtown.NewAddressActivity" />
         <activity android:name=".town.newtown.NewCategoryActivity" />

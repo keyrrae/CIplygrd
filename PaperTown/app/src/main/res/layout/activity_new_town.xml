@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~  Copyright (c) 2017 - present, Zhenyu Yang
-  ~  All rights reserved.
-  ~
-  ~  This source code is licensed under the BSD-style license found in the
-  ~  LICENSE file in the root directory of this source tree.
-  -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -60,10 +53,9 @@
                 <ImageView
                     android:id="@+id/imageView_newTown"
                     android:layout_width="match_parent"
+                    android:layout_height="200sp"
                     android:scaleType="centerCrop"
-                    android:layout_height="200sp" />
-
-
+                    android:src="@drawable/brick"/>
 
 
                 <TextView
@@ -86,7 +78,6 @@
 
 
             </FrameLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

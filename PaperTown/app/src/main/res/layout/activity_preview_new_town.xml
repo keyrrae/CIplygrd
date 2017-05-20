@@ -13,7 +13,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
+    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.PreviewNewTownActivity">
 
 
     <android.support.design.widget.AppBarLayout
