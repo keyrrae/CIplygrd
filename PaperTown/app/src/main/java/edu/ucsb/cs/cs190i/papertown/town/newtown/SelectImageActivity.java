@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,6 +68,36 @@ public class SelectImageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_selectimg);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_check_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                Log.i("dataToD", "setNavigationOnClickListener");
+                Intent returnIntent = new Intent();
+
+                ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
+                Log.i("mSwitcher", "imageUris[0] = "+imageUris[0].toString());
+                returnIntent.putParcelableArrayListExtra    ("multipleImage", uriList);
+                //returnIntent.putExtra("result", imageUris[0].toString());
+                setResult(Activity.RESULT_FIRST_USER, returnIntent);
+                finish();
+
+                //if don't want to return data:
+//                Intent returnIntent = new Intent();
+//                setResult(Activity.RESULT_CANCELED, returnIntent);
+//                finish();
+            }
+        });
+
+
+
         String s = getIntent().getStringExtra(EXTRA_MESSAGE);
         Log.i("onActivityResult", "getStringExtra = " + s);
 
@@ -93,7 +124,7 @@ public class SelectImageActivity extends AppCompatActivity
                     Log.i("addOnItemTouchListener", "last one!");
 
 //                    //stat camera roll
-//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
 //                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) , NEW_PHOTO_REQUEST);//one can be replaced with any action code
 
@@ -121,7 +152,7 @@ public class SelectImageActivity extends AppCompatActivity
                         else{
                             Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
                             //normal request goes here
-                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                         }
                     }
@@ -140,31 +171,17 @@ public class SelectImageActivity extends AppCompatActivity
 
 
 
-        //add button
-        Button button = (Button) findViewById(R.id.button_new_image_done);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent returnIntent = new Intent();
-
-                ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
-                Log.i("mSwitcher", "imageUris[0] = "+imageUris[0].toString());
-                returnIntent.putParcelableArrayListExtra    ("multipleImage", uriList);
-                //returnIntent.putExtra("result", imageUris[0].toString());
-                setResult(Activity.RESULT_FIRST_USER, returnIntent);
-                finish();
-
-
-
-                //if don't want to return data:
-//                Intent returnIntent = new Intent();
-//                setResult(Activity.RESULT_CANCELED, returnIntent);
-//                finish();
-
-            }
-
-        });
+//        //add button
+//        Button button = (Button) findViewById(R.id.button_new_image_done);
+//        button.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//
+//
+//            }
+//
+//        });
 
     }
 
@@ -207,7 +224,7 @@ public class SelectImageActivity extends AppCompatActivity
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE2");
 
                     //to start activity after the first time asking for permission
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.

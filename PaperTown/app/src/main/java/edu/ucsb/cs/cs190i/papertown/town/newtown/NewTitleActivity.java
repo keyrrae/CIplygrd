@@ -29,34 +29,26 @@ public class NewTitleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_title);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
 
-        Button button = (Button) findViewById(R.id.button_newtitle_done);
-        button.setOnClickListener(new View.OnClickListener() {
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_check_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",ed.getText().toString());
                 Log.i("ed","text = "+ed.getText().toString());
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
-
-
-                //if don't want to return data:
-//                Intent returnIntent = new Intent();
-//                setResult(Activity.RESULT_CANCELED, returnIntent);
-//                finish();
-
             }
         });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     }
     @Override

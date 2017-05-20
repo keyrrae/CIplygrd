@@ -19,29 +19,17 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <FrameLayout
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_newTown_selectimg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-            <Button
-                android:id="@+id/button_new_image_done"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_check_box_black_24dp"
-                android:gravity="left|center_vertical"
-                android:textColor="#000000"
-                android:textSize="15dp"
-                android:background="?attr/colorPrimary"
-                android:text="Done" />
-
-        </FrameLayout>
+            app:theme="@style/ToolBarStyle"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
+
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"

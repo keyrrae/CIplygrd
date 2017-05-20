@@ -1,10 +1,9 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown.geo;
@@ -45,17 +44,26 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import edu.ucsb.cs.cs190i.papertown.GeoHash;
 import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 
 import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
 import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
@@ -74,25 +82,26 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 @RuntimePermissions
 public class GeoActivity extends AppCompatActivity implements
-    GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener,
-    LocationListener {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
   private SupportMapFragment mapFragment;
   private GoogleMap map;
   private GoogleApiClient mGoogleApiClient;
   private LocationRequest mLocationRequest;
-  private static final int PICK_IMAGE = 1234;
+  private GeoTownListAdapter mAdapter;
   private long UPDATE_INTERVAL = 60000;  /* 60 secs */
   private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
-   /*
-   * Define a request code to send to Google Play services This code is
-   * returned in Activity.onActivityResult
-   */
+  LatLng currLoc = new LatLng(0.0, 0.0);
+  /*
+  * Define a request code to send to Google Play services This code is
+  * returned in Activity.onActivityResult
+  */
   private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-  public List<Town> towns;
+  public List<Town> towns = new ArrayList<>();
 
 
   @Override
@@ -112,6 +121,8 @@ public class GeoActivity extends AppCompatActivity implements
         switch(item.getItemId()){
           case R.id.add_town:
             Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
+            newTownIntent.putExtra("LAT", currLoc.latitude);
+            newTownIntent.putExtra("LNG", currLoc.longitude);
             startActivity(newTownIntent);
             break;
           case R.id.list_view:
@@ -119,7 +130,7 @@ public class GeoActivity extends AppCompatActivity implements
             startActivity(townListIntent);
             break;
           case R.id.action_settings:
-            cleanSharedPreferences();
+            FirebaseAuth.getInstance().signOut();
             Intent splashIntent = new Intent(GeoActivity.this, SplashScreenActivity.class);
             startActivity(splashIntent);
             finish();
@@ -161,7 +172,6 @@ public class GeoActivity extends AppCompatActivity implements
       }
     });
 
-
     RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -169,36 +179,26 @@ public class GeoActivity extends AppCompatActivity implements
 
     initData();
 
-    GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns);
+    mAdapter = new GeoTownListAdapter(towns);
     mRecyclerView.setAdapter(mAdapter);
 
     mRecyclerView.addOnItemTouchListener(
 
-        new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
-          @Override
-          public void onItemClick(View view, int position) {
-            Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-            startActivity(intent);
-          }
+              @Override
+              public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                startActivity(intent);
+              }
 
-          @Override
-          public void onLongItemClick(View view, int position) {
-          }
+              @Override
+              public void onLongItemClick(View view, int position) {
+              }
 
-        })
+            })
     );
 
-  }
-
-  private void cleanSharedPreferences(){
-    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-    editor.remove(TOKEN);
-    editor.remove(TOKEN_TIME);
-    editor.remove(USERID);
-    editor.remove(EMAIL);
-    editor.remove(CRED);
-    editor.commit();
   }
 
   protected void loadMap(GoogleMap googleMap) {
@@ -207,6 +207,45 @@ public class GeoActivity extends AppCompatActivity implements
       // Map is ready
       map.setBuildingsEnabled(true);
       map.setIndoorEnabled(true);
+      map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+        @Override
+        public void onCameraIdle() {
+          LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+          double neLat = bounds.northeast.latitude;
+          double swLat = bounds.southwest.latitude;
+          double neLng = bounds.northeast.longitude;
+          double swLng = bounds.southwest.longitude;
+
+          if(neLat - swLat > 5 || neLng - swLng > 5){
+            // dont update when zoomed out
+            return;
+          }
+
+          towns.clear();
+          List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
+          FirebaseDatabase database = FirebaseDatabase.getInstance();
+          if (database != null) {
+
+            for(String code: allGeoCodes){
+              Query query = database.getReference("towns").orderByChild("geoHash").equalTo(code);
+              query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                  for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Town town = ds.getValue(Town.class);
+                    towns.add(town);
+                  }
+                  mAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+              });
+            }
+          }
+        }
+      });
       Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
       GeoActivityPermissionsDispatcher.getMyLocationWithCheck(this);
     } else {
@@ -228,9 +267,9 @@ public class GeoActivity extends AppCompatActivity implements
       map.setMyLocationEnabled(true);
       map.getUiSettings().setCompassEnabled(true);
       mGoogleApiClient = new GoogleApiClient.Builder(this)
-          .addApi(LocationServices.API)
-          .addConnectionCallbacks(this)
-          .addOnConnectionFailedListener(this).build();
+              .addApi(LocationServices.API)
+              .addConnectionCallbacks(this)
+              .addOnConnectionFailedListener(this).build();
       connectClient();
     }
   }
@@ -281,27 +320,6 @@ public class GeoActivity extends AppCompatActivity implements
             break;
         }
         break;
-      case PICK_IMAGE:
-        ArrayList<Uri> res = new ArrayList<>();
-        if(resultCode == RESULT_OK){
-          if(data.getData() != null) {
-            Uri uri = data.getData();
-            res.add(uri);
-          } else {
-            ClipData clipData = data.getClipData();
-            if(clipData != null){
-              for (int i = 0; i < clipData.getItemCount(); i++) {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
-                res.add(uri);
-              }
-            }
-          }
-          Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
-          newTownIntent.putParcelableArrayListExtra(TOWN_IMAGE_LIST, res);
-          startActivity(newTownIntent);
-        }
-        break;
     }
   }
 
@@ -316,7 +334,7 @@ public class GeoActivity extends AppCompatActivity implements
     } else {
       // Get the error dialog from Google Play services
       Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-          CONNECTION_FAILURE_RESOLUTION_REQUEST);
+              CONNECTION_FAILURE_RESOLUTION_REQUEST);
 
       // If Google Play services can provide an error dialog
       if (errorDialog != null) {
@@ -348,8 +366,8 @@ public class GeoActivity extends AppCompatActivity implements
     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     if (location != null) {
       Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-      LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+      currLoc = new LatLng(location.getLatitude(), location.getLongitude());
+      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
       map.animateCamera(cameraUpdate);
     } else {
       Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
@@ -365,17 +383,17 @@ public class GeoActivity extends AppCompatActivity implements
     mLocationRequest.setInterval(UPDATE_INTERVAL);
     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-        mLocationRequest, this);
+            mLocationRequest, this);
   }
 
   @Override
   public void onLocationChanged(Location location) {
     // Report to the UI that the location was updated
     String msg = "Updated Location: " +
-        Double.toString(location.getLatitude()) + "," +
-        Double.toString(location.getLongitude());
+            Double.toString(location.getLatitude()) + "," +
+            Double.toString(location.getLongitude());
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
+    currLoc = new LatLng(location.getLatitude(), location.getLongitude());
   }
 
   /*
@@ -405,7 +423,7 @@ public class GeoActivity extends AppCompatActivity implements
       try {
         // Start an Activity that tries to resolve the error
         connectionResult.startResolutionForResult(this,
-            CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                CONNECTION_FAILURE_RESOLUTION_REQUEST);
 				/*
 				 * Thrown if Google Play services canceled the original
 				 * PendingIntent
@@ -416,7 +434,7 @@ public class GeoActivity extends AppCompatActivity implements
       }
     } else {
       Toast.makeText(getApplicationContext(),
-          "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
+              "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
     }
   }
 
@@ -465,41 +483,41 @@ public class GeoActivity extends AppCompatActivity implements
     imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
 
 
-    Town t1 = new Town.Builder()
-        .setTitle("Mother Susanna Monument")
-        .setCategory("Place")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("6510 El Colegio Rd Apt 1223")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("theUniqueEye")
-        .setImages(imgs1)
-        .setSketch("")
-        .build();
+    Town t1 = new TownBuilder()
+            .setTitle("Mother Susanna Monument")
+            .setCategory("Place")
+            .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+            .setAddress("6510 El Colegio Rd Apt 1223")
+            .setLat(35.594559f)
+            .setLng(-117.899149f)
+            .setUserId("theUniqueEye")
+            .setImages(imgs1)
+            .setSketch("")
+            .build();
 
-    Town t2 = new Town.Builder()
-        .setTitle("Father Crowley Monument")
-        .setCategory("Place")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("6510 El Colegio Rd Apt 1223")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("theUniqueEye")
-        .setImages(imgs2)
-        .setSketch("")
-        .build();
+    Town t2 = new TownBuilder()
+            .setTitle("Father Crowley Monument")
+            .setCategory("Place")
+            .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+            .setAddress("6510 El Colegio Rd Apt 1223")
+            .setLat(35.594559f)
+            .setLng(-117.899149f)
+            .setUserId("theUniqueEye")
+            .setImages(imgs2)
+            .setSketch("")
+            .build();
 
-    Town t3 = new Town.Builder()
-        .setTitle("Wonder Land")
-        .setCategory("Creature")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("Rabbit Hole 1901C")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("Sams to Go")
-        .setImages(imgs3)
-        .setSketch("")
-        .build();
+    Town t3 = new TownBuilder()
+            .setTitle("Wonder Land")
+            .setCategory("Creature")
+            .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+            .setAddress("Rabbit Hole 1901C")
+            .setLat(35.594559f)
+            .setLng(-117.899149f)
+            .setUserId("Sams to Go")
+            .setImages(imgs3)
+            .setSketch("")
+            .build();
 
     towns.add(t1);
     towns.add(t2);

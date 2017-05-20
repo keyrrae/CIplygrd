@@ -11,13 +11,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
 
-    <ScrollView
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_detail"
+            android:layout_width="match_parent"
+            app:theme="@style/ToolBarStyle"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
 
 
     <LinearLayout
@@ -107,9 +128,9 @@
 
         <fragment
             android:id="@+id/detail_map"
-            class="com.google.android.gms.maps.SupportMapFragment"
+            class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:layout_marginTop="16dp" />
 
         <TextView
@@ -135,40 +156,32 @@
             android:textColor="@android:color/background_dark"
             android:textSize="14dp" />
 
-        <!--<ImageView-->
-            <!--android:id="@+id/detail_town_navi"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/detail_address"-->
-            <!--android:layout_marginLeft="4dp"-->
-            <!--android:layout_toRightOf="@+id/detail_town_address"-->
-            <!--android:src="@drawable/ic_navigation_black_18dp" />-->
 
-        <GridView
+
+
+        <edu.ucsb.cs.cs190i.papertown.town.newtown.WrappingGridView
             android:id="@+id/detail_image_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnWidth="100dp"
-            android:numColumns="4"
-            android:verticalSpacing="2dp"
-            android:horizontalSpacing="2dp"
-            android:stretchMode="columnWidth"
+            android:numColumns="3"
+            android:verticalSpacing="15dp"
+            android:horizontalSpacing="15dp"
             android:gravity="center"
-            android:layout_marginTop="8dp"
+            android:padding="5sp"
             />
+
+        <Button
+            android:id="@+id/button_test_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Button" />
 
 
     </LinearLayout>
 
-    </ScrollView>
 
-    <Button
-        android:id="@+id/button_test_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="@android:color/darker_gray"
-        android:gravity="center"
-        android:text="Button" />
+
+    </ScrollView>
 
 </LinearLayout>

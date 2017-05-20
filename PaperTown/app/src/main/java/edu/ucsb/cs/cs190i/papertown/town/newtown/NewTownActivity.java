@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,11 +39,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -51,6 +55,7 @@ public class NewTownActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory{
 //  static ListView listview;
   private ImageSwitcher mSwitcher;
+    private  ImageView imageView_newTown;
 
   final int NEW_TITLE_REQUEST = 0;
   final int NEW_ADDRESS_REQUEST = 1;
@@ -82,8 +87,21 @@ public class NewTownActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_town);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_done);
     setSupportActionBar(toolbar);
+      getSupportActionBar().setTitle(null);
+      toolbar.setTitle("");
+      toolbar.setSubtitle("");
+      toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+      toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+//        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+              Log.i("dataToD", "setNavigationOnClickListener");
+              finish();
+          }
+      });
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -99,29 +117,29 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
     //setup switcher
-    mSwitcher = (ImageSwitcher) findViewById(R.id.switcher);
-    mSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-      @Override
-      public View makeView() {
-        ImageView myView = new ImageView(getApplicationContext());
-        myView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        myView.setLayoutParams(new
-                ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        return myView;
-      }
-    });
-    mSwitcher.setInAnimation(AnimationUtils.loadAnimation(this,
-            android.R.anim.fade_in));
-    mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
-            android.R.anim.fade_out));
+      imageView_newTown = (ImageView) findViewById(R.id.imageView_newTown);
+//    mSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+//      @Override
+//      public View makeView() {
+//        ImageView myView = new ImageView(getApplicationContext());
+//        myView.setScaleType(ImageView.ScaleType.FIT_XY);
+//        myView.setLayoutParams(new
+//                ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT));
+//        return myView;
+//      }
+//    });
+//    mSwitcher.setInAnimation(AnimationUtils.loadAnimation(this,
+//            android.R.anim.fade_in));
+//    mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
+//            android.R.anim.fade_out));
 
-    mSwitcher.setImageDrawable(getResources().getDrawable(R.drawable.brick));
+      imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.brick));
 
 
     //set up imageview onclick
     //ImageView selectImage = (ImageView) findViewById(R.id.imageView);
-    mSwitcher.setOnClickListener(new View.OnClickListener() {
+      imageView_newTown.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Log.i("onClick", "selectImage click");
@@ -130,7 +148,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
         //stat camera rool
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+        Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , NEW_PHOTO_REQUEST);//one can be replaced with any action code
 
@@ -264,7 +282,7 @@ public class NewTownActivity extends AppCompatActivity implements
           Toast.makeText(getApplicationContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
         }
         else{
-          Log.i("onClick", "Submit!");
+          Log.i("onClick", "Preview !");
 
             //passing data to detailView
 
@@ -278,7 +296,7 @@ public class NewTownActivity extends AppCompatActivity implements
             intent.putExtra("description", description);  //passing data...
             intent.putExtra("category", category);  //passing data...
             intent.putExtra("information", information);  //passing data...
-
+            intent.putExtra("mode", "preview");  //passing data...
 
             //process Uri array data
             ArrayList<String> uriStringArrayList = new ArrayList<>();
@@ -288,12 +306,32 @@ public class NewTownActivity extends AppCompatActivity implements
             intent.putStringArrayListExtra("uriStringArrayList", uriStringArrayList);  //passing Uri array data...
 
 
+            //pass town as an object
+            //processing address to latlng
+            String[] separated = address.split(",");
+            float lat = Float.parseFloat(separated[0]);
+            float lng = Float.parseFloat(separated[1]);
+
+//            Town testTown = new  Town.Builder()
+//                    .setTitle(title)
+//                    .setAddress(address)
+//                    .setCategory(category)
+//                    .setDescription(description)
+//                    .setLat(lat)
+//                    .setLng(lng)
+//                    .setImages(uriStringArrayList)
+//                    .build();
+
+//            intent.putExtra("town", testTown);
 
             //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
             startActivity (intent);
 //            overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
-            finish();
+
+
+
+           // finish();
 
         }
 
@@ -501,77 +539,83 @@ public class NewTownActivity extends AppCompatActivity implements
         //imageUri = Uri.parse(result);
         ImageView c = (ImageView) findViewById(R.id.checkbox_0);
         c.setImageResource(R.drawable.ic_check_box_white_24dp);
-
+        Picasso.with(getApplicationContext()).load(uriList[0])
+                .into(imageView_newTown);
 
         //start animation
-
-        (new Thread(new Runnable()
-        {
-
-          @Override
-          public void run()
-          {
-            while (!Thread.interrupted())
-              try
-              {
-                Thread.sleep(3000);  //3s
-                runOnUiThread(new Runnable() // start actions in UI thread
-                {
-
-                  @Override
-                  public void run()
-                  {
-                    Log.i("mSwitcher", "imageCount outside = "+imageCount);
-                    if(imageCount<uriList.length) {
-                      Log.i("mSwitcher", "imageCount = "+imageCount);
-                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
-                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
-                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                      mSwitcher.setImageURI(uriList[imageCount]);
-                      imageCount++;
-                    }
-                    else{
-                      imageCount = 0;
-                      Log.i("mSwitcher", "imageCount = "+imageCount);
-                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
-                      getApplicationContext().grantUriPermission("zhenyuyang.cec150.ece.ucsb.edu.project", uriList[imageCount],
-                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                      mSwitcher.setImageURI(uriList[imageCount]);
-                      imageCount++;
-                    }
-
-//                                        //displayData(); // this action have to be in UI thread
-//                                        if(imageCount==0) {
-//                                            mSwitcher.setImageResource(R.drawable.door);
-//                                            imageCount++;
-//                                        }
-//                                        else if(imageCount==1){
-//                                            mSwitcher.setImageResource(R.drawable.light);
-//                                            imageCount++;
-//                                        }
-//                                        else if(imageCount==2){
-//                                            mSwitcher.setImageResource(R.drawable.corner);
-//                                            imageCount++;
-//                                        }
-//                                        else if(imageCount==3){
-//                                            mSwitcher.setImageResource(R.drawable.mc);
-//                                            imageCount++;
-//                                        }
-//                                        else{
-//                                            imageCount = 0;
-//                                        }
-
-                  }
-                });
-              }
-              catch (InterruptedException e)
-              {
-                // ooops
-              }
-          }
-        })).start(); // the while thread will start in BG thread
-
-        //end of animation
+//
+//        (new Thread(new Runnable()
+//        {
+//
+//          @Override
+//          public void run()
+//          {
+//            while (!Thread.interrupted())
+//              try
+//              {
+//                Thread.sleep(3000);  //3s
+//                runOnUiThread(new Runnable() // start actions in UI thread
+//                {
+//
+//                  @Override
+//                  public void run()
+//                  {
+//                    Log.i("mSwitcher", "imageCount outside = "+imageCount);
+//                    if(imageCount<uriList.length) {
+//                      Log.i("mSwitcher", "imageCount = "+imageCount);
+//                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
+//                      getApplicationContext().grantUriPermission("edu.ucsb.cs.cs190i.papertown.town.newtown", uriList[imageCount],
+//                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                      mSwitcher.setImageURI(uriList[imageCount]);
+//
+//
+//
+//
+//
+//                      imageCount++;
+//                    }
+//                    else{
+//                      imageCount = 0;
+//                      Log.i("mSwitcher", "imageCount = "+imageCount);
+//                      Log.i("mSwitcher", "riList[imageCount] = "+uriList[imageCount].toString());
+//                      getApplicationContext().grantUriPermission("edu.ucsb.cs.cs190i.papertown.town.newtown", uriList[imageCount],
+//                              Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                      mSwitcher.setImageURI(uriList[imageCount]);
+//                      imageCount++;
+//                    }
+//
+////                                        //displayData(); // this action have to be in UI thread
+////                                        if(imageCount==0) {
+////                                            mSwitcher.setImageResource(R.drawable.door);
+////                                            imageCount++;
+////                                        }
+////                                        else if(imageCount==1){
+////                                            mSwitcher.setImageResource(R.drawable.light);
+////                                            imageCount++;
+////                                        }
+////                                        else if(imageCount==2){
+////                                            mSwitcher.setImageResource(R.drawable.corner);
+////                                            imageCount++;
+////                                        }
+////                                        else if(imageCount==3){
+////                                            mSwitcher.setImageResource(R.drawable.mc);
+////                                            imageCount++;
+////                                        }
+////                                        else{
+////                                            imageCount = 0;
+////                                        }
+//
+//                  }
+//                });
+//              }
+//              catch (InterruptedException e)
+//              {
+//                // ooops
+//              }
+//          }
+//        })).start(); // the while thread will start in BG thread
+//
+//        //end of animation
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
@@ -711,14 +755,14 @@ public class NewTownActivity extends AppCompatActivity implements
 
     //change color of submission button
     Button button_step_left = (Button) findViewById(R.id.button_step_left);
-    button_step_left.setBackgroundColor(Color.rgb(29,191,151));
-    button_step_left.setText("SUBMIT !");
+    button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+    button_step_left.setText("PREVIEW !");
 
 
     //change the color of the progress bar
     ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);
     pb.setProgress(0);  //only show background
-    pb.setBackgroundColor(Color.rgb(29,191,151));
+    pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
 
   }
 
@@ -727,7 +771,7 @@ public class NewTownActivity extends AppCompatActivity implements
     i1.setImageResource(R.drawable.ic_check_box_black_24dp);
 
     //TextView title = (TextView) view.findViewById(R.id.title1);
-    t1.setTextColor(Color.rgb(29,191,151));
+    t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
 
     if(t2!=null) {
       //TextView description = (TextView) view.findViewById(R.id.description);
@@ -758,7 +802,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    mSwitcher.setImageResource(mImageIds[position]);
+    //mSwitcher.setImageResource(mImageIds[position]);
   }
 
   @Override
