@@ -121,34 +121,4 @@ public class SelectImageGridAdapter extends BaseAdapter {
 
         return grid;
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        Log.i("my", "permission requestCode = "+requestCode);
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Log.i("my", "permission.READ_EXTERNAL_STORAGE2");
-//                    //normal request goes here
-//                    imageView.setImageURI(ImageUris[position]);
-////                Picasso.with(mContext).load(ImageUris[position])
-////                        .resize(20,20)
-////                        .fit()
-////                        .into(imageView);
-//
-//                } else {
-//                    Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-////                return;
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//    }
 }

@@ -22,7 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
  * Created by Zhenyu on 2017-05-18.
  */
 
-public class myMapFragment extends SupportMapFragment {
+public class MyMapFragment extends SupportMapFragment {
     private OnTouchListener mListener;
 
     @Override

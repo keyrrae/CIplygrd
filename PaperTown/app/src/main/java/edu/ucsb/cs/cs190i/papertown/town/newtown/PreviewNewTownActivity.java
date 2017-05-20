@@ -244,7 +244,7 @@ public class PreviewNewTownActivity extends AppCompatActivity {
 
     //handle the google Maps
 
-    myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+    MyMapFragment mapFragment = ((MyMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
 
     if (mapFragment != null) {
       mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -300,7 +300,7 @@ public class PreviewNewTownActivity extends AppCompatActivity {
         }
       });
 
-      mapFragment.setListener(new myMapFragment.OnTouchListener() {
+      mapFragment.setListener(new MyMapFragment.OnTouchListener() {
         @Override
         public void onTouch() {
           ScrollView mScrollView = (ScrollView)findViewById(R.id.scrollView_detail);

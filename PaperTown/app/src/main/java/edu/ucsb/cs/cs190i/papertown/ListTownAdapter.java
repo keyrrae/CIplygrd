@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2017 - present, Xuan Wang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- *
- */
-
 package edu.ucsb.cs.cs190i.papertown;
 
 import android.net.Uri;
@@ -22,10 +13,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.models.Town;
-
-/**
- * Created by EYE on 07/05/2017.
- */
 
 public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTownViewHolder>{
 
