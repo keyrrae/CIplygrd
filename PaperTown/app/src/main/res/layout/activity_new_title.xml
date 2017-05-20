@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center"
+    android:background="@color/Gray"
     tools:context="zhenyuyang.cec150.ece.ucsb.edu.project.NewTitleActivity">
-
-
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:elevation="@dimen/s">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -23,47 +23,41 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/Almost_White"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-                <Button
-                    android:id="@+id/button_newtitle_done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_check_box_black_24dp"
-                    android:gravity="left|center_vertical"
-                    android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:background="?attr/colorPrimary"
-                    android:text="Done" />
+
+            <Button
+                android:id="@+id/button_newtitle_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/m"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_check_black_24dp"
+                android:gravity="left|center_vertical"
+                android:text="Done"
+                android:textColor="#000000"
+                android:textSize="14dp" />
 
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:paddingTop="50dp"
+        android:text="Title"
+        android:textStyle="bold"
+        android:textSize="@dimen/mT"/>
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="20sp"
-                android:paddingTop="50sp"
-                android:text="Title"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/editText_newtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Give a name to the item   " />
-
-
-
-
-
-
+    <EditText
+        android:id="@+id/editText_newtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=" Give a name to the item   "
+        android:inputType="textPersonName"
+        android:background="@color/Almost_White"/>
 
 </LinearLayout>

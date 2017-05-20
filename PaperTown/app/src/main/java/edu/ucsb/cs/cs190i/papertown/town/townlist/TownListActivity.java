@@ -29,6 +29,7 @@ import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 
@@ -117,7 +118,7 @@ public class TownListActivity extends AppCompatActivity {
     imgs3.add("http://68.media.tumblr.com/132947bb8b5319f81f8a77d3c83b3fbf/tumblr_o1z5pav4xH1s49orpo1_1280.jpg");
 
 
-    Town t1 = new Town.Builder()
+    Town t1 = new TownBuilder()
         .setTitle("Mother Susanna Monument")
         .setCategory("Place")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
@@ -129,7 +130,7 @@ public class TownListActivity extends AppCompatActivity {
         .setSketch("")
         .build();
 
-    Town t2 = new Town.Builder()
+    Town t2 = new TownBuilder()
         .setTitle("Father Crowley Monument")
         .setCategory("Place")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
@@ -141,7 +142,7 @@ public class TownListActivity extends AppCompatActivity {
         .setSketch("")
         .build();
 
-    Town t3 = new Town.Builder()
+    Town t3 = new TownBuilder()
         .setTitle("Wonder Land")
         .setCategory("Creature")
         .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
