@@ -70,7 +70,9 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
 
-                    returnIntent.putExtra("result", latitude + "," + longitude);
+                    //returnIntent.putExtra("result", latitude + "," + longitude);
+                    EditText ev = ((EditText) findViewById(R.id.editText_new_address));
+                    returnIntent.putExtra("result", ev.getText().toString());
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
@@ -145,7 +147,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
 
 
                         EditText ev = ((EditText) findViewById(R.id.editText_new_address));
-                        ev.setText(latitude + ", " + longitude);
+                        ev.setText(latitude + "," + longitude);
                     }
                     catch(Exception e){
                         Log.e("manu", "e = "+e);

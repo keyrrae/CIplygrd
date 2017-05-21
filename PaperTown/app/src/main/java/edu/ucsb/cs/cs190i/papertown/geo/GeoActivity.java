@@ -64,6 +64,7 @@ import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 
 import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
+import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
@@ -94,6 +95,7 @@ public class GeoActivity extends AppCompatActivity implements
   private GoogleApiClient mGoogleApiClient;
   private LocationRequest mLocationRequest;
   private GeoTownListAdapter mAdapter;
+  private TownMapIcon tmi;
   private long UPDATE_INTERVAL = 60000;  /* 60 secs */
   private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
@@ -245,35 +247,33 @@ public class GeoActivity extends AppCompatActivity implements
 
 
                   //add markers
-                  BitmapDescriptor icon_place = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_18dp);
-                  BitmapDescriptor icon_creature = BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic_black_18dp);
-                  BitmapDescriptor icon_event = BitmapDescriptorFactory.fromResource(R.drawable.ic_chat_black_18dp);
                   for(int i = 0; i<towns.size();i++) {
                     String category = towns.get(i).getCategory();
                     double lat = towns.get(i).getLat();
                     double lng = towns.get(i).getLng();
+                    //add markers
                     if (category != null && !category.isEmpty()) {
                       if (category.equals("place")) {
-                        //add markers
+                        tmi = new TownMapIcon(getResources(), R.drawable.ic_place_black_18dp, 5);
                         map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .title("Ohh!")
-                                .snippet("TsadADSadsA")
-                                .icon(icon_place));
+                                .title(towns.get(i).getTitle())
+                                .snippet(towns.get(i).getCategory())
+                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                       } else if (category.equals("creature")) {
-
+                        tmi = new TownMapIcon(getResources(), R.drawable.ic_traffic_black_18dp, 5);
                         map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .title("Underclass beauty")
-                                .snippet("Get sunburn in my head")
-                                .icon(icon_creature));
+                                .title(towns.get(i).getTitle())
+                                .snippet(towns.get(i).getCategory())
+                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                       } else if (category.equals("event")) {
+                        tmi = new TownMapIcon(getResources(), R.drawable.ic_chat_black_18dp, 5);
                         map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .title("Big thing!")
-                                .snippet("Meat carnival")
-                                .icon(icon_event));
-
-                        //end of adding markers
+                                .title(towns.get(i).getTitle())
+                                .snippet(towns.get(i).getCategory())
+                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                       }
                     }
+                    //end of adding markers
                   }
 
 

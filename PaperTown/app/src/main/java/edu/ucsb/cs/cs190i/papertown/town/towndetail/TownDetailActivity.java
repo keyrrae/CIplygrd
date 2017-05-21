@@ -15,7 +15,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -64,69 +66,69 @@ import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 
 
-
 public class TownDetailActivity extends AppCompatActivity {
 
-  private GridView imageGrid;
-  private ArrayList<Uri> uriList;
+    private GridView imageGrid;
+    private ArrayList<Uri> uriList;
 
     private String mode = "detail";
 
-  String title = "";
-  String address = "";
-  String category = "";
-  String description = "";
-  String information = "";
-  ArrayList<String> uriStringArrayList;
+    String title = "";
+    String address = "";
+    String category = "";
+    String description = "";
+    String information = "";
+    ArrayList<String> uriStringArrayList;
 
-  float lat = 34.415320f;
-  float lng = -119.84023f;
+    TownMapIcon tmi;
 
-  //private TownBuilder townBuilder = new TownBuilder();
-  private List<String> remoteImageUrls = new ArrayList<>();
-  private FirebaseStorage storage;
-  private FirebaseDatabase database;
-  private DatabaseReference townRef;
+    float lat = 34.415320f;
+    float lng = -119.84023f;
+
+    //private TownBuilder townBuilder = new TownBuilder();
+    private List<String> remoteImageUrls = new ArrayList<>();
+    private FirebaseStorage storage;
+    private FirebaseDatabase database;
+    private DatabaseReference townRef;
     Town passedInTown;
 
-  private Integer[] mImageIds = {
-          R.drawable.door, R.drawable.light, R.drawable.corner,
-          R.drawable.mc, R.drawable.light, R.drawable.door,
-          R.drawable.light, R.drawable.corner};
+    private Integer[] mImageIds = {
+            R.drawable.door, R.drawable.light, R.drawable.corner,
+            R.drawable.mc, R.drawable.light, R.drawable.door,
+            R.drawable.light, R.drawable.corner};
 
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_town_detail);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_town_detail);
 
 
-
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setTitle(null);
-    toolbar.setTitle("");
-    toolbar.setSubtitle("");
-    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        Log.i("dataToD", "setNavigationOnClickListener");
-        finish();
-      }
-    });
+                Log.i("dataToD", "setNavigationOnClickListener");
+                finish();
+            }
+        });
 
 
-
-    this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
-    this.uriList = new ArrayList<Uri>();
+        this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
+        this.uriList = new ArrayList<Uri>();
 //    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
 //    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
 
@@ -141,101 +143,95 @@ public class TownDetailActivity extends AppCompatActivity {
 //    townBuilder.setLatLng(lat, lng);
 
 
-      mode = getIntent().getStringExtra("mode");
-      if(mode==null){
-          mode = "detail";
-      }
+        mode = getIntent().getStringExtra("mode");
+        if (mode == null) {
+            mode = "detail";
+        }
 
-      passedInTown = (Town)getIntent().getSerializableExtra("town");
-
-
-      passedInTown.setUserId(UserSingleton.getInstance().getUid());
+        passedInTown = (Town) getIntent().getSerializableExtra("town");
 
 
-    FirebaseApp.initializeApp(this);
-    storage = FirebaseStorage.getInstance();
-    database = FirebaseDatabase.getInstance();
-    townRef = database.getReference("towns");
-
-      Button button_test_detail = (Button) findViewById(R.id.button_test_detail);
-      button_test_detail.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Log.i("dataToD", "button_test_detail OnClickListener");
+        passedInTown.setUserId(UserSingleton.getInstance().getUid());
 
 
+        FirebaseApp.initializeApp(this);
+        storage = FirebaseStorage.getInstance();
+        database = FirebaseDatabase.getInstance();
+        townRef = database.getReference("towns");
+
+        Button button_test_detail = (Button) findViewById(R.id.button_test_detail);
+        button_test_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("dataToD", "button_test_detail OnClickListener");
 
 
-              if(mode.equals("preview")){
-                  Log.i("dataToD", "SUBMIT!");
+                if (mode.equals("preview")) {
+                    Log.i("dataToD", "SUBMIT!");
 
 
-                if(storage != null) {
-                  StorageReference storageRef = storage.getReference();
+                    if (storage != null) {
+                        StorageReference storageRef = storage.getReference();
 
-                  for(Uri uri: uriList) {
-
-
-
-                     // Log.i("original_image","newUri = "+uri.toString());
-                      File f = new File(uri.toString());
-                     // Log.i("original_image","f.getName(); = "+f.getName());
-                      f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/"+f.getName()+UUID.randomUUID().toString() + System.currentTimeMillis()+".jpg"));
-
-                      uri = (Uri.fromFile(f));
-
-                      //Log.i("resize_image","newUri_resized = "+uri.toString());
+                        for (Uri uri : uriList) {
 
 
-                    StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
-                    UploadTask uploadTask = riversRef.putFile(uri);
+                            // Log.i("original_image","newUri = "+uri.toString());
+                            File f = new File(uri.toString());
+                            // Log.i("original_image","f.getName(); = "+f.getName());
+                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 
-                    // Register observers to listen for when the download is done or if it fails
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                      @Override
-                      public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                      }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                      @Override
-                      public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                        @SuppressWarnings("VisibleForTests")
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        if(downloadUrl != null) {
-                          remoteImageUrls.add(downloadUrl.toString());
-                          if(remoteImageUrls.size() == uriList.size()){
-                              passedInTown.setImageUrls(remoteImageUrls);
-                            DatabaseReference newTown = townRef.child(passedInTown.getId());
-                           // Town town = townBuilder.build();
-                            newTown.setValue(passedInTown, new DatabaseReference.CompletionListener() {
-                              @Override
-                              public void onComplete(DatabaseError databaseError,
-                                                     DatabaseReference databaseReference) {
-                                Toast.makeText(
-                                        TownDetailActivity.this,
-                                        "Successfully submitted network",
-                                        Toast.LENGTH_SHORT
-                                ).show();
-                                finish();
-                              }
+                            uri = (Uri.fromFile(f));
+
+                            //Log.i("resize_image","newUri_resized = "+uri.toString());
+
+
+                            StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
+                            UploadTask uploadTask = riversRef.putFile(uri);
+
+                            // Register observers to listen for when the download is done or if it fails
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                                    @SuppressWarnings("VisibleForTests")
+                                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                    if (downloadUrl != null) {
+                                        remoteImageUrls.add(downloadUrl.toString());
+                                        if (remoteImageUrls.size() == uriList.size()) {
+                                            passedInTown.setImageUrls(remoteImageUrls);
+                                            DatabaseReference newTown = townRef.child(passedInTown.getId());
+                                            // Town town = townBuilder.build();
+                                            newTown.setValue(passedInTown, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError,
+                                                                       DatabaseReference databaseReference) {
+                                                    Toast.makeText(
+                                                            TownDetailActivity.this,
+                                                            "Successfully submitted network",
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+                                                    finish();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
                             });
-                          }
                         }
-                      }
-                    });
-                  }
+                    }
+                } else {
+                    finish();
                 }
-              }
-              else{
-                  finish();
-              }
-              Log.i("dataToD", "button_test_detail OnClickListener");
-                      //.setInformation   ???
-          }
-      });
-
-
+                Log.i("dataToD", "button_test_detail OnClickListener");
+                //.setInformation   ???
+            }
+        });
 
 
 //    String s = getIntent().getStringExtra("dataToD");
@@ -248,222 +244,202 @@ public class TownDetailActivity extends AppCompatActivity {
 //    information = getIntent().getStringExtra("information");
 //    uriStringArrayList = getIntent().getStringArrayListExtra("uriStringArrayList");
 
-    if(passedInTown!=null) {
-      Log.i("dataToD", "passedInTown getDescription = "+passedInTown.getTitle().toString());
-        title = passedInTown.getTitle();
-    address =  passedInTown.getAddress();
-    description =  passedInTown.getDescription();
-    category =  passedInTown.getCategory();
-    information =  passedInTown.getUserAlias();
-    uriStringArrayList =  new ArrayList<String>(passedInTown.getImageUrls());
+        if (passedInTown != null) {
+            Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
+            title = passedInTown.getTitle();
+            address = passedInTown.getAddress();
+            description = passedInTown.getDescription();
+            category = passedInTown.getCategory();
+            information = passedInTown.getUserAlias();
+            uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
 
 
-    }
+        }
 
 
-      //change button color
-      if(mode!=null&&mode.equals("preview")) {
-          //change color of submission button
-          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-          button_test_detail.setText("SUBMIT !");
+        //change button color
+        if (mode != null && mode.equals("preview")) {
+            //change color of submission button
+            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            button_test_detail.setText("SUBMIT !");
 
 
-
-      }
-      else{
-          //change color of submission button
+        } else {
+            //change color of submission button
 //          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
 //          button_test_detail.setText("DONE");
-        button_test_detail.setVisibility(Button.INVISIBLE);
-      }
-
-
-    //process uriStringArrayList, put data into uriList
-    if(uriStringArrayList!=null&&uriStringArrayList.size()>0) {
-      for (int i = 0; i < uriStringArrayList.size(); i++) {
-        uriList.add(Uri.parse(uriStringArrayList.get(i)));
-        Log.i("manu", "uriList["+i+"] = "+uriList.get(i));
-      }
-    }
-    else{
-      Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
-      this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-      this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-        this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-
-    }
-
-    //load title
-    if(title!=null) {
-      TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
-      detail_town_description.setText(title);
-       // townBuilder.setTitle(title);
-    }
-
-    //load address
-    if(address!=null) {
-      TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
-      detail_town_description.setText(address);
-       // townBuilder.setAddress(address);
-
-        //processing address to latlng
-        String[] separated = address.split(",");
-        if(separated.length>0) {
-            lat = Float.parseFloat(separated[0]);
-            lng = Float.parseFloat(separated[1]);
-         //   townBuilder.setLatLng(lat, lng);
+            button_test_detail.setVisibility(Button.INVISIBLE);
         }
-    }
 
 
-
-    //load description
-    if(description!=null) {
-      TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
-      detail_town_description.setText(description);
-     //   townBuilder.setDescription(description);
-    }
-
-
-
-    //load category
-    if(category!=null) {
-      TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
-      detail_town_description.setText(category);
-      //  townBuilder.setCategory(category);
-    }
-
-    //load information
-    if(information!=null) {
-      TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
-      detail_town_description.setText(information);
-     //   townBuilder.setUserAlias(information);
-    }
-
-
-    //load uriStringArrayList
-    if(uriList!=null) {
-      if(uriList.size()>0) {
-        final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
-          detail_town_image.post(new Runnable() {
-              @Override
-              public void run() {
-                  Picasso.with(getApplicationContext()).load(uriList.get(0))
-                          .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
-                          .centerCrop()
-                          .into(detail_town_image);
-              }
-          });
-
-        this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-      }
-    }
-
-
-
-    //adjust the gridView hright
-
-
-
-
-
-    //handle the google Maps
-
-    myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
-
-    if (mapFragment != null) {
-      mapFragment.getMapAsync(new OnMapReadyCallback() {
-        @Override
-        public void onMapReady(GoogleMap map) {
-          //enable myLocationButton
-          if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                  Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            map.setMyLocationEnabled(true);
-            //map.getUiSettings().setMyLocationButtonEnabled(true);
-          }
-          else {
-            Log.i("manu", "Error - checkSelfPermission!!");
-          }
-          //end of enabling myLocationButton
-
-            //add markers
-            BitmapDescriptor icon_place = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_18dp);
-            BitmapDescriptor icon_creature = BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic_black_18dp);
-            BitmapDescriptor icon_event = BitmapDescriptorFactory.fromResource(R.drawable.ic_chat_black_18dp);
-
-
-          if(category!=null&&!category.isEmpty()) {
-            if (category.equals("place")) {
-              //add markers
-              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                      .title("Ohh!")
-                      .snippet("TsadADSadsA")
-                      .icon(icon_place));
-            } else if (category.equals("creature")) {
-
-              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                      .title("Underclass beauty")
-                      .snippet("Get sunburn in my head")
-                      .icon(icon_creature));
-            } else if (category.equals("event")) {
-              map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                      .title("Big thing!")
-                      .snippet("Meat carnival")
-                      .icon(icon_event));
-
-              //end of adding markers
+        //process uriStringArrayList, put data into uriList
+        if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
+            for (int i = 0; i < uriStringArrayList.size(); i++) {
+                uriList.add(Uri.parse(uriStringArrayList.get(i)));
+                Log.i("manu", "uriList[" + i + "] = " + uriList.get(i));
             }
-          }
-
-          //camera animation
-          //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
-
-          if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
-          }
-
-
-          //end of camera animation
-
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
 
         }
-      });
 
-      mapFragment.setListener(new myMapFragment.OnTouchListener() {
-        @Override
-        public void onTouch() {
-          ScrollView mScrollView = (ScrollView)findViewById(R.id.scrollView_detail);
-          mScrollView.requestDisallowInterceptTouchEvent(true);
+        //load title
+        if (title != null) {
+            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
+            detail_town_description.setText(title);
+            // townBuilder.setTitle(title);
         }
-      });
+
+        //load address
+        if (address != null) {
+            TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
+            detail_town_description.setText(address);
+            // townBuilder.setAddress(address);
+
+            //processing address to latlng
+            String[] separated = address.split(",");
+            if (separated.length > 0) {
+                lat = Float.parseFloat(separated[0]);
+                lng = Float.parseFloat(separated[1]);
+                //   townBuilder.setLatLng(lat, lng);
+            }
+        }
 
 
-    } else {
+        //load description
+        if (description != null) {
+            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
+            detail_town_description.setText(description);
+            //   townBuilder.setDescription(description);
+        }
 
-      Log.i("manu", "Error - Map Fragment was null!!");
+
+        //load category
+        if (category != null) {
+            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
+            detail_town_description.setText(category);
+            //  townBuilder.setCategory(category);
+        }
+
+        //load information
+        if (information != null) {
+            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
+            detail_town_description.setText(information);
+            //   townBuilder.setUserAlias(information);
+        }
+
+
+        //load uriStringArrayList
+        if (uriList != null) {
+            if (uriList.size() > 0) {
+                final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
+                detail_town_image.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Picasso.with(getApplicationContext()).load(uriList.get(0))
+                                .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
+                                .centerCrop()
+                                .into(detail_town_image);
+                    }
+                });
+
+                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+            }
+        }
+
+
+        //adjust the gridView hright
+
+
+        //handle the google Maps
+
+        myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap map) {
+                    //enable myLocationButton
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        map.setMyLocationEnabled(true);
+                        //map.getUiSettings().setMyLocationButtonEnabled(true);
+                    } else {
+                        Log.i("manu", "Error - checkSelfPermission!!");
+                    }
+                    //end of enabling myLocationButton
+
+                    //add markers
+                    if (category != null && !category.isEmpty()) {
+                        if (category.equals("place")) {
+                            tmi = new TownMapIcon(getResources(), R.drawable.ic_place_black_18dp, 5);
+                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                    .title(title)
+                                    .snippet(category)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                        } else if (category.equals("creature")) {
+                            tmi = new TownMapIcon(getResources(), R.drawable.ic_traffic_black_18dp, 5);
+                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                    .title(title)
+                                    .snippet(category)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                        } else if (category.equals("event")) {
+                            tmi = new TownMapIcon(getResources(), R.drawable.ic_chat_black_18dp, 5);
+                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                    .title(title)
+                                    .snippet(category)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                        }
+                    }
+                    //end of adding markers
+
+
+                    //camera animation
+                    //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
+
+                    if (map != null) {
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
+                    }
+
+
+                    //end of camera animation
+
+
+                }
+            });
+
+            mapFragment.setListener(new myMapFragment.OnTouchListener() {
+                @Override
+                public void onTouch() {
+                    ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollView_detail);
+                    mScrollView.requestDisallowInterceptTouchEvent(true);
+                }
+            });
+
+
+        } else {
+
+            Log.i("manu", "Error - Map Fragment was null!!");
+        }
+
+
     }
 
 
-
-
-
-
-  }
-
-
-
-
-    public static String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName){
-        String filePath = getRealPathFromURI_API19(context,inputUri);
-        final int MAX_IMAGE_SIZE = 600*800; // max final file size in kilobytes   700 * 1024;
+    public static String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
+        String filePath = getRealPathFromURI_API19(context, inputUri);
+        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
 
         // First decode with inJustDecodeBounds=true to check dimensions of image
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filePath,options);
+        BitmapFactory.decodeFile(filePath, options);
 
         // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
         //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
@@ -471,27 +447,27 @@ public class TownDetailActivity extends AppCompatActivity {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        options.inPreferredConfig= Bitmap.Config.ARGB_8888;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        Bitmap bmpPic = BitmapFactory.decodeFile(filePath,options);
+        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
 
 
         int compressQuality = 100; // quality decreasing by 5 every loop.
         int streamLength;
-        do{
+        do {
             ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
             Log.d("compressBitmap", "Quality: " + compressQuality);
             bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
             byte[] bmpPicByteArray = bmpStream.toByteArray();
             streamLength = bmpPicByteArray.length;
             compressQuality -= 5;
-            Log.d("compressBitmap", "Size: " + streamLength/1024+" kb");
-        }while (streamLength >= MAX_IMAGE_SIZE);
+            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
+        } while (streamLength >= MAX_IMAGE_SIZE);
 
         try {
             //save the resized and compressed file to disk cache
-            Log.d("compressBitmap","cacheDir: "+context.getCacheDir());
-            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir()+fileName);
+            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
+            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
             bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
             bmpFile.flush();
             bmpFile.close();
@@ -499,9 +475,8 @@ public class TownDetailActivity extends AppCompatActivity {
             Log.e("compressBitmap", "Error on saving file");
         }
         //return the path of resized and compressed file
-        return  context.getCacheDir()+fileName;
+        return context.getCacheDir() + fileName;
     }
-
 
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -509,7 +484,7 @@ public class TownDetailActivity extends AppCompatActivity {
         // Image nin islenmeden onceki genislik ve yuksekligi
         final int height = options.outHeight;
         final int width = options.outWidth;
-        Log.d(debugTag,"image height: "+height+ "---image width: "+ width);
+        Log.d(debugTag, "image height: " + height + "---image width: " + width);
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
@@ -523,24 +498,24 @@ public class TownDetailActivity extends AppCompatActivity {
                 inSampleSize *= 2;
             }
         }
-        Log.d(debugTag,"inSampleSize: "+inSampleSize);
+        Log.d(debugTag, "inSampleSize: " + inSampleSize);
         return inSampleSize;
     }
 
-    public static String getRealPathFromURI_API19(Context context, Uri uri){
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
 
         // Split at colon, use second item in the array
         String id = wholeID.split(":")[1];
 
-        String[] column = { MediaStore.Images.Media.DATA };
+        String[] column = {MediaStore.Images.Media.DATA};
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
 
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
+                column, sel, new String[]{id}, null);
 
         int columnIndex = cursor.getColumnIndex(column[0]);
 
@@ -550,7 +525,6 @@ public class TownDetailActivity extends AppCompatActivity {
         cursor.close();
         return filePath;
     }
-
 
 
 }
