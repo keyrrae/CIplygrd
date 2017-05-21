@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
@@ -87,11 +88,12 @@ public class TownDetailActivity extends AppCompatActivity {
   float lat = 34.415320f;
   float lng = -119.84023f;
 
-  private TownBuilder townBuilder = new TownBuilder();
+  //private TownBuilder townBuilder = new TownBuilder();
   private List<String> remoteImageUrls = new ArrayList<>();
   private FirebaseStorage storage;
   private FirebaseDatabase database;
   private DatabaseReference townRef;
+    Town passedInTown;
 
   private Integer[] mImageIds = {
           R.drawable.door, R.drawable.light, R.drawable.corner,
@@ -137,7 +139,17 @@ public class TownDetailActivity extends AppCompatActivity {
 //    townBuilder.setDescription("test descriptions");
 //    townBuilder.setTitle("test title");
 //    townBuilder.setLatLng(lat, lng);
-    townBuilder.setUserId(UserSingleton.getInstance().getUid());
+
+
+      mode = getIntent().getStringExtra("mode");
+      if(mode==null){
+          mode = "detail";
+      }
+
+      passedInTown = (Town)getIntent().getSerializableExtra("town");
+
+
+      passedInTown.setUserId(UserSingleton.getInstance().getUid());
 
 
     FirebaseApp.initializeApp(this);
@@ -165,14 +177,14 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
 
-                      Log.i("original_image","newUri = "+uri.toString());
+                     // Log.i("original_image","newUri = "+uri.toString());
                       File f = new File(uri.toString());
-                      Log.i("original_image","f.getName(); = "+f.getName());
-                      f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/"+f.getName()+".jpg"));
+                     // Log.i("original_image","f.getName(); = "+f.getName());
+                      f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/"+f.getName()+UUID.randomUUID().toString() + System.currentTimeMillis()+".jpg"));
 
                       uri = (Uri.fromFile(f));
 
-                      Log.i("resize_image","newUri_resized = "+uri.toString());
+                      //Log.i("resize_image","newUri_resized = "+uri.toString());
 
 
                     StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
@@ -193,10 +205,10 @@ public class TownDetailActivity extends AppCompatActivity {
                         if(downloadUrl != null) {
                           remoteImageUrls.add(downloadUrl.toString());
                           if(remoteImageUrls.size() == uriList.size()){
-                            townBuilder.setImages(remoteImageUrls);
-                            DatabaseReference newTown = townRef.child(townBuilder.getId());
-                            Town town = townBuilder.build();
-                            newTown.setValue(townBuilder.build(), new DatabaseReference.CompletionListener() {
+                              passedInTown.setImageUrls(remoteImageUrls);
+                            DatabaseReference newTown = townRef.child(passedInTown.getId());
+                           // Town town = townBuilder.build();
+                            newTown.setValue(passedInTown, new DatabaseReference.CompletionListener() {
                               @Override
                               public void onComplete(DatabaseError databaseError,
                                                      DatabaseReference databaseReference) {
@@ -226,23 +238,26 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
 
-    String s = getIntent().getStringExtra("dataToD");
-    Log.i("dataToD", "data = "+s);
+//    String s = getIntent().getStringExtra("dataToD");
+//    Log.i("dataToD", "data = "+s);
+//
+//    title = getIntent().getStringExtra("title");
+//    address = getIntent().getStringExtra("address");
+//    description = getIntent().getStringExtra("description");
+//    category = getIntent().getStringExtra("category");
+//    information = getIntent().getStringExtra("information");
+//    uriStringArrayList = getIntent().getStringArrayListExtra("uriStringArrayList");
 
-    title = getIntent().getStringExtra("title");
-    address = getIntent().getStringExtra("address");
-    description = getIntent().getStringExtra("description");
-    category = getIntent().getStringExtra("category");
-    information = getIntent().getStringExtra("information");
-    uriStringArrayList = getIntent().getStringArrayListExtra("uriStringArrayList");
-      mode = getIntent().getStringExtra("mode");
-      if(mode==null){
-          mode = "detail";
-      }
-
-    Town passedInTown = (Town)getIntent().getSerializableExtra("town");
     if(passedInTown!=null) {
-      Log.i("dataToD", "passedInTown getDescription = "+passedInTown.getDescription().toString());
+      Log.i("dataToD", "passedInTown getDescription = "+passedInTown.getTitle().toString());
+        title = passedInTown.getTitle();
+    address =  passedInTown.getAddress();
+    description =  passedInTown.getDescription();
+    category =  passedInTown.getCategory();
+    information =  passedInTown.getUserAlias();
+    uriStringArrayList =  new ArrayList<String>(passedInTown.getImageUrls());
+
+
     }
 
 
@@ -285,20 +300,22 @@ public class TownDetailActivity extends AppCompatActivity {
     if(title!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
       detail_town_description.setText(title);
-        townBuilder.setTitle(title);
+       // townBuilder.setTitle(title);
     }
 
     //load address
     if(address!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
       detail_town_description.setText(address);
-        townBuilder.setAddress(address);
+       // townBuilder.setAddress(address);
 
         //processing address to latlng
         String[] separated = address.split(",");
-        lat = Float.parseFloat(separated[0]);
-        lng = Float.parseFloat(separated[1]);
-        townBuilder.setLatLng(lat, lng);
+        if(separated.length>0) {
+            lat = Float.parseFloat(separated[0]);
+            lng = Float.parseFloat(separated[1]);
+         //   townBuilder.setLatLng(lat, lng);
+        }
     }
 
 
@@ -307,7 +324,7 @@ public class TownDetailActivity extends AppCompatActivity {
     if(description!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
       detail_town_description.setText(description);
-        townBuilder.setDescription(description);
+     //   townBuilder.setDescription(description);
     }
 
 
@@ -316,24 +333,31 @@ public class TownDetailActivity extends AppCompatActivity {
     if(category!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
       detail_town_description.setText(category);
-        townBuilder.setCategory(category);
+      //  townBuilder.setCategory(category);
     }
 
     //load information
     if(information!=null) {
       TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
       detail_town_description.setText(information);
-        townBuilder.setUserAlias(information);
+     //   townBuilder.setUserAlias(information);
     }
 
 
     //load uriStringArrayList
     if(uriList!=null) {
       if(uriList.size()>0) {
-        ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
-        Picasso.with(this).load(uriList.get(0))
-                .fit()
-                .into(detail_town_image);
+        final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
+          detail_town_image.post(new Runnable() {
+              @Override
+              public void run() {
+                  Picasso.with(getApplicationContext()).load(uriList.get(0))
+                          .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
+                          .centerCrop()
+                          .into(detail_town_image);
+              }
+          });
+
         this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
       }
     }

@@ -189,6 +189,9 @@ public class GeoActivity extends AppCompatActivity implements
               @Override
               public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+
+                Log.i("GeoRecycOnClick", "position = "+position);
+                  intent.putExtra("town", towns.get(position));
                 startActivity(intent);
               }
 

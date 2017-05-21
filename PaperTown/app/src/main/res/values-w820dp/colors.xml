@@ -5,9 +5,7 @@
   ~
   ~  This source code is licensed under the BSD-style license found in the
   ~  LICENSE file in the root directory of this source tree.
-  -->
-
-<resources>
+  --><resources>
     <color name="colorPrimary">#cecece</color>
     <color name="colorPrimaryDark">#939393</color>
     <color name="colorAccent">#ff3838</color>

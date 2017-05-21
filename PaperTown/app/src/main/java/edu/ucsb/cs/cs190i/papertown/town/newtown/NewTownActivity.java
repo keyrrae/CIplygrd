@@ -47,6 +47,7 @@ import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -288,14 +289,14 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
             Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-            intent.putExtra("dataToD", "asdf");  //passing data...
+//            intent.putExtra("dataToD", "asdf");  //passing data...
 
 
-            intent.putExtra("title", title);  //passing data...
-            intent.putExtra("address", address);  //passing data...
-            intent.putExtra("description", description);  //passing data...
-            intent.putExtra("category", category);  //passing data...
-            intent.putExtra("information", information);  //passing data...
+//            intent.putExtra("title", title);  //passing data...
+//            intent.putExtra("address", address);  //passing data...
+//            intent.putExtra("description", description);  //passing data...
+//            intent.putExtra("category", category);  //passing data...
+//            intent.putExtra("information", information);  //passing data...
             intent.putExtra("mode", "preview");  //passing data...
 
             //process Uri array data
@@ -312,17 +313,17 @@ public class NewTownActivity extends AppCompatActivity implements
             float lat = Float.parseFloat(separated[0]);
             float lng = Float.parseFloat(separated[1]);
 
-//            Town testTown = new  Town.Builder()
-//                    .setTitle(title)
-//                    .setAddress(address)
-//                    .setCategory(category)
-//                    .setDescription(description)
-//                    .setLat(lat)
-//                    .setLng(lng)
-//                    .setImages(uriStringArrayList)
-//                    .build();
+            Town testTown = new TownBuilder()
+                    .setTitle(title)
+                    .setAddress(address)
+                    .setCategory(category)
+                    .setDescription(description)
+                    .setLat(lat)
+                    .setLng(lng)
+                    .setImages(uriStringArrayList)
+                    .build();
 
-//            intent.putExtra("town", testTown);
+            intent.putExtra("town", testTown);
 
             //startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);   //not need to get results
             startActivity (intent);
