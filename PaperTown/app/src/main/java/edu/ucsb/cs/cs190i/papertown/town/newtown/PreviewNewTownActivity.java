@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -40,6 +42,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
@@ -69,10 +72,11 @@ public class PreviewNewTownActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_preview_new_town);
 
+    ButterKnife.bind(this);
+
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
     setSupportActionBar(toolbar);
-    getSupportActionBar().setTitle(null);
-    toolbar.setTitle("");
+    toolbar.setTitle("Preview");
     toolbar.setSubtitle("");
     toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,7 +90,6 @@ public class PreviewNewTownActivity extends AppCompatActivity {
     townBuilder = (TownBuilder) intent.getSerializableExtra("TOWN_BUILDER");
     this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
     uriList.addAll(townBuilder.getUrisLocal());
-    townBuilder.setUserId(UserSingleton.getInstance().getUid());
 
     FirebaseApp.initializeApp(this);
     storage = FirebaseStorage.getInstance();
@@ -98,9 +101,6 @@ public class PreviewNewTownActivity extends AppCompatActivity {
           @Override
           public void onClick(View v) {
               Log.i("dataToD", "button_test_detail OnClickListener");
-
-
-
 
               if(mode.equals("preview")){
                   Log.i("dataToD", "SUBMIT!");
@@ -130,7 +130,6 @@ public class PreviewNewTownActivity extends AppCompatActivity {
                           if(remoteImageUrls.size() == uriList.size()){
                             townBuilder.setImages(remoteImageUrls);
                             DatabaseReference newTown = townRef.child(townBuilder.getId());
-                            Town town = townBuilder.build();
                             newTown.setValue(townBuilder.build(), new DatabaseReference.CompletionListener() {
                               @Override
                               public void onComplete(DatabaseError databaseError,
@@ -178,9 +177,6 @@ public class PreviewNewTownActivity extends AppCompatActivity {
           //change color of submission button
           button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
           button_test_detail.setText("SUBMIT !");
-
-
-
       }
       else{
           //change color of submission button
@@ -238,10 +234,6 @@ public class PreviewNewTownActivity extends AppCompatActivity {
 
     //adjust the gridView hright
 
-
-
-
-
     //handle the google Maps
 
     MyMapFragment mapFragment = ((MyMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
@@ -289,14 +281,18 @@ public class PreviewNewTownActivity extends AppCompatActivity {
               //end of adding markers
             }
           }
-          //camera animation
-          //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
 
           if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
+            map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(
+                        townBuilder.getLat(),
+                        townBuilder.getLng()
+                    ),
+                    15
+                )
+            );
           }
-          //end of camera animation
-
         }
       });
 
@@ -307,13 +303,16 @@ public class PreviewNewTownActivity extends AppCompatActivity {
           mScrollView.requestDisallowInterceptTouchEvent(true);
         }
       });
-
-
     } else {
-
       Log.i("manu", "Error - Map Fragment was null!!");
     }
 
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_preview_new_town, menu);
+    return true;
+  }
 }

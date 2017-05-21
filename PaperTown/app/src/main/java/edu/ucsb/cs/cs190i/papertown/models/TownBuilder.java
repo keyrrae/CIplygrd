@@ -1,7 +1,6 @@
 package edu.ucsb.cs.cs190i.papertown.models;
 
 import android.net.Uri;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,31 +13,19 @@ public class TownBuilder implements Serializable {
 
   private String id = "";
   private String geoHash = "";
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public String getUserAlias() {
-    return userAlias;
-  }
-
   private String title = "";
   private String category = "";
   private String description = "";
   private String address = "";
+
+  public double getLat() {
+    return lat;
+  }
+
+  public double getLng() {
+    return lng;
+  }
+
   private double lat = 0.0f;
   private double lng = 0.0f;
   private String userId = "";
@@ -125,6 +112,26 @@ public class TownBuilder implements Serializable {
   public TownBuilder setUserAlias(String al){
     this.userAlias = al;
     return this;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public String getUserAlias() {
+    return userAlias;
   }
 
   public String getId() {

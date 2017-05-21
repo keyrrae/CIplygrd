@@ -83,7 +83,6 @@ public class GeoActivity extends AppCompatActivity implements
 
   public List<Town> towns = new ArrayList<>();
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -91,13 +90,11 @@ public class GeoActivity extends AppCompatActivity implements
     ButterKnife.bind(this);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
     setSupportActionBar(toolbar);
     getSupportActionBar().setTitle("");
     toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
-
         switch(item.getItemId()){
           case R.id.add_town:
             Intent newTownIntent = new Intent(GeoActivity.this, NewTownActivity.class);
@@ -446,7 +443,6 @@ public class GeoActivity extends AppCompatActivity implements
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.menu_geo, menu);
-
     return true;
   }
 

@@ -12,6 +12,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
+        }
     }
     buildTypes {
         release {
@@ -58,6 +61,7 @@ dependencies {
 
     // For testin
     compile 'com.zhihu.android:matisse:0.4.3'
+    compile 'com.zxy.android:tiny:0.0.5'
 
 
     compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
