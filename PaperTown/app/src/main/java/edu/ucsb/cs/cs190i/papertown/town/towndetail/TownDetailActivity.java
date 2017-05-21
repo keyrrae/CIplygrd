@@ -389,9 +389,10 @@ public class TownDetailActivity extends AppCompatActivity {
           }
           //end of enabling myLocationButton
 
-          BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker);
-          BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
-          BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker2);
+            //add markers
+            BitmapDescriptor icon_place = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_18dp);
+            BitmapDescriptor icon_creature = BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic_black_18dp);
+            BitmapDescriptor icon_event = BitmapDescriptorFactory.fromResource(R.drawable.ic_chat_black_18dp);
 
 
           if(category!=null&&!category.isEmpty()) {
@@ -400,18 +401,18 @@ public class TownDetailActivity extends AppCompatActivity {
               map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                       .title("Ohh!")
                       .snippet("TsadADSadsA")
-                      .icon(icon1));
+                      .icon(icon_place));
             } else if (category.equals("creature")) {
 
               map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                       .title("Underclass beauty")
                       .snippet("Get sunburn in my head")
-                      .icon(icon2));
+                      .icon(icon_creature));
             } else if (category.equals("event")) {
               map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                       .title("Big thing!")
                       .snippet("Meat carnival")
-                      .icon(icon3));
+                      .icon(icon_event));
 
               //end of adding markers
             }

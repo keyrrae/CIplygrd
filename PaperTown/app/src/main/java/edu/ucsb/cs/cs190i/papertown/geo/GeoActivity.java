@@ -43,8 +43,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -238,6 +241,44 @@ public class GeoActivity extends AppCompatActivity implements
                     Town town = ds.getValue(Town.class);
                     towns.add(town);
                   }
+
+
+
+                  //add markers
+                  BitmapDescriptor icon_place = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_18dp);
+                  BitmapDescriptor icon_creature = BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic_black_18dp);
+                  BitmapDescriptor icon_event = BitmapDescriptorFactory.fromResource(R.drawable.ic_chat_black_18dp);
+                  for(int i = 0; i<towns.size();i++) {
+                    String category = towns.get(i).getCategory();
+                    double lat = towns.get(i).getLat();
+                    double lng = towns.get(i).getLng();
+                    if (category != null && !category.isEmpty()) {
+                      if (category.equals("place")) {
+                        //add markers
+                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .title("Ohh!")
+                                .snippet("TsadADSadsA")
+                                .icon(icon_place));
+                      } else if (category.equals("creature")) {
+
+                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .title("Underclass beauty")
+                                .snippet("Get sunburn in my head")
+                                .icon(icon_creature));
+                      } else if (category.equals("event")) {
+                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .title("Big thing!")
+                                .snippet("Meat carnival")
+                                .icon(icon_event));
+
+                        //end of adding markers
+                      }
+                    }
+                  }
+
+
+
+
                   mAdapter.notifyDataSetChanged();
                 }
                 @Override
