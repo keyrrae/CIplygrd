@@ -18,6 +18,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -62,6 +64,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
@@ -296,7 +299,7 @@ public class TownDetailActivity extends AppCompatActivity {
             // townBuilder.setTitle(title);
         }
 
-        //load address
+        //load address and physical address
         if (address != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
             detail_town_description.setText(address);
@@ -309,6 +312,33 @@ public class TownDetailActivity extends AppCompatActivity {
                 lng = Float.parseFloat(separated[1]);
                 //   townBuilder.setLatLng(lat, lng);
             }
+
+            TextView detail_physical_address = (TextView) findViewById(R.id.detail_physical_address);
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                detail_physical_address.setText(address+", "+city+", "+state+", "+country+", "+postalCode);
+            }
+            catch (Exception e){
+                Toast.makeText(
+                        TownDetailActivity.this,
+                        "Unable to obtain the address from the GPS coordinates.",
+                        Toast.LENGTH_SHORT
+                ).show();
+                detail_physical_address.setText("NOT AVAILABLE");
+            }
+
         }
 
 

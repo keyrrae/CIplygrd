@@ -132,6 +132,7 @@ public class GeoActivity extends AppCompatActivity implements
             break;
           case R.id.list_view:
             Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
+            townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
             startActivity(townListIntent);
             break;
           case R.id.action_settings:

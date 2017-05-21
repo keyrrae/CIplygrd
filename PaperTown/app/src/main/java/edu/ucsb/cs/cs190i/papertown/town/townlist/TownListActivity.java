@@ -53,6 +53,9 @@ public class TownListActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_town_list);
 
+
+    towns = (List<Town>)getIntent().getSerializableExtra("townArrayList");
+
     //
 
     RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
@@ -72,6 +75,7 @@ public class TownListActivity extends AppCompatActivity {
                 Log.i("RecyclerItemClr", "onItemClick");
 
                 Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                intent.putExtra("town", towns.get(position));
                 startActivity(intent);
 
 
@@ -129,62 +133,67 @@ public class TownListActivity extends AppCompatActivity {
   }
 
   private void initData() {
-    towns = new ArrayList<>();
-
-    List<String> imgs1 = new ArrayList<>();
-    imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
-
-    List<String> imgs2 = new ArrayList<>();
-    imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
-
-    List<String> imgs3 = new ArrayList<>();
-    imgs3.add("http://68.media.tumblr.com/132947bb8b5319f81f8a77d3c83b3fbf/tumblr_o1z5pav4xH1s49orpo1_1280.jpg");
 
 
-    Town t1 = new TownBuilder()
-        .setTitle("Mother Susanna Monument")
-        .setCategory("Place")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("6510 El Colegio Rd Apt 1223")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("theUniqueEye")
-        .setImages(imgs1)
-        .setSketch("")
-        .build();
+    //if not town list is passed in, create default list of towns
+    if (towns.size() == 0) {
+      towns = new ArrayList<>();
 
-    Town t2 = new TownBuilder()
-        .setTitle("Father Crowley Monument")
-        .setCategory("Place")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("6510 El Colegio Rd Apt 1223")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("theUniqueEye")
-        .setImages(imgs2)
-        .setSketch("")
-        .build();
+      List<String> imgs1 = new ArrayList<>();
+      imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
 
-    Town t3 = new TownBuilder()
-        .setTitle("Wonder Land")
-        .setCategory("Creature")
-        .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-        .setAddress("Rabbit Hole 1901C")
-        .setLat(35.594559f)
-        .setLng(-117.899149f)
-        .setUserId("Sams to Go")
-        .setImages(imgs3)
-        .setSketch("")
-        .build();
+      List<String> imgs2 = new ArrayList<>();
+      imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
 
-    towns.add(t1);
-    towns.add(t2);
-    towns.add(t3);
-    towns.add(t1);
-    towns.add(t2);
-    towns.add(t3);
-    towns.add(t1);
-    towns.add(t2);
-    towns.add(t3);
+      List<String> imgs3 = new ArrayList<>();
+      imgs3.add("http://68.media.tumblr.com/132947bb8b5319f81f8a77d3c83b3fbf/tumblr_o1z5pav4xH1s49orpo1_1280.jpg");
+
+
+      Town t1 = new TownBuilder()
+              .setTitle("Mother Susanna Monument")
+              .setCategory("Place")
+              .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+              .setAddress("6510 El Colegio Rd Apt 1223")
+              .setLat(35.594559f)
+              .setLng(-117.899149f)
+              .setUserId("theUniqueEye")
+              .setImages(imgs1)
+              .setSketch("")
+              .build();
+
+      Town t2 = new TownBuilder()
+              .setTitle("Father Crowley Monument")
+              .setCategory("Place")
+              .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+              .setAddress("6510 El Colegio Rd Apt 1223")
+              .setLat(35.594559f)
+              .setLng(-117.899149f)
+              .setUserId("theUniqueEye")
+              .setImages(imgs2)
+              .setSketch("")
+              .build();
+
+      Town t3 = new TownBuilder()
+              .setTitle("Wonder Land")
+              .setCategory("Creature")
+              .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+              .setAddress("Rabbit Hole 1901C")
+              .setLat(35.594559f)
+              .setLng(-117.899149f)
+              .setUserId("Sams to Go")
+              .setImages(imgs3)
+              .setSketch("")
+              .build();
+
+      towns.add(t1);
+      towns.add(t2);
+      towns.add(t3);
+      towns.add(t1);
+      towns.add(t2);
+      towns.add(t3);
+      towns.add(t1);
+      towns.add(t2);
+      towns.add(t3);
+    }
   }
 }
