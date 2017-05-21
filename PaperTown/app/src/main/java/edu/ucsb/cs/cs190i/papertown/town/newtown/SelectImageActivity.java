@@ -74,7 +74,7 @@ public class SelectImageActivity extends AppCompatActivity
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

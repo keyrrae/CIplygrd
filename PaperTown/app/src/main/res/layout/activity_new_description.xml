@@ -13,6 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/Gray"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewDescriptionActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -26,7 +28,7 @@
             android:layout_width="match_parent"
             app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/Almost_White"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
@@ -34,15 +36,18 @@
         android:id="@+id/textView_new_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20sp"
-        android:paddingTop="10sp"
+        android:layout_marginTop="50dp"
         android:text="Description"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textSize="@dimen/mT"/>
 
     <EditText
         android:id="@+id/editText_new_description"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/m"
+        android:background="@color/Almost_White"
+        android:padding="@dimen/s"
         android:hint="Describe the item with a precise, concise, and professional tone." />
 
 

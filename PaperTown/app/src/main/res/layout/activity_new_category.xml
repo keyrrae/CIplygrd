@@ -13,6 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/Gray"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewCategoryActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -26,7 +27,7 @@
             android:layout_width="match_parent"
             app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/Almost_White"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
@@ -41,31 +42,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="15dp"
-            android:text="What type of secret item do you want to add?"
-            tools:layout_editor_absoluteX="178dp"
-            tools:layout_editor_absoluteY="128dp" />
+            android:textSize="@dimen/mT"
+            android:gravity="center_horizontal"
+            android:text="What type of secret item \n do you want to add?"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/button_cate1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="A Place" />
+        android:text="A Place"
+        android:background="@color/Almost_White">
+        </Button>
 
     <Button
         android:id="@+id/button_cate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="A Creature" />
+        android:text="A Creature"
+        android:background="@color/Almost_White"/>
 
     <Button
         android:id="@+id/button_cate3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="An Event" />
+        android:text="An Event"
+        android:background="@color/Almost_White"
+        />
 
 </LinearLayout>

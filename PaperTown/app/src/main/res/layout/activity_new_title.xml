@@ -11,12 +11,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown..NewTitleActivity">
-
-
+    android:background="@color/Gray"
+    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewTitleActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,35 +28,27 @@
             android:layout_width="match_parent"
             app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/Almost_White"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:paddingTop="50dp"
+        android:text="Title"
+        android:textStyle="bold"
+        android:textSize="@dimen/mT"/>
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="20sp"
-                android:paddingTop="50sp"
-                android:text="Title"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/editText_newtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Give a name to the item   " />
-
-
-
-
-
-
+    <EditText
+        android:id="@+id/editText_newtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=" Give a name to the item   "
+        android:inputType="textPersonName"
+        android:background="@color/Almost_White"/>
 
 </LinearLayout>

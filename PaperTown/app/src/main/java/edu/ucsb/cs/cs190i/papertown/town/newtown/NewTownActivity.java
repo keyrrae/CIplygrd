@@ -92,7 +92,7 @@ public class NewTownActivity extends AppCompatActivity implements
       getSupportActionBar().setTitle(null);
       toolbar.setTitle("");
       toolbar.setSubtitle("");
-      toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+      toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
       toolbar.setNavigationOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -134,7 +134,7 @@ public class NewTownActivity extends AppCompatActivity implements
 //    mSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
 //            android.R.anim.fade_out));
 
-      imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.brick));
+      imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
 
 
     //set up imageview onclick
@@ -331,7 +331,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
 
-           // finish();
+            finish();
 
         }
 
@@ -864,6 +864,9 @@ public class NewTownActivity extends AppCompatActivity implements
         super.onDestroy();
 
     }
+
+
+
 
 
 }

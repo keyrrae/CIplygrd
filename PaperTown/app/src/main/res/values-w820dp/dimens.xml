@@ -1,15 +1,32 @@
 <!--
-  ~  Copyright (c) 2017 - present, Xuan Wang
+  ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
   ~  This source code is licensed under the BSD-style license found in the
   ~  LICENSE file in the root directory of this source tree.
-  ~
   -->
 
 <resources>
-    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
-         (such as screen margins) for screens with more than 820dp of available width. This
-         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
-    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="fab_l">100dp</dimen>
+    <dimen name="fab_m">40dp</dimen>
+
+    <dimen name="xs">4dp</dimen>
+    <dimen name="s">8dp</dimen>
+    <dimen name="m">16dp</dimen>
+    <dimen name="l">32dp</dimen>
+    <dimen name="xl">48dp</dimen>
+
+    <dimen name="ssT">12sp</dimen>
+    <dimen name="sT">16sp</dimen>
+    <dimen name="mT">24sp</dimen>
+    <dimen name="lT">32sp</dimen>
+    <dimen name="xlT">48sp</dimen>
+
+
 </resources>
