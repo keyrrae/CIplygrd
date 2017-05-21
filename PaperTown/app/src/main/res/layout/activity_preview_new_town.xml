@@ -128,7 +128,7 @@
 
         <fragment
             android:id="@+id/detail_map"
-            class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
+            class="edu.ucsb.cs.cs190i.papertown.town.newtown.MyMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="16dp" />
