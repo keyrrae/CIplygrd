@@ -21,8 +21,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -184,6 +186,11 @@ public class GeoActivity extends AppCompatActivity implements
     mRecyclerView.setLayoutManager(linearLayoutManager);
 
     initData();
+
+
+    //add snapping effect
+    SnapHelper helper = new LinearSnapHelper();
+    helper.attachToRecyclerView(mRecyclerView);
 
     mAdapter = new GeoTownListAdapter(towns);
     mRecyclerView.setAdapter(mAdapter);
