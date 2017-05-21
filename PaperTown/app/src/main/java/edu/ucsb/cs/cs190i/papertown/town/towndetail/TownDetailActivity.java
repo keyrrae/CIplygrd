@@ -328,7 +328,7 @@ public class TownDetailActivity extends AppCompatActivity {
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 
-                detail_physical_address.setText(address+", "+city+", "+state+", "+country+", "+postalCode);
+                detail_physical_address.setText(address+"\n"+city+", "+state+", "+country+", "+postalCode);
             }
             catch (Exception e){
                 Toast.makeText(
