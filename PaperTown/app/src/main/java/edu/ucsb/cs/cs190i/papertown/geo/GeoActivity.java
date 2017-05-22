@@ -115,7 +115,9 @@ public class GeoActivity extends AppCompatActivity implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     public List<Town> towns = new ArrayList<>();
-    public List<Town> townsBuffer = new ArrayList<>();
+    public List<Town> townsOld = new ArrayList<>();
+
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +188,7 @@ public class GeoActivity extends AppCompatActivity implements
             }
         });
 
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -298,20 +300,53 @@ public class GeoActivity extends AppCompatActivity implements
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    //make a backup of towns
+                                    townsOld.clear();
+                                    for(int i = 0;i < towns.size();i++){
+                                        townsOld.add(towns.get(i));
+                                    }
+                                    //clear towns List
                                     towns.clear();
+
+
+
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
+                                        Log.i("onTownsChange:", "towns.add(town), towns sien = "+townsOld.size()+", town = " + town.getTitle());
                                         towns.add(town);
+
                                     }
 
 
-                                    for (Marker marker : mMarkerArray) {
-                                        marker.remove();
+                                    //compare towns lists
+                                    boolean isEqual = true;
+                                    if(townsOld.size()==towns.size()){
+                                        for(int i = 0;i<towns.size();i++){
+                                            if(!townsOld.get(i).getId().equals(towns.get(i).getId())){
+                                                isEqual = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        isEqual = false;
                                     }
 
-                                    updateMapMarkers();
+                                    Log.i("onTownsChange:", "isEqual = " + isEqual);
 
-                                    mAdapter.notifyDataSetChanged();
+                                    if(!isEqual) {
+                                        for (Marker marker : mMarkerArray) {
+                                            marker.remove();
+                                        }
+
+                                        updateMapMarkers();
+
+
+//                                    mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
+//                                    mRecyclerView.setAdapter(mAdapter);
+                                        mAdapter.notifyDataSetChanged();
+                                    }
                                 }
 
                                 @Override
