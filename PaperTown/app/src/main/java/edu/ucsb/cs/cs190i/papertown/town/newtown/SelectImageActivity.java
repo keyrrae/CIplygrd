@@ -45,6 +45,10 @@ public class SelectImageActivity extends AppCompatActivity
     String[] web = {
             "Google"
     } ;
+
+    //TODO
+    //Need to fix the gridView
+
     int[] imageId = {
             R.drawable.test,
             R.drawable.test,
