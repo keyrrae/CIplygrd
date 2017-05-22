@@ -84,24 +84,23 @@ public class TownDetailActivity extends AppCompatActivity {
 
     private String mode = "detail";
 
-    String title = "";
-    String address = "";
-    String category = "";
-    String description = "";
-    String information = "";
-    ArrayList<String> uriStringArrayList;
+    private String title = "";
+    private String address = "";
+    private String category = "";
+    private String description = "";
+    private String information = "";
+    private ArrayList<String> uriStringArrayList;
 
-    TownMapIcon tmi;
+    private TownMapIcon tmi;
 
-    float lat = 34.415320f;
-    float lng = -119.84023f;
+    private float lat = 34.415320f;
+    private float lng = -119.84023f;
 
-    //private TownBuilder townBuilder = new TownBuilder();
     private List<String> remoteImageUrls = new ArrayList<>();
     private FirebaseStorage storage;
     private FirebaseDatabase database;
     private DatabaseReference townRef;
-    Town passedInTown;
+    private Town passedInTown;
 
     private Integer[] mImageIds = {
             R.drawable.door, R.drawable.light, R.drawable.corner,
@@ -114,7 +113,6 @@ public class TownDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_town_detail);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -124,39 +122,22 @@ public class TownDetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
                 Log.i("dataToD", "setNavigationOnClickListener");
                 finish();
             }
         });
 
-
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
         this.uriList = new ArrayList<Uri>();
-//    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//    this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-
-
-//    Intent intent = getIntent();
-//    double lat = intent.getDoubleExtra("LAT", 0.0);
-//    double lng = intent.getDoubleExtra("LNG", 0.0);
-//    townBuilder.setAddress("testAddress");
-//    townBuilder.setCategory("testCate");
-//    townBuilder.setDescription("test descriptions");
-//    townBuilder.setTitle("test title");
-//    townBuilder.setLatLng(lat, lng);
-
 
         mode = getIntent().getStringExtra("mode");
         if (mode == null) {
             mode = "detail";
         }
-
         passedInTown = (Town) getIntent().getSerializableExtra("town");
 
-
         passedInTown.setUserId(UserSingleton.getInstance().getUid());
-
 
         FirebaseApp.initializeApp(this);
         storage = FirebaseStorage.getInstance();
@@ -169,7 +150,6 @@ public class TownDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i("dataToD", "button_test_detail OnClickListener");
 
-
                 if (mode.equals("preview")) {
                     Log.i("dataToD", "SUBMIT!");
 
@@ -179,22 +159,10 @@ public class TownDetailActivity extends AppCompatActivity {
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
                     progress.show();
 
-
-
                     if (storage != null) {
                         StorageReference storageRef = storage.getReference();
 
                         for (Uri uri : uriList) {
-
-
-                            // compression
-//                            File f = new File(uri.toString());
-//                            // Log.i("original_image","f.getName(); = "+f.getName());
-//                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-//                            uri = (Uri.fromFile(f));
-                            //end of compression
-
-
                             StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
                             UploadTask uploadTask = riversRef.putFile(uri);
 
@@ -221,8 +189,7 @@ public class TownDetailActivity extends AppCompatActivity {
                                                 public void onComplete(DatabaseError databaseError,
                                                                        DatabaseReference databaseReference) {
 
-
-                                                    // To dismiss the dialog
+                                                    // To dismiss the spinner dialog
                                                     progress.dismiss();
 
                                                     Toast.makeText(
@@ -242,21 +209,9 @@ public class TownDetailActivity extends AppCompatActivity {
                 } else {
                     finish();
                 }
-                Log.i("dataToD", "button_test_detail OnClickListener");
-                //.setInformation   ???
             }
         });
 
-
-//    String s = getIntent().getStringExtra("dataToD");
-//    Log.i("dataToD", "data = "+s);
-//
-//    title = getIntent().getStringExtra("title");
-//    address = getIntent().getStringExtra("address");
-//    description = getIntent().getStringExtra("description");
-//    category = getIntent().getStringExtra("category");
-//    information = getIntent().getStringExtra("information");
-//    uriStringArrayList = getIntent().getStringArrayListExtra("uriStringArrayList");
 
         if (passedInTown != null) {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
@@ -267,9 +222,7 @@ public class TownDetailActivity extends AppCompatActivity {
             information = passedInTown.getUserAlias();
             uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
 
-
         }
-
 
         //change button color
         if (mode != null && mode.equals("preview")) {
@@ -280,8 +233,6 @@ public class TownDetailActivity extends AppCompatActivity {
 
         } else {
             //change color of submission button
-//          button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
-//          button_test_detail.setText("DONE");
             button_test_detail.setVisibility(Button.INVISIBLE);
         }
 
@@ -289,14 +240,8 @@ public class TownDetailActivity extends AppCompatActivity {
         //process uriStringArrayList, put data into uriList
         if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
             for (int i = 0; i < uriStringArrayList.size(); i++) {
-//                Uri uri = Uri.parse(uriStringArrayList.get(i));
-//                File f = new File(uri.toString());
-//                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-//                uri = (Uri.fromFile(f));
-//                Log.i("manu", "compress");
-//                uriList.add(uri);
                 uriList.add(Uri.parse(uriStringArrayList.get(i)));
-                Log.i("manu", "uriList[" + i + "] = " + uriList.get(i));
+//                Log.i("manu", "uriList[" + i + "] = " + uriList.get(i));
             }
         } else {
             Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
@@ -358,14 +303,12 @@ public class TownDetailActivity extends AppCompatActivity {
 
         }
 
-
         //load description
         if (description != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
             detail_town_description.setText(description);
             //   townBuilder.setDescription(description);
         }
-
 
         //load category
         if (category != null) {
@@ -380,7 +323,6 @@ public class TownDetailActivity extends AppCompatActivity {
             detail_town_description.setText(information);
             //   townBuilder.setUserAlias(information);
         }
-
 
         //load uriStringArrayList
         if (uriList != null) {
@@ -399,11 +341,6 @@ public class TownDetailActivity extends AppCompatActivity {
                 this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
             }
         }
-
-
-        //adjust the gridView hright
-
-
         //handle the google Maps
 
         myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
@@ -434,15 +371,10 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
                     //camera animation
-                    //map.moveCamera(CameraUpdateFactory.newLatLngZoom(/*some location*/, 10));
-
                     if (map != null) {
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
                     }
-
-
                     //end of camera animation
-
 
                 }
             });
@@ -457,107 +389,9 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
         } else {
-
             Log.i("manu", "Error - Map Fragment was null!!");
         }
 
 
     }
-
-
-//    public static String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
-//        String filePath = getRealPathFromURI_API19(context, inputUri);
-//        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
-//
-//        // First decode with inJustDecodeBounds=true to check dimensions of image
-//        final BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(filePath, options);
-//
-//        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
-//        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
-//        options.inSampleSize = calculateInSampleSize(options, 800, 800);
-//
-//        // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
-//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//
-//        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
-//
-//
-//        int compressQuality = 100; // quality decreasing by 5 every loop.
-//        int streamLength;
-//        do {
-//            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
-//            Log.d("compressBitmap", "Quality: " + compressQuality);
-//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
-//            byte[] bmpPicByteArray = bmpStream.toByteArray();
-//            streamLength = bmpPicByteArray.length;
-//            compressQuality -= 5;
-//            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
-//        } while (streamLength >= MAX_IMAGE_SIZE);
-//
-//        try {
-//            //save the resized and compressed file to disk cache
-//            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
-//            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
-//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
-//            bmpFile.flush();
-//            bmpFile.close();
-//        } catch (Exception e) {
-//            Log.e("compressBitmap", "Error on saving file");
-//        }
-//        //return the path of resized and compressed file
-//        return context.getCacheDir() + fileName;
-//    }
-//
-//
-//    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        String debugTag = "MemoryInformation";
-//        // Image nin islenmeden onceki genislik ve yuksekligi
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        Log.d(debugTag, "image height: " + height + "---image width: " + width);
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//        Log.d(debugTag, "inSampleSize: " + inSampleSize);
-//        return inSampleSize;
-//    }
-//
-//    public static String getRealPathFromURI_API19(Context context, Uri uri) {
-//        String filePath = "";
-//        String wholeID = DocumentsContract.getDocumentId(uri);
-//
-//        // Split at colon, use second item in the array
-//        String id = wholeID.split(":")[1];
-//
-//        String[] column = {MediaStore.Images.Media.DATA};
-//
-//        // where id is equal to
-//        String sel = MediaStore.Images.Media._ID + "=?";
-//
-//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                column, sel, new String[]{id}, null);
-//
-//        int columnIndex = cursor.getColumnIndex(column[0]);
-//
-//        if (cursor.moveToFirst()) {
-//            filePath = cursor.getString(columnIndex);
-//        }
-//        cursor.close();
-//        return filePath;
-//    }
-
-
 }

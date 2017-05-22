@@ -37,24 +37,13 @@ import static edu.ucsb.cs.cs190i.papertown.town.newtown.SelectImageActivity.MY_P
 
 public class SelelctImageGrid extends BaseAdapter {
     private Context mContext;
-    private final String[] web;
     private  int[] Imageid;
     private  Uri[] ImageUris;
     ImageView imageView;
 
-
-
-
-    public SelelctImageGrid(Context c,String[] web,int[] Imageid ) {
-        mContext = c;
-        this.Imageid = Imageid;
-        this.web = web;
-    }
-
-    public SelelctImageGrid(Context c,String[] web,Uri[] ImageUris ) {
+    public SelelctImageGrid(Context c,Uri[] ImageUris ) {
         mContext = c;
         this.ImageUris = ImageUris;
-        this.web = web;
     }
 
     @Override
@@ -84,117 +73,39 @@ public class SelelctImageGrid extends BaseAdapter {
 
         if (convertView == null) {
             if(position!=ImageUris.length) {
-                grid = new View(mContext);
+//                grid = new View(mContext);
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
-                //TextView textView = (TextView) grid.findViewById(R.id.grid_text);
                 imageView = (ImageView) grid.findViewById(R.id.grid_image);
-                //textView.setText(web[position]);
-                //imageView.setImageResource(Imageid[position]);
-                //imageView.setImageURI(ImageUris[position]);
-                //imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.test));
                 Log.i("addOnItemTouchListener", "ImageUris["+position+"] = "+ImageUris[position]);
-
-
-
-
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (mContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
-
-
-                        // Should we show an explanation?
                         if (ActivityCompat.shouldShowRequestPermissionRationale((SelectImageActivity)mContext,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            // Explain to the user why we need to read the contacts
                             Log.i("my", "permission.READ_EXTERNAL_STORAGE");
 
                         }
-
                         ActivityCompat.requestPermissions((SelectImageActivity)mContext,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                        // app-defined int constant
-
-//                        return;
                     }
                     else{
                         Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-                        //normal request goes here
-                        //imageView.setImageURI(ImageUris[position]);
                 Picasso.with(mContext).load(ImageUris[position])
                         .fit()
                         .into(imageView);
                     }
                 }
-
-
-
-
-
-
-
-
-//                imageView.setImageURI(ImageUris[position]);
-////                Picasso.with(mContext).load(ImageUris[position])
-////                        .resize(20,20)
-////                        .fit()
-////                        .into(imageView);
-
-
-
-
-
-
-
-
-
             }
             else{
-                grid = new View(mContext);
+//                grid = new View(mContext);
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
-                //TextView textView = (TextView) grid.findViewById(R.id.grid_text);
                 ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-                //textView.setText(web[position]);
                 imageView.setBackgroundColor(Color.GRAY);
                 imageView.setImageResource(R.drawable.ic_add_white_24dp);
-                //imageView.setImageURI(ImageUris[position]);
             }
         } else {
             grid = (View) convertView;
         }
-
         return grid;
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        Log.i("my", "permission requestCode = "+requestCode);
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Log.i("my", "permission.READ_EXTERNAL_STORAGE2");
-//                    //normal request goes here
-//                    imageView.setImageURI(ImageUris[position]);
-////                Picasso.with(mContext).load(ImageUris[position])
-////                        .resize(20,20)
-////                        .fit()
-////                        .into(imageView);
-//
-//                } else {
-//                    Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-////                return;
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//    }
 }

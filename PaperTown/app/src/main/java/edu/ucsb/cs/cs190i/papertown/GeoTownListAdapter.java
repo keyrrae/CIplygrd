@@ -40,10 +40,6 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
     private Context context;
 
     public class GeoTownListViewHolder extends RecyclerView.ViewHolder{
-//        public ImageView imageView;
-//        public TextView titleTextView;
-//        public TextView categoryTextView;
-
         public GeoTownListViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.geo_town_image);

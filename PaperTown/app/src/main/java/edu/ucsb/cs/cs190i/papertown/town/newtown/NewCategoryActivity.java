@@ -77,6 +77,5 @@ public class NewCategoryActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

@@ -59,9 +59,6 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-
-        //imageView.setImageBitmap(this.bitmapList.get(position));
-
         Picasso.with(imageView.getContext()).load(this.uriList.get(position)).into(imageView);
 
         return imageView;

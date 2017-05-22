@@ -126,15 +126,13 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                         location = map.getMyLocation();
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
-//                        Log.i("manu", "latitude = " + latitude);
-//                        Log.i("manu", "longitude = " + longitude);
                         EditText ev = ((EditText) findViewById(R.id.editText_new_address));
                         ev.setText(latitude + "," + longitude);
                     }
                     catch(Exception e){
                         Toast.makeText(
                                 NewAddressActivity.this,
-                                "Error: "+e.toString(),
+                                "Unable to obtain your location, please try again.",//"Error: "+e.toString(),
                                 Toast.LENGTH_SHORT
                         ).show();
                     }
