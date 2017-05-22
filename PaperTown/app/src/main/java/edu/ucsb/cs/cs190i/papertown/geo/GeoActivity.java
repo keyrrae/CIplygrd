@@ -115,7 +115,7 @@ public class GeoActivity extends AppCompatActivity implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     public List<Town> towns = new ArrayList<>();
-
+    public List<Town> townsBuffer = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,8 +258,6 @@ public class GeoActivity extends AppCompatActivity implements
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-
-                        Log.i("GeoRecycOnClick", "position = " + position);
                         intent.putExtra("town", towns.get(position));
                         startActivity(intent);
                     }
@@ -292,8 +290,6 @@ public class GeoActivity extends AppCompatActivity implements
                         // dont update when zoomed out
                         return;
                     }
-
-                    towns.clear();
                     List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     if (database != null) {
@@ -303,12 +299,11 @@ public class GeoActivity extends AppCompatActivity implements
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    towns.clear();
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
                                         towns.add(town);
                                     }
-
-
                                     //add markers
                                     for (int i = 0; i < towns.size(); i++) {
                                         String category = towns.get(i).getCategory();
@@ -317,7 +312,6 @@ public class GeoActivity extends AppCompatActivity implements
                                         //add markers
                                         if (category != null && !category.isEmpty()) {
                                             if (pressedTownId!=null&&!pressedTownId.isEmpty()&&towns.get(i).getId().equals(pressedTownId)) {
-                                                //Log.e("Snapped Item Position:", "snappingPosition = " + snappingPosition);
                                                 tmi = new TownMapIcon(getApplicationContext(), category, true);
                                                 currLoc = new LatLng(lat, lng);
                                             } else {
@@ -331,7 +325,6 @@ public class GeoActivity extends AppCompatActivity implements
                                         }
                                         //end of adding markers
                                     }
-
                                     mAdapter.notifyDataSetChanged();
                                 }
 
@@ -584,7 +577,7 @@ public class GeoActivity extends AppCompatActivity implements
 
         Town t1 = new TownBuilder()
                 .setTitle("Mother Susanna Monument")
-                .setCategory("Place")
+                .setCategory("place")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("6510 El Colegio Rd Apt 1223")
                 .setLat(35.594559f)
@@ -596,7 +589,7 @@ public class GeoActivity extends AppCompatActivity implements
 
         Town t2 = new TownBuilder()
                 .setTitle("Father Crowley Monument")
-                .setCategory("Place")
+                .setCategory("place")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("6510 El Colegio Rd Apt 1223")
                 .setLat(35.594559f)
@@ -608,7 +601,7 @@ public class GeoActivity extends AppCompatActivity implements
 
         Town t3 = new TownBuilder()
                 .setTitle("Wonder Land")
-                .setCategory("Creature")
+                .setCategory("creature")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("Rabbit Hole 1901C")
                 .setLat(35.594559f)
