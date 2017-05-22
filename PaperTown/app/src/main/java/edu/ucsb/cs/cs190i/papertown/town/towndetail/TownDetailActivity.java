@@ -407,25 +407,11 @@ public class TownDetailActivity extends AppCompatActivity {
 
                     //add markers
                     if (category != null && !category.isEmpty()) {
-                        if (category.equals("place")) {
-                            tmi = new TownMapIcon(getResources(), R.drawable.ic_place_black_18dp, 5);
-                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                    .title(title)
-                                    .snippet(category)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                        } else if (category.equals("creature")) {
-                            tmi = new TownMapIcon(getResources(), R.drawable.ic_traffic_black_18dp, 5);
-                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                    .title(title)
-                                    .snippet(category)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                        } else if (category.equals("event")) {
-                            tmi = new TownMapIcon(getResources(), R.drawable.ic_chat_black_18dp, 5);
-                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                    .title(title)
-                                    .snippet(category)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                        }
+                        tmi = new TownMapIcon(getApplicationContext(), category, false);
+                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .title(title)
+                                .snippet(category)
+                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                     }
                     //end of adding markers
 

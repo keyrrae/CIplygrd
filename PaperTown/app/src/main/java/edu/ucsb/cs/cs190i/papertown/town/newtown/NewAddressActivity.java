@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 
 public class NewAddressActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks {
     Location location;
@@ -164,26 +166,31 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             //end of registering myLocationButton event
 
 
-            BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
-            BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
-            BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
+//            BitmapDescriptor icon1 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
+//            BitmapDescriptor icon2 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
+//            BitmapDescriptor icon3 = BitmapDescriptorFactory.fromResource(R.drawable.test_marker3);
 
 
             //add markers
-            map.addMarker(new MarkerOptions().position(new LatLng(34.415320, -119.840233))
-                    .title("Ohh!")
-                    .snippet("TsadADSadsA")
-                    .icon(icon1));
-
-            map.addMarker(new MarkerOptions().position(new LatLng(34.416875, -119.826565))
-                    .title("Underclass beauty")
-                    .snippet("Get sunburn in my head")
-                    .icon(icon2));
-
-            map.addMarker(new MarkerOptions().position(new LatLng(34.409815, -119.845069))
-                    .title("Big thing!")
-                    .snippet("Meat carnival")
-                    .icon(icon3));
+//        if (category.equals("place")) {
+//            tmi = new TownMapIcon(getResources(), R.drawable.ic_place_black_18dp, 5, Color.WHITE);
+//            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+//                    .title(title)
+//                    .snippet(category)
+//                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+//        } else if (category.equals("creature")) {
+//            tmi = new TownMapIcon(getResources(), R.drawable.ic_traffic_black_18dp, 5, Color.WHITE);
+//            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+//                    .title(title)
+//                    .snippet(category)
+//                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+//        } else if (category.equals("event")) {
+//            tmi = new TownMapIcon(getResources(), R.drawable.ic_chat_black_18dp, 5, Color.WHITE);
+//            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+//                    .title(title)
+//                    .snippet(category)
+//                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+//        }
 
             //end of adding markers
 
