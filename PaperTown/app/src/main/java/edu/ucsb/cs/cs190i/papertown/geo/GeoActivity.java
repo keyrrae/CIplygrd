@@ -191,14 +191,14 @@ public class GeoActivity extends AppCompatActivity implements
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        initData();
+        //initData();
 
 
         //add snapping effect
         final SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(mRecyclerView);
 
-        mAdapter = new GeoTownListAdapter(towns);
+        mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -302,6 +302,11 @@ public class GeoActivity extends AppCompatActivity implements
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
                                         towns.add(town);
+                                    }
+
+
+                                    for (Marker marker : mMarkerArray) {
+                                        marker.remove();
                                     }
 
                                     updateMapMarkers();
