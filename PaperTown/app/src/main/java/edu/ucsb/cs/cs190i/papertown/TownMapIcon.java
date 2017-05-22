@@ -89,47 +89,4 @@ public class TownMapIcon {
 
         return iconBitmap;
     }
-
-//
-//    public TownMapIcon(Resources res, int resourceId, int padding) {
-//
-//        resourceWidth = BitmapFactory.decodeResource(res, resourceId).getWidth();
-//        resourceHeight = BitmapFactory.decodeResource(res, resourceId).getHeight();
-//
-//        iconBitmap = Bitmap.createBitmap(resourceWidth + padding, resourceHeight + padding, conf);
-//        Canvas canvas1 = new Canvas(iconBitmap);
-//
-//        // paint defines the text color, stroke width and size
-//        Paint color = new Paint();
-//        color.setTextSize(35);
-//        color.setColor(Color.BLACK);
-//
-//        // modify canvas
-//        canvas1.drawColor(Color.WHITE);
-//        canvas1.drawBitmap(BitmapFactory.decodeResource(res,resourceId), ((canvas1.getWidth() - resourceWidth) / 2), ((canvas1.getHeight() - resourceHeight) / 2), color);
-//    }
-//
-//    public TownMapIcon(Resources res, int resourceId, int padding, int backGroundColor) {
-//
-//        resourceWidth = BitmapFactory.decodeResource(res, resourceId).getWidth();
-//        resourceHeight = BitmapFactory.decodeResource(res, resourceId).getHeight();
-//
-//        iconBitmap = Bitmap.createBitmap(resourceWidth + padding, resourceHeight + padding, conf);
-//        Canvas canvas1 = new Canvas(iconBitmap);
-//
-//        // paint defines the text color, stroke width and size
-//        Paint color = new Paint();
-//        color.setTextSize(35);
-//        color.setColor(Color.BLACK);
-//
-//        // modify canvas
-//        canvas1.drawColor(backGroundColor);
-//        canvas1.drawBitmap(BitmapFactory.decodeResource(res,resourceId), ((canvas1.getWidth() - resourceWidth) / 2), ((canvas1.getHeight() - resourceHeight) / 2), color);
-//    }
-//
-//    public Bitmap getIconBitmap1(){
-//        return iconBitmap;
-//    }
-
-
 }

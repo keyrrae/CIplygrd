@@ -51,6 +51,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -100,6 +101,9 @@ public class GeoActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private GeoTownListAdapter mAdapter;
     private TownMapIcon tmi;
+    private int snappingPosition = -1;
+    private String pressedTownId;
+    private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
@@ -205,8 +209,43 @@ public class GeoActivity extends AppCompatActivity implements
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     View centerView = helper.findSnapView(linearLayoutManager);
-                    int pos = linearLayoutManager.getPosition(centerView);
+                    snappingPosition = linearLayoutManager.getPosition(centerView);
+                    pressedTownId = towns.get(snappingPosition).getId();
                     //Log.e("Snapped Item Position:",""+pos);
+
+                    for (Marker marker : mMarkerArray) {
+//                        marker.setVisible(false);
+                        marker.remove();
+                    }
+
+
+                    //add markers
+                    for (int i = 0; i < towns.size(); i++) {
+                        String category = towns.get(i).getCategory();
+                        double lat = towns.get(i).getLat();
+                        double lng = towns.get(i).getLng();
+                        //add markers
+                        if (category != null && !category.isEmpty()) {
+                            if (pressedTownId!=null&&!pressedTownId.isEmpty()&&towns.get(i).getId().equals(pressedTownId)) {
+                                //Log.e("Snapped Item Position:", "snappingPosition = " + snappingPosition);
+                                tmi = new TownMapIcon(getApplicationContext(), category, true);
+                                currLoc = new LatLng(lat, lng);
+                            } else {
+                                tmi = new TownMapIcon(getApplicationContext(), category, false);
+                            }
+                            Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                    .title(towns.get(i).getTitle())
+                                    .snippet(towns.get(i).getCategory())
+                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                            mMarkerArray.add(marker);
+                        }
+                        //end of adding markers
+                    }
+
+
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
+                    map.animateCamera(cameraUpdate);
+
                 }
             }
         });
@@ -277,15 +316,21 @@ public class GeoActivity extends AppCompatActivity implements
                                         double lng = towns.get(i).getLng();
                                         //add markers
                                         if (category != null && !category.isEmpty()) {
-                                            tmi = new TownMapIcon(getApplicationContext(), category, true);
-                                            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                            if (pressedTownId!=null&&!pressedTownId.isEmpty()&&towns.get(i).getId().equals(pressedTownId)) {
+                                                //Log.e("Snapped Item Position:", "snappingPosition = " + snappingPosition);
+                                                tmi = new TownMapIcon(getApplicationContext(), category, true);
+                                                currLoc = new LatLng(lat, lng);
+                                            } else {
+                                                tmi = new TownMapIcon(getApplicationContext(), category, false);
+                                            }
+                                            Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
                                                     .title(towns.get(i).getTitle())
                                                     .snippet(towns.get(i).getCategory())
                                                     .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                                            mMarkerArray.add(marker);
                                         }
                                         //end of adding markers
                                     }
-
 
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -365,7 +410,7 @@ public class GeoActivity extends AppCompatActivity implements
 
             case CONNECTION_FAILURE_RESOLUTION_REQUEST:
             /*
-			 * If the result code is Activity.RESULT_OK, try to connect again
+             * If the result code is Activity.RESULT_OK, try to connect again
 			 */
                 switch (resultCode) {
                     case Activity.RESULT_OK:
@@ -419,7 +464,7 @@ public class GeoActivity extends AppCompatActivity implements
         // Display the connection status
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
             currLoc = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
             map.animateCamera(cameraUpdate);
@@ -446,7 +491,7 @@ public class GeoActivity extends AppCompatActivity implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         currLoc = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
