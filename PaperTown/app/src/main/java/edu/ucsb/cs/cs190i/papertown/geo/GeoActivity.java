@@ -342,10 +342,11 @@ public class GeoActivity extends AppCompatActivity implements
 
                                         updateMapMarkers();
 
-
-//                                    mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
-//                                    mRecyclerView.setAdapter(mAdapter);
-                                        mAdapter.notifyDataSetChanged();
+                                    //override adapter
+                                    mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
+                                    mRecyclerView.setAdapter(mAdapter);
+//                                        mAdapter.notifyDataSetChanged();
+//                                        mAdapter.notifyItemRangeRemoved(0,towns.size());
                                     }
                                 }
 
