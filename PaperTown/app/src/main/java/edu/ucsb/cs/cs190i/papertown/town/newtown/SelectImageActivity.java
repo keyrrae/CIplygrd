@@ -9,8 +9,14 @@
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -28,8 +34,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 
@@ -109,8 +119,16 @@ public class SelectImageActivity extends AppCompatActivity
 //                Uri.parse(s),
 //                Uri.parse(s)};
 
-        imageUris = addUri(imageUris,Uri.parse(s));
-        //Uri[] imageUrisWithAdd = addUri(imageUris,Uri.parse(s));
+        Uri uri = Uri.parse(s);
+        File f = new File(uri.toString());
+        // Log.i("original_image","f.getName(); = "+f.getName());
+        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+        uri = (Uri.fromFile(f));
+        imageUris = addUri(imageUris,uri);
+
+
+        //imageUris = addUri(imageUris,Uri.parse(s));
+
         SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, web, imageUris);
         grid=(GridView)findViewById(R.id.grid);
         grid.setAdapter(adapter);
@@ -200,8 +218,20 @@ public class SelectImageActivity extends AppCompatActivity
                 Uri selectedImageURI = data.getData();
                 Log.i("onActivityResult", "result = " + selectedImageURI.toString());
 
-                //Uri[] imageUris = { selectedImageURI,selectedImageURI,selectedImageURI};
-                imageUris = addUri(imageUris,selectedImageURI);
+
+
+
+
+
+
+
+                Uri uri = selectedImageURI;
+                File f = new File(uri.toString());
+                // Log.i("original_image","f.getName(); = "+f.getName());
+                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                uri = (Uri.fromFile(f));
+                imageUris = addUri(imageUris,uri);
+                //imageUris = addUri(imageUris,selectedImageURI);
 
                 SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, web, imageUris);
                 Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
@@ -263,6 +293,100 @@ public class SelectImageActivity extends AppCompatActivity
 
 
 
+    }
+
+    public static String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
+        String filePath = getRealPathFromURI_API19(context, inputUri);
+        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
+
+        // First decode with inJustDecodeBounds=true to check dimensions of image
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+
+        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
+        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
+        options.inSampleSize = calculateInSampleSize(options, 800, 800);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
+
+
+        int compressQuality = 100; // quality decreasing by 5 every loop.
+        int streamLength;
+        do {
+            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
+            Log.d("compressBitmap", "Quality: " + compressQuality);
+            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
+            byte[] bmpPicByteArray = bmpStream.toByteArray();
+            streamLength = bmpPicByteArray.length;
+            compressQuality -= 5;
+            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
+        } while (streamLength >= MAX_IMAGE_SIZE);
+
+        try {
+            //save the resized and compressed file to disk cache
+            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
+            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
+            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
+            bmpFile.flush();
+            bmpFile.close();
+        } catch (Exception e) {
+            Log.e("compressBitmap", "Error on saving file");
+        }
+        //return the path of resized and compressed file
+        return context.getCacheDir() + fileName;
+    }
+
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        String debugTag = "MemoryInformation";
+        // Image nin islenmeden onceki genislik ve yuksekligi
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        Log.d(debugTag, "image height: " + height + "---image width: " + width);
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        Log.d(debugTag, "inSampleSize: " + inSampleSize);
+        return inSampleSize;
+    }
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = {MediaStore.Images.Media.DATA};
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{id}, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
 
 }
