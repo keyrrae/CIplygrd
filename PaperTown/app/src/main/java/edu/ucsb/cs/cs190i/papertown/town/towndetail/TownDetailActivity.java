@@ -9,6 +9,7 @@
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -172,6 +173,13 @@ public class TownDetailActivity extends AppCompatActivity {
                 if (mode.equals("preview")) {
                     Log.i("dataToD", "SUBMIT!");
 
+                    final ProgressDialog progress = new ProgressDialog(TownDetailActivity.this);
+                    progress.setTitle("UPLOADING");
+                    progress.setMessage("Wait while uploading your town...");
+                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                    progress.show();
+
+
 
                     if (storage != null) {
                         StorageReference storageRef = storage.getReference();
@@ -212,6 +220,11 @@ public class TownDetailActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(DatabaseError databaseError,
                                                                        DatabaseReference databaseReference) {
+
+
+                                                    // To dismiss the dialog
+                                                    progress.dismiss();
+
                                                     Toast.makeText(
                                                             TownDetailActivity.this,
                                                             "Successfully submitted network",
