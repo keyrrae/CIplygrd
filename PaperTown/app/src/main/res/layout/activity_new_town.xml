@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Add Title"
-                        android:textColor="@color/Medium_Green"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_title"
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Set Address"
-                        android:textColor="@color/Medium_Green"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_address"
@@ -158,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Select Category"
-                        android:textColor="@color/Medium_Green"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_cate"
@@ -189,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Add Description"
-                        android:textColor="@color/Medium_Green"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_description"
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Your Information"
-                        android:textColor="@color/Medium_Green"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"/>
                     <TextView
                         android:id="@+id/description_information"

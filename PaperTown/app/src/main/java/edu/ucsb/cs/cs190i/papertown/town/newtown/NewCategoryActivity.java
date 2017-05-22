@@ -49,7 +49,6 @@ public class NewCategoryActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result","place");
                 setResult(Activity.RESULT_OK,returnIntent);
@@ -61,7 +60,6 @@ public class NewCategoryActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result","creature");
                 setResult(Activity.RESULT_OK,returnIntent);
@@ -73,7 +71,6 @@ public class NewCategoryActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result","event");
                 setResult(Activity.RESULT_OK,returnIntent);

@@ -29,7 +29,6 @@ public class NewInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_information);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_info);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);

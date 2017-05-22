@@ -27,8 +27,6 @@ public class NewDescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_description);
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_description);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);

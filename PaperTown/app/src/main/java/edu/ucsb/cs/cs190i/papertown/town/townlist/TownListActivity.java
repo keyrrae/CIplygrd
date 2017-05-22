@@ -53,10 +53,7 @@ public class TownListActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_town_list);
 
-
     towns = (List<Town>)getIntent().getSerializableExtra("townArrayList");
-
-    //
 
     RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
     //mRecyclerView.setHasFixedSize(true);
@@ -77,14 +74,10 @@ public class TownListActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                 intent.putExtra("town", towns.get(position));
                 startActivity(intent);
-
-
-                // do whatever
               }
 
               @Override public void onLongItemClick(View view, int position) {
                 Log.i("RecyclerItemClr", "onLongItemClick");
-                // do whatever
               }
             })
     );

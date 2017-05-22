@@ -30,7 +30,6 @@ public class NewTitleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_title);
 
-
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_title);
@@ -51,12 +50,4 @@ public class NewTitleActivity extends AppCompatActivity {
         });
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_newtown, menu);  //apply the customized menu
-        return true;
-    }
-
 }

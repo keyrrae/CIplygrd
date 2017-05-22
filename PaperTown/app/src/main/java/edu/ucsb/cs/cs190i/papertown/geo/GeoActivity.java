@@ -211,37 +211,12 @@ public class GeoActivity extends AppCompatActivity implements
                     View centerView = helper.findSnapView(linearLayoutManager);
                     snappingPosition = linearLayoutManager.getPosition(centerView);
                     pressedTownId = towns.get(snappingPosition).getId();
-                    //Log.e("Snapped Item Position:",""+pos);
 
                     for (Marker marker : mMarkerArray) {
-//                        marker.setVisible(false);
                         marker.remove();
                     }
 
-
-                    //add markers
-                    for (int i = 0; i < towns.size(); i++) {
-                        String category = towns.get(i).getCategory();
-                        double lat = towns.get(i).getLat();
-                        double lng = towns.get(i).getLng();
-                        //add markers
-                        if (category != null && !category.isEmpty()) {
-                            if (pressedTownId!=null&&!pressedTownId.isEmpty()&&towns.get(i).getId().equals(pressedTownId)) {
-                                //Log.e("Snapped Item Position:", "snappingPosition = " + snappingPosition);
-                                tmi = new TownMapIcon(getApplicationContext(), category, true);
-                                currLoc = new LatLng(lat, lng);
-                            } else {
-                                tmi = new TownMapIcon(getApplicationContext(), category, false);
-                            }
-                            Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                    .title(towns.get(i).getTitle())
-                                    .snippet(towns.get(i).getCategory())
-                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                            mMarkerArray.add(marker);
-                        }
-                        //end of adding markers
-                    }
-
+                    updateMapMarkers();
 
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
                     map.animateCamera(cameraUpdate);
@@ -269,6 +244,30 @@ public class GeoActivity extends AppCompatActivity implements
                 })
         );
 
+    }
+
+    private void updateMapMarkers(){
+        Town town;
+        for (int i = 0; i < towns.size(); i++) {
+            town = towns.get(i);
+            String category = town.getCategory();
+            double lat = town.getLat();
+            double lng = town.getLng();
+            if (category != null && !category.isEmpty()) {
+                if (pressedTownId != null && !pressedTownId.isEmpty() && town.getId().equals(pressedTownId)) {
+                    //Log.e("Snapped Item Position:", "snappingPosition = " + snappingPosition);
+                    tmi = new TownMapIcon(getApplicationContext(), category, true);
+                    currLoc = new LatLng(lat, lng);
+                } else {
+                    tmi = new TownMapIcon(getApplicationContext(), category, false);
+                }
+                Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                        .title(town.getTitle())
+                        .snippet(town.getCategory())
+                        .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                mMarkerArray.add(marker);
+            }
+        }
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -304,27 +303,9 @@ public class GeoActivity extends AppCompatActivity implements
                                         Town town = ds.getValue(Town.class);
                                         towns.add(town);
                                     }
-                                    //add markers
-                                    for (int i = 0; i < towns.size(); i++) {
-                                        String category = towns.get(i).getCategory();
-                                        double lat = towns.get(i).getLat();
-                                        double lng = towns.get(i).getLng();
-                                        //add markers
-                                        if (category != null && !category.isEmpty()) {
-                                            if (pressedTownId!=null&&!pressedTownId.isEmpty()&&towns.get(i).getId().equals(pressedTownId)) {
-                                                tmi = new TownMapIcon(getApplicationContext(), category, true);
-                                                currLoc = new LatLng(lat, lng);
-                                            } else {
-                                                tmi = new TownMapIcon(getApplicationContext(), category, false);
-                                            }
-                                            Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                                    .title(towns.get(i).getTitle())
-                                                    .snippet(towns.get(i).getCategory())
-                                                    .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                                            mMarkerArray.add(marker);
-                                        }
-                                        //end of adding markers
-                                    }
+
+                                    updateMapMarkers();
+
                                     mAdapter.notifyDataSetChanged();
                                 }
 

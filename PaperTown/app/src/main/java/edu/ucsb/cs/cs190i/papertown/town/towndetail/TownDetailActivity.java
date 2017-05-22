@@ -263,7 +263,7 @@ public class TownDetailActivity extends AppCompatActivity {
         //change button color
         if (mode != null && mode.equals("preview")) {
             //change color of submission button
-            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
             button_test_detail.setText("SUBMIT !");
 
 

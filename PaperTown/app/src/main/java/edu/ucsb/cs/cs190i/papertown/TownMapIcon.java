@@ -22,9 +22,8 @@ import android.graphics.Paint;
 
 public class TownMapIcon {
 
-    Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-
-    Bitmap iconBitmap;
+    private Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+    private Bitmap iconBitmap;
 
     private int resourceWidth;
     private int resourceHeight;
@@ -34,16 +33,12 @@ public class TownMapIcon {
     private int iconDrawableId;
     private boolean ifPressed = false;
     private int backgroundColor;
-    private Context context;
-
 
     public TownMapIcon(Context contextInput, String categoryInput, boolean ifPressedInput) {
         resources = contextInput.getResources();
         category = categoryInput;
-        context = contextInput;
         ifPressed = ifPressedInput;
     }
-
 
     private void setIconDrawableIdAndBackgroundColor(){
 
@@ -67,7 +62,6 @@ public class TownMapIcon {
                 iconDrawableId = R.drawable.ic_chat_white_18dp;
             }
         }
-
     }
 
     public Bitmap getIconBitmap(){
