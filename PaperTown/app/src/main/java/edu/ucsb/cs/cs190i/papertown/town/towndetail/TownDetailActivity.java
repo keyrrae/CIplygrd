@@ -391,7 +391,5 @@ public class TownDetailActivity extends AppCompatActivity {
         } else {
             Log.i("manu", "Error - Map Fragment was null!!");
         }
-
-
     }
 }

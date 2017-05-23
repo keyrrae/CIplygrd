@@ -9,6 +9,7 @@
 package edu.ucsb.cs.cs190i.papertown.geo;
 
 import android.Manifest;
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -18,6 +19,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +35,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -106,6 +111,8 @@ public class GeoActivity extends AppCompatActivity implements
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
+
+    private boolean ifCollasped = true;
 
     LatLng currLoc = new LatLng(0.0, 0.0);
     /*
@@ -200,7 +207,20 @@ public class GeoActivity extends AppCompatActivity implements
         final SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(mRecyclerView);
 
-        mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
+        mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+        if (towns.size() > 0) {
+            if(ifCollasped) {
+                Log.i("onQueryTextChange","expand");
+                expand(mRecyclerView);
+                ifCollasped = !ifCollasped;
+            }
+        } else {
+            if(!ifCollasped) {
+                Log.i("onQueryTextChange","collapse");
+                collapse(mRecyclerView);
+                ifCollasped = !ifCollasped;
+            }
+        }
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -248,7 +268,61 @@ public class GeoActivity extends AppCompatActivity implements
 
     }
 
-    private void updateMapMarkers(){
+
+    public static void expand(final View v) {
+        v.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = v.getMeasuredHeight();
+
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        v.getLayoutParams().height = 1;
+        v.setVisibility(View.VISIBLE);
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? RecyclerView.LayoutParams.WRAP_CONTENT
+                        : (int) (targetHeight * interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
+    }
+
+    public static void collapse(final View v) {
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) {
+                    v.setVisibility(View.GONE);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
+    }
+
+
+    private void updateMapMarkers() {
         Town town;
         for (int i = 0; i < towns.size(); i++) {
             town = towns.get(i);
@@ -303,17 +377,16 @@ public class GeoActivity extends AppCompatActivity implements
 
                                     //make a backup of towns
                                     townsOld.clear();
-                                    for(int i = 0;i < towns.size();i++){
+                                    for (int i = 0; i < towns.size(); i++) {
                                         townsOld.add(towns.get(i));
                                     }
                                     //clear towns List
                                     towns.clear();
 
 
-
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
-                                        Log.i("onTownsChange:", "towns.add(town), towns sien = "+townsOld.size()+", town = " + town.getTitle());
+                                        Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
                                         towns.add(town);
 
                                     }
@@ -321,30 +394,47 @@ public class GeoActivity extends AppCompatActivity implements
 
                                     //compare towns lists
                                     boolean isEqual = true;
-                                    if(townsOld.size()==towns.size()){
-                                        for(int i = 0;i<towns.size();i++){
-                                            if(!townsOld.get(i).getId().equals(towns.get(i).getId())){
+                                    if (townsOld.size() == towns.size()) {
+                                        for (int i = 0; i < towns.size(); i++) {
+                                            if (!townsOld.get(i).getId().equals(towns.get(i).getId())) {
                                                 isEqual = false;
                                                 break;
                                             }
                                         }
-                                    }
-                                    else{
+                                    } else {
                                         isEqual = false;
                                     }
 
                                     Log.i("onTownsChange:", "isEqual = " + isEqual);
 
-                                    if(!isEqual) {
+                                    if (!isEqual) {
                                         for (Marker marker : mMarkerArray) {
                                             marker.remove();
                                         }
 
                                         updateMapMarkers();
 
-                                    //override adapter
-                                    mAdapter = new GeoTownListAdapter(towns,getApplicationContext());
-                                    mRecyclerView.setAdapter(mAdapter);
+                                        //override adapter
+                                        mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+//                                        expand(mRecyclerView);
+
+                                        if (towns.size() > 0) {
+                                            if(ifCollasped) {
+                                                Log.i("onDataChange","expand");
+                                                expand(mRecyclerView);
+                                                ifCollasped = !ifCollasped;
+                                            }
+                                        } else {
+                                            if(!ifCollasped) {
+                                                Log.i("onDataChange","collapse");
+                                                collapse(mRecyclerView);
+                                                ifCollasped = !ifCollasped;
+                                            }
+                                        }
+
+
+                                        mRecyclerView.setAdapter(mAdapter);
+
 //                                        mAdapter.notifyDataSetChanged();
 //                                        mAdapter.notifyItemRangeRemoved(0,towns.size());
                                     }
@@ -506,7 +596,7 @@ public class GeoActivity extends AppCompatActivity implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-       // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         currLoc = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
@@ -528,7 +618,7 @@ public class GeoActivity extends AppCompatActivity implements
      */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-		/*
+        /*
 		 * Google Play services can resolve some errors it detects. If the error
 		 * has a resolution, try sending an Intent to start a Google Play
 		 * services activity that can resolve error.
