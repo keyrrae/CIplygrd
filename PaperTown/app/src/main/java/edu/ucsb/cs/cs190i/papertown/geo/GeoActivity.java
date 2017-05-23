@@ -114,6 +114,8 @@ public class GeoActivity extends AppCompatActivity implements
 
     private boolean ifCollasped = true;
 
+    private float currentMapZoomLeverl = 0;
+
     LatLng currLoc = new LatLng(0.0, 0.0);
     /*
     * Define a request code to send to Google Play services This code is
@@ -209,16 +211,16 @@ public class GeoActivity extends AppCompatActivity implements
 
         mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
         if (towns.size() > 0) {
-            if(ifCollasped) {
-                Log.i("onQueryTextChange","expand");
+            if (ifCollasped) {
+                Log.i("onQueryTextChange", "expand");
                 expand(mRecyclerView);
-                ifCollasped = !ifCollasped;
+                ifCollasped = false;
             }
         } else {
-            if(!ifCollasped) {
-                Log.i("onQueryTextChange","collapse");
+            if (!ifCollasped) {
+                Log.i("onQueryTextChange", "collapse");
                 collapse(mRecyclerView);
-                ifCollasped = !ifCollasped;
+                ifCollasped = true;
             }
         }
         mRecyclerView.setAdapter(mAdapter);
@@ -350,6 +352,10 @@ public class GeoActivity extends AppCompatActivity implements
         map = googleMap;
         if (map != null) {
             // Map is ready
+
+            currentMapZoomLeverl = map.getCameraPosition().zoom;
+            Log.i("loadMap","currentMapZoomLeverl = "+currentMapZoomLeverl);
+
             map.setBuildingsEnabled(true);
             map.setIndoorEnabled(true);
             map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
@@ -375,8 +381,15 @@ public class GeoActivity extends AppCompatActivity implements
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    //make a backup of towns
-                                    townsOld.clear();
+                                    currentMapZoomLeverl = map.getCameraPosition().zoom;
+                                    Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
+
+
+                                    //only update when zoom level is higher than 15
+                                    if (currentMapZoomLeverl > 15){
+
+                                        //make a backup of towns
+                                        townsOld.clear();
                                     for (int i = 0; i < towns.size(); i++) {
                                         townsOld.add(towns.get(i));
                                     }
@@ -407,6 +420,23 @@ public class GeoActivity extends AppCompatActivity implements
 
                                     Log.i("onTownsChange:", "isEqual = " + isEqual);
 
+                                        //                                        expand(mRecyclerView);
+                                        Log.i("onDataChange", "towns.size() = "+towns.size());
+                                        if (towns.size() > 0) {
+                                            if (ifCollasped) {
+                                                Log.i("onDataChange", "expand");
+                                                expand(mRecyclerView);
+                                                ifCollasped = false;
+                                            }
+                                        } else {
+                                            if (!ifCollasped) {
+                                                Log.i("onDataChange", "collapse");
+                                                collapse(mRecyclerView);
+                                                ifCollasped = true;
+                                            }
+                                        }
+
+
                                     if (!isEqual) {
                                         for (Marker marker : mMarkerArray) {
                                             marker.remove();
@@ -416,28 +446,22 @@ public class GeoActivity extends AppCompatActivity implements
 
                                         //override adapter
                                         mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-//                                        expand(mRecyclerView);
-
-                                        if (towns.size() > 0) {
-                                            if(ifCollasped) {
-                                                Log.i("onDataChange","expand");
-                                                expand(mRecyclerView);
-                                                ifCollasped = !ifCollasped;
-                                            }
-                                        } else {
-                                            if(!ifCollasped) {
-                                                Log.i("onDataChange","collapse");
-                                                collapse(mRecyclerView);
-                                                ifCollasped = !ifCollasped;
-                                            }
-                                        }
-
 
                                         mRecyclerView.setAdapter(mAdapter);
 
 //                                        mAdapter.notifyDataSetChanged();
 //                                        mAdapter.notifyItemRangeRemoved(0,towns.size());
                                     }
+
+                                }else{
+                                        if (!ifCollasped) {
+                                            Log.i("onDataChange", "collapse");
+                                            collapse(mRecyclerView);
+                                            ifCollasped = true;
+                                        }
+                                    }
+
+
                                 }
 
                                 @Override
