@@ -112,6 +112,8 @@ public class GeoActivity extends AppCompatActivity implements
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
+    private final int zoomLevelThreshold = 16;
+
     private boolean ifCollasped = true;
 
     private float currentMapZoomLeverl = 0;
@@ -385,8 +387,8 @@ public class GeoActivity extends AppCompatActivity implements
                                     Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
 
 
-                                    //only update when zoom level is higher than 15
-                                    if (currentMapZoomLeverl > 15){
+                                    //only update when zoom level is higher than a threshold
+                                    if (currentMapZoomLeverl > zoomLevelThreshold){
 
                                         //make a backup of towns
                                         townsOld.clear();
@@ -454,6 +456,13 @@ public class GeoActivity extends AppCompatActivity implements
                                     }
 
                                 }else{
+
+//                                        //clear markers also
+//                                        for (Marker marker : mMarkerArray) {
+//                                            marker.remove();
+//                                        }
+
+
                                         if (!ifCollasped) {
                                             Log.i("onDataChange", "collapse");
                                             collapse(mRecyclerView);
