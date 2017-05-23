@@ -75,7 +75,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".geo.GeoActivity"></activity>
+        <activity android:name=".geo.GeoActivity"/>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -84,18 +84,27 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".town.townlist.TownListActivity"></activity>
+        <activity android:name=".town.townlist.TownListActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".town.newtown.NewTownActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_new_town"
-            android:theme="@style/AppTheme"></activity>
-        <activity android:name=".town.towndetail.TownDetailActivity"></activity>
-        <activity android:name=".town.newtown.NewTitleActivity" />
-        <activity android:name=".town.newtown.NewAddressActivity" />
-        <activity android:name=".town.newtown.NewCategoryActivity" />
-        <activity android:name=".town.newtown.NewDescriptionActivity" />
-        <activity android:name=".town.newtown.NewInformationActivity" />
-        <activity android:name=".town.newtown.SelectImageActivity"></activity>
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".town.towndetail.TownDetailActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.NewTitleActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.NewAddressActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.NewCategoryActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.NewDescriptionActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.NewInformationActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".town.newtown.SelectImageActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
