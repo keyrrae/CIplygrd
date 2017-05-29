@@ -38,7 +38,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="Roboto"
             android:text="Town A"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@android:color/holo_blue_bright"
             android:textSize="18dp" />
 
         <TextView
