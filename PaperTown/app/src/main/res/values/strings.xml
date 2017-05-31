@@ -50,9 +50,11 @@
     <string name="title_activity_cc">CCActivity</string>
     <string name="title_activity_new_town">NewTownActivity</string>
 
-    <string name="town_category_place">place</string>
-    <string name="town_category_creature">creature</string>
-    <string name="town_category_event">event</string>
+
+    <!-- Strings related to town category -->
+    <string name="town_category_place">Place</string>
+    <string name="town_category_creature">Creature</string>
+    <string name="town_category_event">Event</string>
 
 
 </resources>

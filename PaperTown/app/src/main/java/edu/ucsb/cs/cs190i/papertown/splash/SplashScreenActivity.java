@@ -84,7 +84,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     // Shimmer
     ShimmerFrameLayout container =
             (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-    container.setDuration(1000);
+    container.setDuration(500);
     container.startShimmerAnimation();
 
     // Login Button
@@ -213,7 +213,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       };
 
       // do the splash
-      mHandler.postDelayed(mLaunchTask, 1000);
+      mHandler.postDelayed(mLaunchTask, 500);
     }
   }
 

@@ -83,7 +83,7 @@ public class NewTownActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -410,20 +410,20 @@ public class NewTownActivity extends AppCompatActivity implements
 
         //change color of submission button
         Button button_step_left = (Button) findViewById(R.id.button_step_left);
-        button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+        button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
         button_step_left.setText("PREVIEW !");
 
 
         //change the color of the progress bar
         ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
         pb.setProgress(0);  //only show background
-        pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+        pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
 
     }
 
     void setChecked(TextView t1, TextView t2, ImageView i1, String desctiption_in) {
         i1.setImageResource(R.drawable.ic_check_box_black_24dp);
-        t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+        t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
         if (t2 != null) {
             t2.setText(desctiption_in);
         }

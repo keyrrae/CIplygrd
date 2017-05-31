@@ -9,6 +9,7 @@
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -113,17 +115,18 @@ public class TownDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_town_detail);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
+        getSupportActionBar().setElevation(0);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.i("dataToD", "setNavigationOnClickListener");
+                Log.i("detail_to_main", "back");
                 finish();
             }
         });
@@ -227,7 +230,7 @@ public class TownDetailActivity extends AppCompatActivity {
         //change button color
         if (mode != null && mode.equals("preview")) {
             //change color of submission button
-            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
             button_test_detail.setText("SUBMIT !");
 
 
