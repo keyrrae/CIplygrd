@@ -401,6 +401,7 @@ public class GeoActivity extends AppCompatActivity implements
 
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
+
                                         Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
                                         towns.add(town);
 
