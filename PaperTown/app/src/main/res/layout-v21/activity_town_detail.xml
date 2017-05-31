@@ -23,6 +23,7 @@
             android:id="@+id/toolbar_detail"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/PrimaryPink"
             android:elevation="0dp"
             android:minHeight="130dp" />
     </android.support.design.widget.AppBarLayout>
@@ -53,8 +54,12 @@
                 android:layout_marginTop="16dp"
                 android:text="Malibu Dream Airstream"
                 android:textAppearance="@style/TitleText_detail"
-                 />
-
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/m"
+                android:background="@color/Gray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

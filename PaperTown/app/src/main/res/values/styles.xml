@@ -11,9 +11,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/Dark_Gray</item>
-        <item name="colorPrimaryDark">@color/Dark_Gray</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/PrimaryPink</item>
+        <item name="colorPrimaryDark">@color/PrimaryPink</item>
+        <item name="colorAccent">@android:color/holo_blue_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -30,5 +30,46 @@
         <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
         <item name="actionMenuTextColor">@color/colorAccent</item>
     </style>
+
+    <!-- Text Style -->
+    <style name="TitleText">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+    </style>
+
+    <style name="SubText">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:fontFamily">"sans-serif"</item>
+    </style>
+
+    <style name="SmallText">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/xsT</item>
+        <item name="android:fontFamily">"sans-serif"</item>
+    </style>
+
+    <style name="TitleText_detail">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/xlT</item>
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+    </style>
+
+    <style name="MainTextBold_detail">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+    </style>
+
+    <style name="MainTextRegular_detail">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:fontFamily">"sans-serif"</item>
+    </style>
+
+    <!-- end of Text Style -->
+
+
 
 </resources>

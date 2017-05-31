@@ -13,6 +13,7 @@ import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -24,21 +25,26 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -98,7 +104,8 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 public class GeoActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        GoogleMap.OnMarkerClickListener {
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -129,6 +136,7 @@ public class GeoActivity extends AppCompatActivity implements
     public List<Town> townsOld = new ArrayList<>();
 
     RecyclerView mRecyclerView;
+    public LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +209,7 @@ public class GeoActivity extends AppCompatActivity implements
 
         mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         //initData();
@@ -227,6 +235,20 @@ public class GeoActivity extends AppCompatActivity implements
         }
         mRecyclerView.setAdapter(mAdapter);
 
+        //ini track bar color
+        mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (mRecyclerView.getChildCount() != 0) {
+                    View v = mRecyclerView.getChildAt(0);
+                    ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                    bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+
+                    pressedTownId = towns.get(0).getId();
+                    updateMapMarkers();
+                }
+            }
+        });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -238,15 +260,24 @@ public class GeoActivity extends AppCompatActivity implements
                     snappingPosition = linearLayoutManager.getPosition(centerView);
                     pressedTownId = towns.get(snappingPosition).getId();
 
-                    for (Marker marker : mMarkerArray) {
-                        marker.remove();
-                    }
+
 
                     updateMapMarkers();
 
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
                     map.animateCamera(cameraUpdate);
 
+                    // set track bar color
+                    ImageView bar = (ImageView) centerView.findViewById(R.id.geo_town_pick_bar);
+                    bar.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+
+                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                        if (i != snappingPosition) {
+                            View v = recyclerView.getChildAt(i);
+                            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                            bar2.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                    }
                 }
             }
         });
@@ -327,6 +358,12 @@ public class GeoActivity extends AppCompatActivity implements
 
 
     private void updateMapMarkers() {
+
+        for (Marker marker : mMarkerArray) {
+            marker.remove();
+        }
+
+
         Town town;
         for (int i = 0; i < towns.size(); i++) {
             town = towns.get(i);
@@ -350,14 +387,47 @@ public class GeoActivity extends AppCompatActivity implements
         }
     }
 
+    // click on marker to move RecyclerView (card list)
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        Log.d("marker", "" + marker.getTitle());
+        for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
+            View v = mRecyclerView.getChildAt(i);
+
+            String titleText = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
+            if(titleText.equals(marker.getTitle())){
+                Log.d("Child at i ",""+i);
+                pressedTownId = towns.get(i).getId();
+                // move RecyclerView
+                RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(this) {
+                            @Override protected int getVerticalSnapPreference() {
+                                return LinearSmoothScroller.SNAP_TO_START;
+                            }
+                        };
+                smoothScroller.setTargetPosition(i);
+                linearLayoutManager.startSmoothScroll(smoothScroller);
+
+                updateMapMarkers();
+//                marker.showInfoWindow();
+                break;
+            }
+
+        }
+
+        return true;
+    }
+
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
             // Map is ready
 
             currentMapZoomLeverl = map.getCameraPosition().zoom;
-            Log.i("loadMap","currentMapZoomLeverl = "+currentMapZoomLeverl);
+            Log.i("loadMap", "currentMapZoomLeverl = " + currentMapZoomLeverl);
 
+            map.setOnMarkerClickListener(this);
             map.setBuildingsEnabled(true);
             map.setIndoorEnabled(true);
             map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
@@ -373,6 +443,7 @@ public class GeoActivity extends AppCompatActivity implements
                         // dont update when zoomed out
                         return;
                     }
+
                     List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     if (database != null) {
@@ -388,43 +459,40 @@ public class GeoActivity extends AppCompatActivity implements
 
 
                                     //only update when zoom level is higher than a threshold
-                                    if (currentMapZoomLeverl > zoomLevelThreshold){
+                                    if (currentMapZoomLeverl > zoomLevelThreshold) {
 
                                         //make a backup of towns
                                         townsOld.clear();
-                                    for (int i = 0; i < towns.size(); i++) {
-                                        townsOld.add(towns.get(i));
-                                    }
-                                    //clear towns List
-                                    towns.clear();
-
-
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        Town town = ds.getValue(Town.class);
-
-                                        Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
-                                        towns.add(town);
-
-                                    }
-
-
-                                    //compare towns lists
-                                    boolean isEqual = true;
-                                    if (townsOld.size() == towns.size()) {
                                         for (int i = 0; i < towns.size(); i++) {
-                                            if (!townsOld.get(i).getId().equals(towns.get(i).getId())) {
-                                                isEqual = false;
-                                                break;
-                                            }
+                                            townsOld.add(towns.get(i));
                                         }
-                                    } else {
-                                        isEqual = false;
-                                    }
+                                        //clear towns List
+                                        towns.clear();
 
-                                    Log.i("onTownsChange:", "isEqual = " + isEqual);
+
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            Town town = ds.getValue(Town.class);
+                                            Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
+                                            towns.add(town);
+                                        }
+
+                                        //compare towns lists
+                                        boolean isEqual = true;
+                                        if (townsOld.size() == towns.size()) {
+                                            for (int i = 0; i < towns.size(); i++) {
+                                                if (!townsOld.get(i).getId().equals(towns.get(i).getId())) {
+                                                    isEqual = false;
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            isEqual = false;
+                                        }
+
+                                        Log.i("onTownsChange:", "isEqual = " + isEqual);
 
                                         //                                        expand(mRecyclerView);
-                                        Log.i("onDataChange", "towns.size() = "+towns.size());
+                                        Log.i("onDataChange", "towns.size() = " + towns.size());
                                         if (towns.size() > 0) {
                                             if (ifCollasped) {
                                                 Log.i("onDataChange", "expand");
@@ -439,39 +507,21 @@ public class GeoActivity extends AppCompatActivity implements
                                             }
                                         }
 
+                                        if (!isEqual) {
 
-                                    if (!isEqual) {
-                                        for (Marker marker : mMarkerArray) {
-                                            marker.remove();
+                                            updateMapMarkers();
+                                            //override adapter
+                                            mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+                                            mRecyclerView.setAdapter(mAdapter);
                                         }
 
-                                        updateMapMarkers();
-
-                                        //override adapter
-                                        mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-
-                                        mRecyclerView.setAdapter(mAdapter);
-
-//                                        mAdapter.notifyDataSetChanged();
-//                                        mAdapter.notifyItemRangeRemoved(0,towns.size());
-                                    }
-
-                                }else{
-
-//                                        //clear markers also
-//                                        for (Marker marker : mMarkerArray) {
-//                                            marker.remove();
-//                                        }
-
-
+                                    } else {
                                         if (!ifCollasped) {
                                             Log.i("onDataChange", "collapse");
                                             collapse(mRecyclerView);
                                             ifCollasped = true;
                                         }
                                     }
-
-
                                 }
 
                                 @Override
@@ -653,7 +703,7 @@ public class GeoActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         /*
-		 * Google Play services can resolve some errors it detects. If the error
+         * Google Play services can resolve some errors it detects. If the error
 		 * has a resolution, try sending an Intent to start a Google Play
 		 * services activity that can resolve error.
 		 */
@@ -662,7 +712,7 @@ public class GeoActivity extends AppCompatActivity implements
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(this,
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
-				/*
+                /*
 				 * Thrown if Google Play services canceled the original
 				 * PendingIntent
 				 */

@@ -59,7 +59,7 @@
             android:id="@+id/geo_town_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:background="@color/cardview_shadow_end_color"
             />
 
     </LinearLayout>

@@ -32,11 +32,11 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
  */
 
 public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.GeoTownListViewHolder>{
-    public List<Town> towns;
-    public ImageView imageView;
-    public TextView titleTextView;
-    public TextView categoryTextView;
-    public CardView cardView;
+    private List<Town> towns;
+    private ImageView imageView;
+    private TextView titleTextView;
+    private TextView categoryTextView;
+    private CardView cardView;
     private Context context;
 
     public class GeoTownListViewHolder extends RecyclerView.ViewHolder{
@@ -63,17 +63,18 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
 
     @Override
     public void onBindViewHolder(GeoTownListViewHolder holder, int position) {
-//        holder.imageView.setImageURI(Uri.parse(towns.get(position).getImageUrls().get(0)));
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         final int height = displayMetrics.heightPixels;
         final int width = displayMetrics.widthPixels;
-        cardView.getLayoutParams().width = (int)(width*0.7f);
+        cardView.getLayoutParams().width = (int)(width*0.6f);
 
         Picasso.with(imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(imageView);
 
         titleTextView.setText(towns.get(position).getTitle());
         categoryTextView.setText(towns.get(position).getCategory());
+
     }
 
     @Override

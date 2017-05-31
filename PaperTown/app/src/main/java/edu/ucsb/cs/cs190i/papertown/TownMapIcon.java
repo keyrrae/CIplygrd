@@ -29,7 +29,7 @@ public class TownMapIcon {
     private int resourceHeight;
     private Resources resources;
     private String category;
-    private int padding = 5;
+    private int padding = 40;
     private int iconDrawableId;
     private boolean ifPressed = false;
     private int backgroundColor;
@@ -45,21 +45,21 @@ public class TownMapIcon {
         if(!ifPressed) {
             backgroundColor = Color.WHITE;
             if (category.equals("place")) {
-                iconDrawableId = R.drawable.ic_place_black_18dp;
+                iconDrawableId = R.drawable.ic_location_city_black_24dp;
             } else if (category.equals("creature")) {
-                iconDrawableId = R.drawable.ic_traffic_black_18dp;
+                iconDrawableId = R.drawable.ic_pets_black_24dp;
             } else if (category.equals("event")) {
-                iconDrawableId = R.drawable.ic_chat_black_18dp;
+                iconDrawableId = R.drawable.ic_chat_black_24dp;
             }
         }
         else{
-            backgroundColor = resources.getColor(R.color.Medium_Green);
+            backgroundColor = resources.getColor(R.color.PrimaryPink);
             if (category.equals("place")) {
-                iconDrawableId = R.drawable.ic_place_white_18dp;
+                iconDrawableId = R.drawable.ic_location_city_white_24dp;
             } else if (category.equals("creature")) {
-                iconDrawableId = R.drawable.ic_traffic_white_18dp;
+                iconDrawableId = R.drawable.ic_pets_white_24dp;
             } else if (category.equals("event")) {
-                iconDrawableId = R.drawable.ic_chat_white_18dp;
+                iconDrawableId = R.drawable.ic_chat_white_24dp;
             }
         }
     }
@@ -74,11 +74,13 @@ public class TownMapIcon {
 
         // paint defines the text color, stroke width and size
         Paint color = new Paint();
-        color.setTextSize(35);
-        color.setColor(Color.BLACK);
+        color.setColor(backgroundColor);
+        color.setStrokeWidth(1);
+
+        canvas1.drawCircle(canvas1.getWidth() / 2, canvas1.getHeight() / 2, canvas1.getWidth()/2 , color);
 
         // modify canvas
-        canvas1.drawColor(backgroundColor);
+        //canvas1.drawColor(backgroundColor);
         canvas1.drawBitmap(BitmapFactory.decodeResource(resources,iconDrawableId), ((canvas1.getWidth() - resourceWidth) / 2), ((canvas1.getHeight() - resourceHeight) / 2), color);
 
         return iconBitmap;
