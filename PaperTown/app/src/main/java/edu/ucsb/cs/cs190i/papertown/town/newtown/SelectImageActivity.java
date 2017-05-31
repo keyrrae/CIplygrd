@@ -200,7 +200,7 @@ public class SelectImageActivity extends AppCompatActivity
                             }
 
                         }
-                    });
+                });
 
                 } else {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
@@ -306,45 +306,7 @@ public class SelectImageActivity extends AppCompatActivity
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
-//        Cursor cursor;
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//
-//
-//                // Should we show an explanation?
-//                if (shouldShowRequestPermissionRationale(
-//                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                    // Explain to the user why we need to read the contacts
-//                    Log.i("my", "permission.READ_EXTERNAL_STORAGE");
-//
-//                }
-//
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-//                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-//
-//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                // app-defined int constant
-//
-////                        return;
-//            }
-//            else{
-//                Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-//                //normal request goes here
-////                cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-////                        column, sel, new String[]{id}, null);
-////
-////
-////                int columnIndex = cursor.getColumnIndex(column[0]);
-////
-////                if (cursor.moveToFirst()) {
-////                    filePath = cursor.getString(columnIndex);
-////                }
-////                cursor.close();
-////                return filePath;
-//            }
-//        }
+
 
 
 

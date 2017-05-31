@@ -261,7 +261,6 @@ public class GeoActivity extends AppCompatActivity implements
                     pressedTownId = towns.get(snappingPosition).getId();
 
 
-
                     updateMapMarkers();
 
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
@@ -271,9 +270,14 @@ public class GeoActivity extends AppCompatActivity implements
                     ImageView bar = (ImageView) centerView.findViewById(R.id.geo_town_pick_bar);
                     bar.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
 
+
+                    Log.i("onScrollStateChanged", "snappingPosition = " + snappingPosition);
+                    Log.i("onScrollStateChanged", "recyclerView.getChildCount() = " + recyclerView.getChildCount());
+
                     for (int i = 0; i < recyclerView.getChildCount(); i++) {
-                        if (i != snappingPosition) {
-                            View v = recyclerView.getChildAt(i);
+                        View v = recyclerView.getChildAt(i);
+                        String t_title = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
+                        if (!t_title.equals(((TextView) centerView.findViewById(R.id.geo_town_title)).getText().toString())) {
                             ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
                             bar2.setBackgroundColor(Color.TRANSPARENT);
                         }
@@ -397,15 +401,16 @@ public class GeoActivity extends AppCompatActivity implements
             View v = mRecyclerView.getChildAt(i);
 
             String titleText = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
-            if(titleText.equals(marker.getTitle())){
-                Log.d("Child at i ",""+i);
+            if (titleText.equals(marker.getTitle())) {
+                Log.d("Child at i ", "" + i);
                 pressedTownId = towns.get(i).getId();
                 // move RecyclerView
                 RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(this) {
-                            @Override protected int getVerticalSnapPreference() {
-                                return LinearSmoothScroller.SNAP_TO_START;
-                            }
-                        };
+                    @Override
+                    protected int getVerticalSnapPreference() {
+                        return LinearSmoothScroller.SNAP_TO_START;
+                    }
+                };
                 smoothScroller.setTargetPosition(i);
                 linearLayoutManager.startSmoothScroll(smoothScroller);
 
@@ -472,7 +477,7 @@ public class GeoActivity extends AppCompatActivity implements
 
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                             Town town = ds.getValue(Town.class);
-                                            Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
+                                            //Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
                                             towns.add(town);
                                         }
 
@@ -492,7 +497,7 @@ public class GeoActivity extends AppCompatActivity implements
                                         Log.i("onTownsChange:", "isEqual = " + isEqual);
 
                                         //                                        expand(mRecyclerView);
-                                        Log.i("onDataChange", "towns.size() = " + towns.size());
+                                        // Log.i("onDataChange", "towns.size() = " + towns.size());
                                         if (towns.size() > 0) {
                                             if (ifCollasped) {
                                                 Log.i("onDataChange", "expand");
@@ -713,7 +718,7 @@ public class GeoActivity extends AppCompatActivity implements
                 connectionResult.startResolutionForResult(this,
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 /*
-				 * Thrown if Google Play services canceled the original
+                 * Thrown if Google Play services canceled the original
 				 * PendingIntent
 				 */
             } catch (IntentSender.SendIntentException e) {
