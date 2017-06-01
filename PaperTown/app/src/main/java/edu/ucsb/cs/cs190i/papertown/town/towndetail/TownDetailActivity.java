@@ -36,6 +36,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -342,8 +343,24 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
 
                 this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+
+                // click to show fullscreen single image
+                imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        //Toast.makeText(getApplicationContext(), "Item Clicked: " + position, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), SingleImageActivity.class);
+                        i.putExtra("ImageUri",uriList.get(position).toString());
+                        startActivity(i);
+                    }
+                });
             }
         }
+
+
+
         //handle the google Maps
 
         myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
@@ -394,5 +411,6 @@ public class TownDetailActivity extends AppCompatActivity {
         } else {
             Log.i("manu", "Error - Map Fragment was null!!");
         }
+
     }
 }
