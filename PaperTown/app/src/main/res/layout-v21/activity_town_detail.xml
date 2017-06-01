@@ -7,36 +7,45 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context="edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity">
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+        android:theme="@style/AppTheme.AppBarOverlay">
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_detail"
             android:layout_width="match_parent"
+            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/PrimaryPink"
-            android:elevation="0dp"
-            android:minHeight="130dp" />
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
+
 
     <ScrollView
         android:id="@+id/scrollView_detail"
         android:layout_width="match_parent"
-        android:layout_height="657dp">
+        android:layout_height="match_parent">
+
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
 
             <ImageView
                 android:id="@+id/detail_town_image"
@@ -46,91 +55,76 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/corridor" />
 
+
+
+            <TextView
+                android:id="@+id/detail_town_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="Roboto"
+                android:text="Author"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/detail_town_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
-                android:text="Malibu Dream Airstream"
-                android:textAppearance="@style/TitleText_detail"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
-                android:background="@color/Gray"/>
+                android:fontFamily="Roboto"
+                android:text="Town A"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/m"
-                android:paddingTop="@dimen/m"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/detail_town_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_location_city_black_24dp" />
-
+                android:orientation="horizontal">
                 <TextView
                     android:id="@+id/detail_town_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:layout_marginStart="@dimen/xs"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="Roboto"
                     android:text="Place"
-                    android:textAppearance="@style/MainTextBold_detail" />
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="10dp" />
 
                 <TextView
                     android:id="@+id/detail_town_visit_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-
+                    android:layout_marginTop="8dp"
                     android:layout_toRightOf="@+id/detail_town_category"
-                    android:text="75 visitors"
-                    android:textAppearance="@style/MainTextRegular_detail"/>
+                    android:fontFamily="Roboto"
+                    android:text="75 visits"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="10dp" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/detail_town_author"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/m"
-                    android:layout_marginTop="@dimen/xs"
-                    android:text="Documented by"
-                    android:textAppearance="@style/MainTextRegular_detail"/>
-                <TextView
-                    android:id="@+id/detail_town_information"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/xs"
-                    android:layout_marginTop="@dimen/xs"
-                    android:text="Author"
-                    android:textAppearance="@style/MainTextBold_detail"
-                    android:textColor="@color/Medium_Green"/>
-            </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
-                android:background="@color/Gray"/>
 
             <TextView
                 android:id="@+id/detail_town_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
-                android:layout_marginEnd="@dimen/m"
-                android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor " />
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="Roboto"
+                android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
+                android:textColor="@android:color/background_dark"
+                android:textSize="14dp" />
 
             <fragment
                 android:id="@+id/detail_map"
@@ -162,25 +156,32 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="14dp" />
 
+
+
+
             <edu.ucsb.cs.cs190i.papertown.town.newtown.WrappingGridView
                 android:id="@+id/detail_image_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:horizontalSpacing="15dp"
                 android:numColumns="3"
+                android:verticalSpacing="15dp"
+                android:horizontalSpacing="15dp"
+                android:gravity="center"
                 android:padding="5sp"
-                android:verticalSpacing="15dp" />
+                />
 
             <Button
                 android:id="@+id/button_test_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="Button" />
+
 
         </LinearLayout>
 
-    </ScrollView>
 
+
+    </ScrollView>
 
 </LinearLayout>
