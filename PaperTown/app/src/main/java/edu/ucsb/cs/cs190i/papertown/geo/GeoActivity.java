@@ -191,21 +191,21 @@ public class GeoActivity extends AppCompatActivity implements
             Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
 
-        SearchView searchView = (SearchView) findViewById(R.id.search);
-        searchView.setQueryHint("Where to");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //TODO: perform the search
-                Toast.makeText(GeoActivity.this, query, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
+//        SearchView searchView = (SearchView) findViewById(R.id.search);
+//        searchView.setQueryHint("Where to");
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                //TODO: perform the search
+//                Toast.makeText(GeoActivity.this, query, Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return true;
+//            }
+//        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
