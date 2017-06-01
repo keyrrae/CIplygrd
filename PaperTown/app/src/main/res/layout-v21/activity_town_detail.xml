@@ -31,7 +31,7 @@
     <ScrollView
         android:id="@+id/scrollView_detail"
         android:layout_width="match_parent"
-        android:layout_height="657dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,20 +51,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
                 android:layout_marginTop="16dp"
                 android:text="Malibu Dream Airstream"
                 android:textAppearance="@style/TitleText_detail"
                 />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
-                android:background="@color/Gray"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/m"
-                android:paddingTop="@dimen/m"
+                android:paddingTop="@dimen/l"
                 android:orientation="horizontal"
                 android:gravity="center">
 
@@ -72,23 +69,23 @@
                     android:id="@+id/detail_town_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_location_city_black_24dp" />
+                    android:background="@drawable/ic_location_city_white_24dp"
+                    android:backgroundTint="@color/PrimaryPink"/>
 
                 <TextView
                     android:id="@+id/detail_town_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="@dimen/xs"
                     android:text="Place"
-                    android:textAppearance="@style/MainTextBold_detail" />
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/PrimaryPink"/>
 
                 <TextView
                     android:id="@+id/detail_town_visit_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-
+                    android:layout_marginLeft="@dimen/s"
                     android:layout_toRightOf="@+id/detail_town_category"
                     android:text="75 visitors"
                     android:textAppearance="@style/MainTextRegular_detail"/>
@@ -98,7 +95,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/m">
                 <TextView
                     android:id="@+id/detail_town_author"
                     android:layout_width="match_parent"
@@ -107,76 +105,125 @@
                     android:layout_marginTop="@dimen/xs"
                     android:text="Documented by"
                     android:textAppearance="@style/MainTextRegular_detail"/>
+
                 <TextView
                     android:id="@+id/detail_town_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/xs"
+                    android:layout_marginStart="@dimen/s"
                     android:layout_marginTop="@dimen/xs"
                     android:text="Author"
                     android:textAppearance="@style/MainTextBold_detail"
-                    android:textColor="@color/Medium_Green"/>
+                    android:textColor="@color/PrimaryPink" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/m"
-                android:background="@color/Gray"/>
+                android:background="@color/LightestGray"/>
+
+            <TextView
+                android:id="@+id/detail_town_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/m"
+                android:text="Discription"
+                android:textAppearance="@style/MainTextBold_detail"
+                />
 
             <TextView
                 android:id="@+id/detail_town_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
-                android:layout_marginEnd="@dimen/m"
-                android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor " />
+                android:layout_margin="@dimen/m"
+                android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
+                android:textAppearance="@style/MainTextRegular_detail"
+                />
 
             <fragment
                 android:id="@+id/detail_map"
                 class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="@dimen/m" />
+
+            <TextView
+                android:id="@+id/detail_coor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coordinates"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/l"
+                android:textAppearance="@style/MainTextBold_detail"
+                />
 
             <TextView
                 android:id="@+id/detail_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="Roboto"
+                android:text="Coordinate"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/m"
+                android:textAppearance="@style/MainTextRegular_detail"
+                 />
+
+            <TextView
+                android:id="@+id/detail_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Address"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="10dp" />
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/l"
+                android:textAppearance="@style/MainTextBold_detail"
+                />
 
             <TextView
                 android:id="@+id/detail_physical_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="Roboto"
-                android:text="Address here. Olancha, CA 93549 >>"
-                android:textColor="@android:color/background_dark"
-                android:textSize="14dp" />
+                android:text="Address here. Olancha, CA 93549."
+                android:layout_margin="@dimen/m"
+                android:textAppearance="@style/MainTextRegular_detail"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/m"
+                android:background="@color/LightestGray"/>
+
+            <TextView
+                android:id="@+id/detail_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gallery"
+                android:layout_marginStart="@dimen/m"
+                android:textAppearance="@style/MainTextBold_detail"
+                />
 
             <edu.ucsb.cs.cs190i.papertown.town.newtown.WrappingGridView
                 android:id="@+id/detail_image_grid"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/m"
                 android:gravity="center"
-                android:horizontalSpacing="15dp"
-                android:numColumns="3"
-                android:padding="5sp"
-                android:verticalSpacing="15dp" />
+                android:numColumns="4"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/m"
+                android:background="@color/LightestGray"/>
 
             <Button
                 android:id="@+id/button_test_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Button" />
+
+
 
         </LinearLayout>
 

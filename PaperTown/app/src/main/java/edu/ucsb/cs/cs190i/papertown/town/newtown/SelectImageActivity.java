@@ -87,44 +87,48 @@ public class SelectImageActivity extends AppCompatActivity
         String s = getIntent().getStringExtra(EXTRA_MESSAGE);
         Log.i("onActivityResult", "getStringExtra = " + s);
 
-        //compress the image from the uri
-        Uri uri = Uri.parse(s);
-        File f = new File(uri.toString());
-        // Log.i("original_image","f.getName(); = "+f.getName());
-        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-        uri = (Uri.fromFile(f));
 
-        imageUris = addUri(imageUris,uri);
 
-        SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-        grid=(GridView)findViewById(R.id.grid);
-        grid.setAdapter(adapter);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Log.i("addOnItemTouchListener", "onItemClick position =" + position);
-                if(position == imageUris.length){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            if (shouldShowRequestPermissionRationale(
-                                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                                Log.i("my", "permission.READ_EXTERNAL_STORAGE");
-                            }
-                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                        }
-                        else{
-                            Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-                            Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
-                        }
-                    }
-                }
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Log.i("my", "permission.READ_EXTERNAL_STORAGE");
             }
-        });
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+        else{
+            //compress the image from the uri
+            Uri uri = Uri.parse(s);
+            File f = new File(uri.toString());
+            // Log.i("original_image","f.getName(); = "+f.getName());
+            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+            uri = (Uri.fromFile(f));
+
+            imageUris = addUri(imageUris, uri);
+
+            SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+            grid = (GridView) findViewById(R.id.grid);
+            grid.setAdapter(adapter);
+            grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Log.i("addOnItemTouchListener", "onItemClick position =" + position);
+                    if (position == imageUris.length) {
+
+                        Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
+                        Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
+
+                    }
+
+                }
+            });
+        }
     }
 
     @Override
@@ -163,10 +167,40 @@ public class SelectImageActivity extends AppCompatActivity
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE2");
+//
+//                    //to start activity after the first time asking for permission
+//                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
 
-                    //to start activity after the first time asking for permission
-                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
+                    //compress the image from the uri
+                    String s = getIntent().getStringExtra(EXTRA_MESSAGE);
+                    Uri uri = Uri.parse(s);
+                    File f = new File(uri.toString());
+                    // Log.i("original_image","f.getName(); = "+f.getName());
+                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                    uri = (Uri.fromFile(f));
+
+                    imageUris = addUri(imageUris,uri);
+
+                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                    grid=(GridView)findViewById(R.id.grid);
+                    grid.setAdapter(adapter);
+                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+                            Log.i("addOnItemTouchListener", "onItemClick position =" + position);
+                            if(position == imageUris.length){
+
+                                Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
+                                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
+
+                            }
+
+                        }
+                    });
 
                 } else {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
@@ -191,8 +225,8 @@ public class SelectImageActivity extends AppCompatActivity
         }
     }
 
-    public static String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
-        String filePath = getRealPathFromURI_API19(context, inputUri);
+    public  String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
+        String filePath = getRealPathFromURI(context, inputUri);
         final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
 
         // First decode with inJustDecodeBounds=true to check dimensions of image
@@ -261,7 +295,7 @@ public class SelectImageActivity extends AppCompatActivity
         return inSampleSize;
     }
 
-    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+    public String getRealPathFromURI(Context context, Uri uri) {
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
 

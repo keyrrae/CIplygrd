@@ -24,6 +24,7 @@
 
     <dimen name="xsT">12sp</dimen>
     <dimen name="sT">14sp</dimen>
+    <dimen name="nT">16sp</dimen>
     <dimen name="mT">18sp</dimen>
     <dimen name="lT">24sp</dimen>
     <dimen name="xlT">32sp</dimen>

@@ -36,7 +36,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="3sp"
-        android:background="@color/Gray"
+        android:background="@color/LighterGray"
         android:progressDrawable="@drawable/customprogressbar" />
 
 
@@ -246,8 +246,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="@color/Gray"
+        android:background="@color/LighterGray"
         android:gravity="center"
-        android:text="6 steps to finish" />
+        android:text="6 steps to finish"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
