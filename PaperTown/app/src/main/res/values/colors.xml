@@ -17,9 +17,9 @@
     <color name="PrimaryPink">#f50057</color>
     <color name="DarkPink">#bb002f</color>
     <color name="LightPink">#ff5983</color>
-    <color name="Gray">#e0e0e0</color>
+    <color name="LightestGray">#e0e0e0</color>
     <color name="Almost_White">#fafafa</color>
-    <color name="Dark_Gray">#c7c7c7</color>
+    <color name="LighterGray">#c7c7c7</color>
     <color name="PrimaryGray">#424242</color>
     <color name="LightGray">#6d6d6d</color>
     <color name="DarkGray">#1b1b1b</color>

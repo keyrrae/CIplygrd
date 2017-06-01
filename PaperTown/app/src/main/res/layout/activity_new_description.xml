@@ -14,7 +14,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@color/Gray"
+    android:background="@color/LighterGray"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewDescriptionActivity">
 
     <android.support.design.widget.AppBarLayout

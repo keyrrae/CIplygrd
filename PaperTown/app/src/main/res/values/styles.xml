@@ -58,13 +58,13 @@
 
     <style name="MainTextBold_detail">
         <item name="android:textColor">@color/PrimaryGray</item>
-        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:textSize">@dimen/mT</item>
         <item name="android:fontFamily">"sans-serif-medium"</item>
     </style>
 
     <style name="MainTextRegular_detail">
-        <item name="android:textColor">@color/PrimaryGray</item>
-        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:textColor">@color/LightGray</item>
+        <item name="android:textSize">@dimen/nT</item>
         <item name="android:fontFamily">"sans-serif"</item>
     </style>
 
