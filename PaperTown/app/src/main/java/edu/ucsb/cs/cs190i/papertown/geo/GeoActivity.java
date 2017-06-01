@@ -124,6 +124,7 @@ public class GeoActivity extends AppCompatActivity implements
     private boolean ifCollasped = true;
 
     private float currentMapZoomLeverl = 0;
+    private boolean ifNothingSelected = true;
 
     LatLng currLoc = new LatLng(0.0, 0.0);
     /*
@@ -137,6 +138,8 @@ public class GeoActivity extends AppCompatActivity implements
 
     RecyclerView mRecyclerView;
     public LinearLayoutManager linearLayoutManager;
+
+    private ImageView pre_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,23 +242,43 @@ public class GeoActivity extends AppCompatActivity implements
         mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (mRecyclerView.getChildCount() != 0) {
-                    View v = mRecyclerView.getChildAt(0);
-                    ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-                    bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+                Log.i("onGlobalLayout", "onGlobalLayout");
+                if (currentMapZoomLeverl > zoomLevelThreshold&&ifNothingSelected) {
+                    Log.i("onGlobalLayout", "PrimaryPink");
+                    if (mRecyclerView.getChildCount() != 0) {
+                        View v = mRecyclerView.getChildAt(0);
+                        ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                        bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
 
-                    pressedTownId = towns.get(0).getId();
-                    updateMapMarkers();
+                        pressedTownId = towns.get(0).getId();
+                        updateMapMarkers();
+                        //pre_view = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                    }
                 }
             }
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+
+                Log.i("onScrollStateChanged", "newState = " + newState);
+
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL||newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+
+                    //clear color bar when scrolling
+//                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+//                        View v = recyclerView.getChildAt(i);
+//                        ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+//                        bar2.setBackgroundColor(Color.TRANSPARENT);
+//                    }
+                    clearAllColorBar(recyclerView);
+
+
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     View centerView = helper.findSnapView(linearLayoutManager);
                     snappingPosition = linearLayoutManager.getPosition(centerView);
                     pressedTownId = towns.get(snappingPosition).getId();
@@ -269,28 +292,13 @@ public class GeoActivity extends AppCompatActivity implements
                     // set track bar color
                     ImageView bar = (ImageView) centerView.findViewById(R.id.geo_town_pick_bar);
                     bar.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
-
-
-                    Log.i("onScrollStateChanged", "snappingPosition = " + snappingPosition);
-                    Log.i("onScrollStateChanged", "recyclerView.getChildCount() = " + recyclerView.getChildCount());
-
-                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
-                        View v = recyclerView.getChildAt(i);
-                        String t_title = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
-                        if (!t_title.equals(((TextView) centerView.findViewById(R.id.geo_town_title)).getText().toString())) {
-                            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-                            bar2.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                    }
                 }
             }
         });
 
 
         mRecyclerView.addOnItemTouchListener(
-
                 new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
@@ -307,6 +315,15 @@ public class GeoActivity extends AppCompatActivity implements
 
     }
 
+
+    private void clearAllColorBar(RecyclerView recyclerView){
+        //clear color bar when scrolling
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            View v = recyclerView.getChildAt(i);
+            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+            bar2.setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
 
     public static void expand(final View v) {
         v.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -335,8 +352,15 @@ public class GeoActivity extends AppCompatActivity implements
         v.startAnimation(a);
     }
 
-    public static void collapse(final View v) {
+    public void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
+
+        //clear things
+        pressedTownId = null;
+        updateMapMarkers();
+        clearAllColorBar((RecyclerView)v);
+        ifNothingSelected = true;
+
 
         Animation a = new Animation() {
             @Override
@@ -395,12 +419,13 @@ public class GeoActivity extends AppCompatActivity implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-
+        ifNothingSelected = false;
         Log.d("marker", "" + marker.getTitle());
-        for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
-            View v = mRecyclerView.getChildAt(i);
+        for (int i = 0; i < towns.size(); i++) {
+            //View v = mRecyclerView.getChildAt(i);
 
-            String titleText = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
+            //String titleText = ((TextView) v.findViewById(R.id.geo_town_title)).getText().toString();
+            String titleText = towns.get(i).getTitle();
             if (titleText.equals(marker.getTitle())) {
                 Log.d("Child at i ", "" + i);
                 pressedTownId = towns.get(i).getId();
@@ -420,7 +445,7 @@ public class GeoActivity extends AppCompatActivity implements
             }
 
         }
-
+        clearAllColorBar(mRecyclerView);
         return true;
     }
 
@@ -513,7 +538,6 @@ public class GeoActivity extends AppCompatActivity implements
                                         }
 
                                         if (!isEqual) {
-
                                             updateMapMarkers();
                                             //override adapter
                                             mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
@@ -763,63 +787,63 @@ public class GeoActivity extends AppCompatActivity implements
         return true;
     }
 
-    private void initData() {
-        towns = new ArrayList<>();
-
-        List<String> imgs1 = new ArrayList<>();
-        imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
-
-        List<String> imgs2 = new ArrayList<>();
-        imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
-
-        List<String> imgs3 = new ArrayList<>();
-        imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
-
-
-        Town t1 = new TownBuilder()
-                .setTitle("Mother Susanna Monument")
-                .setCategory("place")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs1)
-                .setSketch("")
-                .build();
-
-        Town t2 = new TownBuilder()
-                .setTitle("Father Crowley Monument")
-                .setCategory("place")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs2)
-                .setSketch("")
-                .build();
-
-        Town t3 = new TownBuilder()
-                .setTitle("Wonder Land")
-                .setCategory("creature")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-    }
+//    private void initData() {
+//        towns = new ArrayList<>();
+//
+//        List<String> imgs1 = new ArrayList<>();
+//        imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
+//
+//        List<String> imgs2 = new ArrayList<>();
+//        imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
+//
+//        List<String> imgs3 = new ArrayList<>();
+//        imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
+//
+//
+//        Town t1 = new TownBuilder()
+//                .setTitle("Mother Susanna Monument")
+//                .setCategory("place")
+//                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+//                .setAddress("6510 El Colegio Rd Apt 1223")
+//                .setLat(35.594559f)
+//                .setLng(-117.899149f)
+//                .setUserId("theUniqueEye")
+//                .setImages(imgs1)
+//                .setSketch("")
+//                .build();
+//
+//        Town t2 = new TownBuilder()
+//                .setTitle("Father Crowley Monument")
+//                .setCategory("place")
+//                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+//                .setAddress("6510 El Colegio Rd Apt 1223")
+//                .setLat(35.594559f)
+//                .setLng(-117.899149f)
+//                .setUserId("theUniqueEye")
+//                .setImages(imgs2)
+//                .setSketch("")
+//                .build();
+//
+//        Town t3 = new TownBuilder()
+//                .setTitle("Wonder Land")
+//                .setCategory("creature")
+//                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+//                .setAddress("Rabbit Hole 1901C")
+//                .setLat(35.594559f)
+//                .setLng(-117.899149f)
+//                .setUserId("Sams to Go")
+//                .setImages(imgs3)
+//                .setSketch("")
+//                .build();
+//
+//        towns.add(t1);
+//        towns.add(t2);
+//        towns.add(t3);
+//        towns.add(t1);
+//        towns.add(t2);
+//        towns.add(t3);
+//        towns.add(t1);
+//        towns.add(t2);
+//        towns.add(t3);
+//    }
 }
