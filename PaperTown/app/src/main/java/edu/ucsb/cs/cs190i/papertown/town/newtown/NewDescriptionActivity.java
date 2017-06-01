@@ -14,11 +14,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewDescriptionActivity extends AppCompatActivity {
 
@@ -26,6 +28,15 @@ public class NewDescriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_description);
+
+        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        String dataPassIn = passedInTown.getDescription();
+        Log.i("ed","dataPassIn = "+dataPassIn);
+        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
+            Log.i("ed","dataPassIn2 = "+dataPassIn);
+            ((EditText)findViewById(R.id.editText_new_description)).setText(dataPassIn);
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_description);
         setSupportActionBar(toolbar);

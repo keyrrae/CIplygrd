@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewInformationActivity extends AppCompatActivity {
 
@@ -28,6 +29,16 @@ public class NewInformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_information);
+
+        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        String dataPassIn = passedInTown.getUserAlias();
+        String[] dataPassInList = dataPassIn.split(",");
+        Log.i("ed","dataPassIn = "+dataPassIn);
+        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
+            Log.i("ed","dataPassIn2 = "+dataPassIn);
+            ((EditText)findViewById(R.id.editText_new_firstName)).setText(dataPassInList[0]);
+            ((EditText)findViewById(R.id.editText_new_lastName)).setText(dataPassInList[1]);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_info);
         setSupportActionBar(toolbar);

@@ -47,6 +47,7 @@ import java.util.Arrays;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 public class NewAddressActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks {
@@ -56,6 +57,14 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_address);
+
+        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        String dataPassIn = passedInTown.getAddress();
+        Log.i("ed","dataPassIn = "+dataPassIn);
+        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
+            Log.i("ed","dataPassIn2 = "+dataPassIn);
+            ((EditText)findViewById(R.id.editText_new_address)).setText(dataPassIn);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_address);
         setSupportActionBar(toolbar);

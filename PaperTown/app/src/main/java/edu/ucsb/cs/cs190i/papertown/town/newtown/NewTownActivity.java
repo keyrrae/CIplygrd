@@ -69,15 +69,39 @@ public class NewTownActivity extends AppCompatActivity implements
     private String category = "";
     private String description = "";
     private String information = "";
+    private float lat;
+    private float lng;
     private Uri[] uriList;
     private Uri imageUri = null;
+    private  ArrayList<String> uriStringArrayList;
 
     private int itemLeft = 6;
+
+    private Town outputTown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_town);
+
+
+
+
+
+        outputTown = new TownBuilder()
+                .setTitle(title)
+                .setAddress(address)
+                .setCategory(category)
+                .setDescription(description)
+                .setLat(lat)
+                .setLng(lng)
+                .setImages(uriStringArrayList)
+                .build();
+
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_done);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -97,10 +121,17 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                //stat camera rool
-                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);//one can be replaced with any action code
+                if(uriStringArrayList==null||uriStringArrayList.size()==0) {
+                    //stat camera rool
+                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);//one can be replaced with any action code
+                }
+                else{
+                    Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
+                    intent.putExtra("townPassIn", outputTown);
+                    startActivityForResult(intent, NEW_PHOTO_REQUEST);
+                }
             }
         });
 
@@ -109,7 +140,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, "asdf");
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_TITLE_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
@@ -122,7 +153,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, "asdf");
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_ADDRESS_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
@@ -136,7 +167,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, "asdf");
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_CATEGORY_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
@@ -149,7 +180,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, "asdf");
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
@@ -162,7 +193,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewInformationActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, "asdf");
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_INFORMATION_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
@@ -186,25 +217,25 @@ public class NewTownActivity extends AppCompatActivity implements
 
                     //processing address to latlng
                     String[] separated = address.split(",");
-                    float lat = Float.parseFloat(separated[0]);
-                    float lng = Float.parseFloat(separated[1]);
+                    lat = Float.parseFloat(separated[0]);
+                    lng = Float.parseFloat(separated[1]);
 
-                    //process Uri array data
-                    ArrayList<String> uriStringArrayList = new ArrayList<>();
-                    for (int i = 0; i < uriList.length; i++) {
-                        uriStringArrayList.add(uriList[i].toString());
-                    }
+//                    //process Uri array data
+//                    uriStringArrayList = new ArrayList<>();
+//                    for (int i = 0; i < uriList.length; i++) {
+//                        uriStringArrayList.add(uriList[i].toString());
+//                    }
 
                     //pass town as an object
-                    Town outputTown = new TownBuilder()
-                            .setTitle(title)
-                            .setAddress(address)
-                            .setCategory(category)
-                            .setDescription(description)
-                            .setLat(lat)
-                            .setLng(lng)
-                            .setImages(uriStringArrayList)
-                            .build();
+//                    Town outputTown = new TownBuilder()
+//                            .setTitle(title)
+//                            .setAddress(address)
+//                            .setCategory(category)
+//                            .setDescription(description)
+//                            .setLat(lat)
+//                            .setLng(lng)
+//                            .setImages(uriStringArrayList)
+//                            .build();
 
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
@@ -227,6 +258,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 String result = data.getStringExtra("result");
                 Log.i("onActivityResult", "result = " + result);
                 title = result;
+                outputTown.setTitle(result);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
@@ -241,6 +273,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 String result = data.getStringExtra("result");
                 Log.i("onActivityResult", "result = " + result);
                 address = result;
+                outputTown.setAddress(result);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
@@ -254,6 +287,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 String result = data.getStringExtra("result");
                 Log.i("onActivityResult", "result = " + result);
                 category = result;
+                outputTown.setCategory(result);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
@@ -267,6 +301,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 String result = data.getStringExtra("result");
                 Log.i("onActivityResult", "result = " + result);
                 description = result;
+                outputTown.setDescription(result);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
@@ -279,6 +314,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 String result = data.getStringExtra("result");
                 Log.i("onActivityResult", "result = " + result);
                 information = result;
+                outputTown.setUserAlias(result);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
@@ -304,6 +340,13 @@ public class NewTownActivity extends AppCompatActivity implements
                 c.setImageResource(R.drawable.ic_check_box_white_24dp);
                 Picasso.with(getApplicationContext()).load(uriList[0])
                         .into(imageView_newTown);
+
+                //process Uri array data
+                uriStringArrayList = new ArrayList<>();
+                for (int i = 0; i < uriList.length; i++) {
+                    uriStringArrayList.add(uriList[i].toString());
+                }
+                outputTown.setImageUrls(uriStringArrayList);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");

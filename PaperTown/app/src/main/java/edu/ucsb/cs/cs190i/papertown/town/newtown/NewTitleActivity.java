@@ -20,18 +20,27 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewTitleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_title);
 
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
-
+        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        String dataPassIn = passedInTown.getTitle();
+        Log.i("ed","dataPassIn = "+dataPassIn);
+        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
+            Log.i("ed","dataPassIn2 = "+dataPassIn);
+            ((EditText)findViewById(R.id.editText_newtitle)).setText(dataPassIn);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
