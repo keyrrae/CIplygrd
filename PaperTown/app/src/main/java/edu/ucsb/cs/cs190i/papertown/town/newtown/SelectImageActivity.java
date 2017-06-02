@@ -88,7 +88,7 @@ public class SelectImageActivity extends AppCompatActivity {
         });
 
         Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(
