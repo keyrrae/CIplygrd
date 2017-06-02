@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2017 - present, Jing Yan
+  ~  All rights reserved.
+  ~
+  ~  This source code is licensed under the BSD-style license found in the
+  ~  LICENSE file in the root directory of this source tree.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/detail_favor"
+        android:icon="@drawable/ic_favorite_border_white_24dp"
+        android:title="dislike"
+        app:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:id="@+id/detail_share"
+        android:icon="@drawable/ic_share_white_24dp"
+        android:title="@string/list_view"
+        app:showAsAction="collapseActionView|ifRoom" />
+</menu>

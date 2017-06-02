@@ -33,9 +33,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -109,6 +113,13 @@ public class TownDetailActivity extends AppCompatActivity {
             R.drawable.mc, R.drawable.light, R.drawable.door,
             R.drawable.light, R.drawable.corner};
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_detail, menu);
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,18 +127,45 @@ public class TownDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_town_detail);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail); // Attaching the layout to the toolbar object
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-        getSupportActionBar().setElevation(0);
-        toolbar.setTitle("");
-        toolbar.setSubtitle("");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("detail_to_main", "back");
                 finish();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.detail_favor:
+
+                        if(item.getTitle().equals("dislike")){
+                            Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
+                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                            item.setTitle("like");
+                            break;
+                        }
+                        if(item.getTitle().equals("like")){
+                            Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
+                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                            item.setTitle("dislike");
+                            break;
+                        }
+                        break;
+                    case R.id.detail_share:
+                        Toast.makeText(TownDetailActivity.this, "Want to share it?", Toast.LENGTH_SHORT).show();
+//                        Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
+//                        townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
+//                        startActivity(townListIntent);
+                        break;
+                }
+                return true;
             }
         });
 
@@ -342,8 +380,29 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
 
                 this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+
+                // click to show fullscreen single image
+                imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        //Toast.makeText(getApplicationContext(), "Item Clicked: " + position, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), SingleImageActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("ImageUri",uriList.get(position).toString());
+                        extras.putParcelableArrayList("AllImageUris",uriList);
+                        extras.putInt("Position",position);
+                        i.putExtras(extras);
+                        startActivity(i);
+                        //Log.d("AllImageUris_SEND",""+uriList);
+                    }
+                });
             }
         }
+
+
+
         //handle the google Maps
 
         myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
@@ -394,5 +453,6 @@ public class TownDetailActivity extends AppCompatActivity {
         } else {
             Log.i("manu", "Error - Map Fragment was null!!");
         }
+
     }
 }

@@ -13,6 +13,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/PrimaryPink"
     tools:context="edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity">
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -30,8 +31,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Geolocation based story sharing app"
-            android:textSize="20sp"
+            android:text="Paper Town"
+            android:textAppearance="@style/SplashText"
             android:id="@+id/shimmer_text"
              />
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -40,13 +41,15 @@
 
     <Button
         android:id="@+id/button_login"
-        android:layout_width="180dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/s"
+        android:textAppearance="@style/MainTextBold_detail"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="@dimen/l"
+        android:backgroundTint="@color/Almost_White"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
@@ -62,16 +65,18 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.88" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <Button
         android:id="@+id/button_signup"
-        android:layout_width="180dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Signup"
+        android:textAppearance="@style/MainTextBold_detail"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginBottom="@dimen/l"
+        android:layout_marginLeft="@dimen/s"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:backgroundTint="@color/Almost_White"/>
 
 </android.support.constraint.ConstraintLayout>

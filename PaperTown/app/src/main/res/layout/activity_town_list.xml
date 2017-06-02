@@ -15,7 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".town.townlist.TownListActivity">
+    tools:context=".town.townlist.TownListActivity"
+    android:background="@color/Almost_White">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
