@@ -37,7 +37,9 @@ public class NewInformationActivity extends AppCompatActivity {
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
             Log.i("ed","dataPassIn2 = "+dataPassIn);
             ((EditText)findViewById(R.id.editText_new_firstName)).setText(dataPassInList[0]);
-            ((EditText)findViewById(R.id.editText_new_lastName)).setText(dataPassInList[1]);
+            if(dataPassInList.length>1) {
+                ((EditText) findViewById(R.id.editText_new_lastName)).setText(dataPassInList[1]);
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_info);

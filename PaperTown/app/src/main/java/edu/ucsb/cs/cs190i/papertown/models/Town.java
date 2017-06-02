@@ -13,6 +13,8 @@ import android.icu.util.ULocale;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.ucsb.cs.cs190i.papertown.GeoHash;
+
 /**
  * Created by xuanwang on 5/4/17.
  */
@@ -115,6 +117,7 @@ public class Town implements Serializable {
 
   public void setLat(float lat) {
     this.lat = lat;
+    this.geoHash = GeoHash.genGeoHash(lat, lng);
   }
 
   public double getLng() {
@@ -123,6 +126,7 @@ public class Town implements Serializable {
 
   public void setLng(float lng) {
     this.lng = lng;
+    this.geoHash = GeoHash.genGeoHash(lat, lng);
   }
 
   public String getUserId() {

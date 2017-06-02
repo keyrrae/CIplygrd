@@ -215,10 +215,10 @@ public class NewTownActivity extends AppCompatActivity implements
                     //passing data to detailView
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
 
-                    //processing address to latlng
-                    String[] separated = address.split(",");
-                    lat = Float.parseFloat(separated[0]);
-                    lng = Float.parseFloat(separated[1]);
+//                    //processing address to latlng
+//                    String[] separated = address.split(",");
+//                    lat = Float.parseFloat(separated[0]);
+//                    lng = Float.parseFloat(separated[1]);
 
 //                    //process Uri array data
 //                    uriStringArrayList = new ArrayList<>();
@@ -250,8 +250,6 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-
-
         if (requestCode == NEW_TITLE_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -274,6 +272,13 @@ public class NewTownActivity extends AppCompatActivity implements
                 Log.i("onActivityResult", "result = " + result);
                 address = result;
                 outputTown.setAddress(result);
+
+                //processing address to latlng
+                String[] separated = address.split(",");
+                lat = Float.parseFloat(separated[0]);
+                lng = Float.parseFloat(separated[1]);
+                outputTown.setLat(lat);
+                outputTown.setLng(lng);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
