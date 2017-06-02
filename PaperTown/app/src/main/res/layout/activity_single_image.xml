@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~  Copyright (c) 2017 - present, Zhenyu Yang
+  ~  Copyright (c) 2017 - present, Jing Yan
   ~  All rights reserved.
   ~
   ~  This source code is licensed under the BSD-style license found in the
@@ -15,13 +15,23 @@
     android:gravity="center"
     android:background="@android:color/black">
 
-    <ImageView
-        android:id="@+id/single_image"
-        android:layout_height="wrap_content"
+    <!--<ImageView-->
+        <!--android:id="@+id/single_image"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:src="@drawable/window"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--/>-->
+
+    <TextView
         android:layout_width="match_parent"
-        android:src="@drawable/window"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
+        android:layout_height="match_parent"
+        android:text="No more."
+        android:gravity="center"
+        android:textAppearance="@style/TitleText"
+        android:textColor="@color/Almost_White"
         />
+
 
 </LinearLayout>

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 - present, Zhenyu Yang
+ *  Copyright (c) 2017 - present, Jing Yan
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
@@ -17,7 +17,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.picasso.Picasso;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.util.ArrayList;
 
@@ -29,12 +31,16 @@ import edu.ucsb.cs.cs190i.papertown.R;
 
 public class SingleImageActivity extends AppCompatActivity {
     private Uri uri;
+    private ArrayList<Uri> uris;
+    private int position;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_image);
+
+        Fresco.initialize(this);
 
         LinearLayout l = (LinearLayout) findViewById(R.id.single_layout);
         l.setOnClickListener(new View.OnClickListener() {
@@ -47,11 +53,17 @@ public class SingleImageActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras!=null){
             uri = Uri.parse(extras.getString("ImageUri"));
-            //Log.d("URI",""+uri);
+            uris = extras.getParcelableArrayList("AllImageUris");
+            position = extras.getInt("Position");
+            Log.d("URIs",""+uris);
         }
 
-        final ImageView single_image = (ImageView) findViewById(R.id.single_image);
+        //final ImageView single_image = (ImageView) findViewById(R.id.single_image);
+        //Picasso.with(getApplicationContext()).load(uri).into(single_image);
 
-        Picasso.with(getApplicationContext()).load(uri).into(single_image);
+        // use FrescoImageViewer Library
+        new ImageViewer.Builder<>(this, uris)
+                .setStartPosition(position)
+                .show();
     }
 }

@@ -68,6 +68,12 @@
         <item name="android:fontFamily">"sans-serif"</item>
     </style>
 
+    <style name="SplashText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/xxlT</item>
+        <item name="android:fontFamily">"serif-monospace"</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <!-- end of Text Style -->
 
 
