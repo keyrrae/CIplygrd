@@ -20,11 +20,13 @@
     <dimen name="l">32dp</dimen>
     <dimen name="xl">48dp</dimen>
 
-    <dimen name="ssT">12sp</dimen>
-    <dimen name="sT">16sp</dimen>
-    <dimen name="mT">24sp</dimen>
-    <dimen name="lT">32sp</dimen>
-    <dimen name="xlT">48sp</dimen>
+    <dimen name="xsT">12sp</dimen>
+    <dimen name="sT">14sp</dimen>
+    <dimen name="nT">16sp</dimen>
+    <dimen name="mT">18sp</dimen>
+    <dimen name="lT">24sp</dimen>
+    <dimen name="xlT">32sp</dimen>
+    <dimen name="xxlT">48sp</dimen>
 
 
 </resources>

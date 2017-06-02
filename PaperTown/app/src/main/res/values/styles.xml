@@ -32,6 +32,8 @@
     </style>
 
     <!-- Text Style -->
+
+    <!-- Map Card -->
     <style name="TitleText">
         <item name="android:textColor">@color/PrimaryGray</item>
         <item name="android:textSize">@dimen/sT</item>
@@ -50,6 +52,7 @@
         <item name="android:fontFamily">"sans-serif"</item>
     </style>
 
+    <!-- Detail -->
     <style name="TitleText_detail">
         <item name="android:textColor">@color/PrimaryGray</item>
         <item name="android:textSize">@dimen/xlT</item>
@@ -68,12 +71,34 @@
         <item name="android:fontFamily">"sans-serif"</item>
     </style>
 
+    <!-- Splash Screen -->
     <style name="SplashText">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/xxlT</item>
         <item name="android:fontFamily">"serif-monospace"</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!-- List Card -->
+    <style name="TitleText_list">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/lT</item>
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+    </style>
+
+    <style name="MainText_list">
+        <item name="android:textColor">@color/PrimaryGray</item>
+        <item name="android:textSize">@dimen/sT</item>
+        <item name="android:fontFamily">"sans-serif"</item>
+    </style>
+
+    <style name="footerText_list">
+        <item name="android:textColor">@color/LightGray</item>
+        <item name="android:textSize">@dimen/xsT</item>
+        <item name="android:fontFamily">"sans-serif"</item>
+    </style>
+
+
     <!-- end of Text Style -->
 
 
