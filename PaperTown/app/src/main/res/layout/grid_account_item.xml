@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2017 - present, Zhenyu Yang
+  ~  All rights reserved.
+  ~
+  ~  This source code is licensed under the BSD-style license found in the
+  ~  LICENSE file in the root directory of this source tree.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/grid_item" >
+
+    <ImageView
+        android:id="@+id/grid_item_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/com_facebook_profile_picture_blank_square" />
+
+    <TextView
+        android:id="@+id/grid_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grid_item_image"
+        android:layout_centerHorizontal="true"
+        android:textSize = "15dp"
+        android:text="untitled"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>

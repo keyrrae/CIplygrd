@@ -53,12 +53,13 @@ import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 public class NewAddressActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks {
     private Location location;
     private LocationManager locationManager;
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_address);
 
-        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         String dataPassIn = passedInTown.getAddress();
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
@@ -79,7 +80,19 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
 
                 if(location!=null) {
                     EditText ev = ((EditText) findViewById(R.id.editText_new_address));
-                    returnIntent.putExtra("result", ev.getText().toString());
+                    //returnIntent.putExtra("result", ev.getText().toString());
+
+                    String address = ev.getText().toString();
+                    passedInTown.setAddress(address);
+
+                    //processing address to latlng
+                    String[] separated = address.split(",");
+                    float lat = Float.parseFloat(separated[0]);
+                    float lng = Float.parseFloat(separated[1]);
+                    passedInTown.setLat(lat);
+                    passedInTown.setLng(lng);
+
+                    returnIntent.putExtra("result",passedInTown);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }

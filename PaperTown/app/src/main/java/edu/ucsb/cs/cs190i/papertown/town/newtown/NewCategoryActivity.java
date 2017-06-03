@@ -25,11 +25,13 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewCategoryActivity extends AppCompatActivity {
-
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
+
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_category);
         setSupportActionBar(toolbar);
@@ -41,7 +43,9 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","event");
+                //returnIntent.putExtra("result","event");
+                //passedInTown.setCategory("event");
+                //returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }
@@ -52,7 +56,9 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","place");
+                //returnIntent.putExtra("result","place");
+                passedInTown.setCategory("place");
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
@@ -63,7 +69,9 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","creature");
+                //returnIntent.putExtra("result","creature");
+                passedInTown.setCategory("creature");
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
@@ -74,7 +82,9 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result","event");
+                //returnIntent.putExtra("result","event");
+                passedInTown.setCategory("event");
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }

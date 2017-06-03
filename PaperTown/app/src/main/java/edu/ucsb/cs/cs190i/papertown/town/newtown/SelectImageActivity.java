@@ -32,21 +32,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class SelectImageActivity extends AppCompatActivity
-{
+public class SelectImageActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 112;
     final int PICK_PHOTO_REQUEST = 5;
     Uri[] imageUris;
@@ -54,12 +59,13 @@ public class SelectImageActivity extends AppCompatActivity
     GridView grid;
     String[] web = {
             "Google"
-    } ;
-
+    };
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_selectimg);
         setSupportActionBar(toolbar);
@@ -75,20 +81,29 @@ public class SelectImageActivity extends AppCompatActivity
                 Intent returnIntent = new Intent();
 
                 ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
-                Log.i("mSwitcher", "imageUris[0] = "+imageUris[0].toString());
-                returnIntent.putParcelableArrayListExtra    ("multipleImage", uriList);
-                //returnIntent.putExtra("result", imageUris[0].toString());
+                Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
+                //returnIntent.putParcelableArrayListExtra("multipleImage", uriList);
+
+//                uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
+//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
+//                Picasso.with(getApplicationContext()).load(uriList[0])
+//                        .into(imageView_newTown);
+
+                //process Uri array data
+                ArrayList<String> uriStringArrayList = new ArrayList<>();
+                for (int i = 0; i < uriList.size(); i++) {
+                    uriStringArrayList.add(uriList.get(i).toString());
+                }
+                passedInTown.setImageUrls(uriStringArrayList);
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_FIRST_USER, returnIntent);
                 finish();
 
             }
         });
 
-        String s = getIntent().getStringExtra(EXTRA_MESSAGE);
-        Log.i("onActivityResult", "getStringExtra = " + s);
-
-
-
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -98,17 +113,33 @@ public class SelectImageActivity extends AppCompatActivity
             }
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        }
-        else{
-            //compress the image from the uri
-            Uri uri = Uri.parse(s);
-            File f = new File(uri.toString());
-            // Log.i("original_image","f.getName(); = "+f.getName());
-            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-            uri = (Uri.fromFile(f));
+        } else {
+            if (passedInTown != null) {
+                List<String> dataPassIn = passedInTown.getImageUrls();
+                if (dataPassIn != null) {
+                Log.i("ed", "dataPassIn = " + dataPassIn);
+                Log.i("ed", "dataPassIn2 = " + dataPassIn);
+                for (int i = 0; i < dataPassIn.size(); i++) {
+                    imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+                }
+                }
+            } else {
 
-            imageUris = addUri(imageUris, uri);
+                String s = getIntent().getStringExtra(EXTRA_MESSAGE);
+                Log.i("onActivityResult", "getStringExtra = " + s);
 
+
+                //compress the image from the uri
+                Uri uri = Uri.parse(s);
+                File f = new File(uri.toString());
+                // Log.i("original_image","f.getName(); = "+f.getName());
+                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                uri = (Uri.fromFile(f));
+
+                imageUris = addUri(imageUris, uri);
+
+
+            }
             SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
             grid = (GridView) findViewById(R.id.grid);
             grid.setAdapter(adapter);
@@ -144,10 +175,10 @@ public class SelectImageActivity extends AppCompatActivity
                 // Log.i("original_image","f.getName(); = "+f.getName());
                 f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
                 uri = (Uri.fromFile(f));
-                imageUris = addUri(imageUris,uri);
+                imageUris = addUri(imageUris, uri);
                 SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
                 Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
-                grid=(GridView)findViewById(R.id.grid);
+                grid = (GridView) findViewById(R.id.grid);
                 grid.setAdapter(adapter);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -160,7 +191,7 @@ public class SelectImageActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        Log.i("my", "permission requestCode = "+requestCode);
+        Log.i("my", "permission requestCode = " + requestCode);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
@@ -172,35 +203,51 @@ public class SelectImageActivity extends AppCompatActivity
 //                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
 
-                    //compress the image from the uri
-                    String s = getIntent().getStringExtra(EXTRA_MESSAGE);
-                    Uri uri = Uri.parse(s);
-                    File f = new File(uri.toString());
-                    // Log.i("original_image","f.getName(); = "+f.getName());
-                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                    uri = (Uri.fromFile(f));
-
-                    imageUris = addUri(imageUris,uri);
-
-                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-                    grid=(GridView)findViewById(R.id.grid);
-                    grid.setAdapter(adapter);
-                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-                            Log.i("addOnItemTouchListener", "onItemClick position =" + position);
-                            if(position == imageUris.length){
-
-                                Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-                                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
-
+                    Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+                        if (passedInTown != null) {
+                            List<String> dataPassIn = passedInTown.getImageUrls();
+                            Log.i("ed", "dataPassIn = " + dataPassIn);
+                            Log.i("ed", "dataPassIn2 = " + dataPassIn);
+                            for (int i = 0; i < dataPassIn.size(); i++) {
+                                imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
                             }
+                        } else {
+
+                            String s = getIntent().getStringExtra(EXTRA_MESSAGE);
+                            Log.i("onActivityResult", "getStringExtra = " + s);
+
+
+                            //compress the image from the uri
+                            Uri uri = Uri.parse(s);
+                            File f = new File(uri.toString());
+                            // Log.i("original_image","f.getName(); = "+f.getName());
+                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                            uri = (Uri.fromFile(f));
+
+                            imageUris = addUri(imageUris, uri);
+
 
                         }
-                    });
+                        SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                        grid = (GridView) findViewById(R.id.grid);
+                        grid.setAdapter(adapter);
+                        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view,
+                                                    int position, long id) {
+                                Log.i("addOnItemTouchListener", "onItemClick position =" + position);
+                                if (position == imageUris.length) {
+
+                                    Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
+                                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
+
+                                }
+
+                            }
+                        });
+
 
                 } else {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
@@ -210,22 +257,21 @@ public class SelectImageActivity extends AppCompatActivity
     }
 
     Uri[] addUri(Uri[] urilist, Uri in) {
-        if(urilist!=null) {
-            Uri[] output = new Uri[urilist.length+1];
+        if (urilist != null) {
+            Uri[] output = new Uri[urilist.length + 1];
 
             for (int i = 0; i < urilist.length; i++) {
                 output[i] = urilist[i];
             }
             output[urilist.length] = in;
             return output;
-        }
-        else{
+        } else {
             Uri[] output = {in};
             return output;
         }
     }
 
-    public  String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
+    public String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
         String filePath = getRealPathFromURI(context, inputUri);
         final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
 
@@ -306,6 +352,7 @@ public class SelectImageActivity extends AppCompatActivity
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
+
 
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 column, sel, new String[]{id}, null);

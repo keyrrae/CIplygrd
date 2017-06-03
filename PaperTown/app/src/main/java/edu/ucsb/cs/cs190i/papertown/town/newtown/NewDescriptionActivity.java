@@ -23,13 +23,13 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewDescriptionActivity extends AppCompatActivity {
-
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_description);
 
-        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         String dataPassIn = passedInTown.getDescription();
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
@@ -49,7 +49,9 @@ public class NewDescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
                 EditText ev = (EditText) findViewById(R.id.editText_new_description);
-                returnIntent.putExtra("result", ev.getText().toString());
+                //returnIntent.putExtra("result", ev.getText().toString());
+                passedInTown.setDescription(ev.getText().toString());
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }

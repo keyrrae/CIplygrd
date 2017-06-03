@@ -13,10 +13,12 @@ import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
@@ -85,7 +87,9 @@ import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
+import edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
@@ -123,6 +127,8 @@ public class GeoActivity extends AppCompatActivity implements
 
     private boolean ifCollasped = true;
 
+
+
     private float currentMapZoomLeverl = 0;
     private boolean ifNothingSelected = true;
 
@@ -148,6 +154,8 @@ public class GeoActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setSubtitle("");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -178,9 +186,25 @@ public class GeoActivity extends AppCompatActivity implements
             }
         });
 
+        toolbar.setNavigationIcon(R.drawable.ic_account_circle_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent townListIntent = new Intent(GeoActivity.this, AccountActivity.class);
+               // townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
+                startActivity(townListIntent);
+            }
+        });
+
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
         }
+
+
+
+
+
+
 
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
