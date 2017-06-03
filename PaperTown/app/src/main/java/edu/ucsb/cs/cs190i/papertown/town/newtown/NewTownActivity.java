@@ -218,14 +218,12 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
                     //save town to DB
-                    final SQLiteDatabase database_w = dbHelper.getWritableDatabase();
-                    final SQLiteDatabase database_r = dbHelper.getReadableDatabase();
-                    int TagID = dbHelper.saveTownToDB(outputTown, database_w, database_r);
-
+                    int status = dbHelper.saveTownToDB(outputTown);
+                    Log.i("saveTownToDB", "status = "+status);
 
 
                     //read test
-                    List<Town>  townRead = dbHelper.getALLTownsFromDB(database_r);
+                    List<Town>  townRead = dbHelper.getALLTownsFromDB();
 
                     Log.i("onClick", "townRead = "+townRead);
 

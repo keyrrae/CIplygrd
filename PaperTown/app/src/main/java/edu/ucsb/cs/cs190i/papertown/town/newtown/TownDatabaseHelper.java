@@ -27,7 +27,6 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
  */
 
     public class TownDatabaseHelper extends SQLiteOpenHelper {
-    SQLiteDatabase database;
 
     private static final String CreateTownTable = "CREATE TABLE Towns (Id integer PRIMARY KEY AUTOINCREMENT, TownID text, Title text, Address text, Category text, Description text, UserAlias text, Location text, ImageUris text);";
 
@@ -72,7 +71,6 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        database = db;
         Log.i("ImageTagDatabaseHelper", "onCreate");
         db.execSQL(CreateTownTable);
         Log.i("ImageTagDatabaseHelper", "db = " + db.toString());
@@ -97,7 +95,8 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
         void OnDatabaseChange();
     }
 
-    int saveTownToDB(Town town, SQLiteDatabase database_w, SQLiteDatabase database_r) {
+    int saveTownToDB(Town town) {
+        SQLiteDatabase database_w = this.getWritableDatabase();
         Log.i("SQLiteDatabase", "database = " + database_w.toString());
         // Insert the new row, returning the primary key value of the new row
         String tableName_insert = "Towns";
@@ -132,7 +131,8 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
     }
 
 
-    List<Town> getALLTownsFromDB(SQLiteDatabase db) {
+    List<Town> getALLTownsFromDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
         String tableName_read = "Towns";
         String query = "SELECT * FROM " + tableName_read;
 
