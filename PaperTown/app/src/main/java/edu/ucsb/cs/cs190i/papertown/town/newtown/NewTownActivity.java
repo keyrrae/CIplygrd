@@ -121,7 +121,7 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                if(uriStringArrayList==null||uriStringArrayList.size()==0) {
+                if(outputTown.getImageUrls()==null||outputTown.getImageUrls().size()==0) {
                     //stat camera rool
                     Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -253,10 +253,13 @@ public class NewTownActivity extends AppCompatActivity implements
         if (requestCode == NEW_TITLE_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                Log.i("onActivityResult", "result = " + result);
-                title = result;
-                outputTown.setTitle(result);
+//                String result = data.getStringExtra("result");
+//                Log.i("onActivityResult", "result = " + result);
+//                title = result;
+//                outputTown.setTitle(result);
+
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
@@ -268,17 +271,20 @@ public class NewTownActivity extends AppCompatActivity implements
         if (requestCode == NEW_ADDRESS_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                Log.i("onActivityResult", "result = " + result);
-                address = result;
-                outputTown.setAddress(result);
+//                String result = data.getStringExtra("result");
+//                Log.i("onActivityResult", "result = " + result);
+//                address = result;
+//                outputTown.setAddress(result);
+//
+//                //processing address to latlng
+//                String[] separated = address.split(",");
+//                lat = Float.parseFloat(separated[0]);
+//                lng = Float.parseFloat(separated[1]);
+//                outputTown.setLat(lat);
+//                outputTown.setLng(lng);
 
-                //processing address to latlng
-                String[] separated = address.split(",");
-                lat = Float.parseFloat(separated[0]);
-                lng = Float.parseFloat(separated[1]);
-                outputTown.setLat(lat);
-                outputTown.setLng(lng);
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
@@ -289,10 +295,13 @@ public class NewTownActivity extends AppCompatActivity implements
         if (requestCode == NEW_CATEGORY_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                Log.i("onActivityResult", "result = " + result);
-                category = result;
-                outputTown.setCategory(result);
+//                String result = data.getStringExtra("result");
+//                Log.i("onActivityResult", "result = " + result);
+//                category = result;
+//                outputTown.setCategory(result);
+
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
@@ -303,10 +312,13 @@ public class NewTownActivity extends AppCompatActivity implements
         if (requestCode == NEW_DESCRIPTION_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                Log.i("onActivityResult", "result = " + result);
-                description = result;
-                outputTown.setDescription(result);
+//                String result = data.getStringExtra("result");
+//                Log.i("onActivityResult", "result = " + result);
+//                description = result;
+//                outputTown.setDescription(result);
+
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
@@ -316,10 +328,13 @@ public class NewTownActivity extends AppCompatActivity implements
         if (requestCode == NEW_INFORMATION_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                Log.i("onActivityResult", "result = " + result);
-                information = result;
-                outputTown.setUserAlias(result);
+//                String result = data.getStringExtra("result");
+//                Log.i("onActivityResult", "result = " + result);
+//                information = result;
+//                outputTown.setUserAlias(result);
+
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
@@ -334,24 +349,40 @@ public class NewTownActivity extends AppCompatActivity implements
                 Uri selectedImageURI = data.getData();
                 Log.i("onActivityResult", "result = " + selectedImageURI.toString());
                 Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
+                //intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
+                ArrayList<String> tempList = new ArrayList<>();
+                tempList.add(selectedImageURI.toString());
+                outputTown.setImageUrls(tempList);
+                intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_PHOTO_REQUEST);
             }
 
             if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
-                ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
-                uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+                //ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
+
+                outputTown = (Town)data.getSerializableExtra("result");
+                Log.i("onActivityResult", "result = " + outputTown.toString());
+
+
+
                 ImageView c = (ImageView) findViewById(R.id.checkbox_0);
                 c.setImageResource(R.drawable.ic_check_box_white_24dp);
-                Picasso.with(getApplicationContext()).load(uriList[0])
+                Picasso.with(getApplicationContext()).load( Uri.parse(outputTown.getImageUrls().get(0)))
                         .into(imageView_newTown);
 
-                //process Uri array data
-                uriStringArrayList = new ArrayList<>();
-                for (int i = 0; i < uriList.length; i++) {
-                    uriStringArrayList.add(uriList[i].toString());
-                }
-                outputTown.setImageUrls(uriStringArrayList);
+
+//                uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
+//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
+//                Picasso.with(getApplicationContext()).load(uriList[0])
+//                        .into(imageView_newTown);
+//
+//                //process Uri array data
+//                uriStringArrayList = new ArrayList<>();
+//                for (int i = 0; i < uriList.length; i++) {
+//                    uriStringArrayList.add(uriList[i].toString());
+//                }
+//                outputTown.setImageUrls(uriStringArrayList);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
@@ -366,64 +397,64 @@ public class NewTownActivity extends AppCompatActivity implements
     void checkAllInformation() {
         int counter = 0;
 
-        Log.i("all", "title = " + title);
-        Log.i("all", "address = " + address);
-        Log.i("all", "category = " + category);
-        Log.i("all", "description = " + description);
-        Log.i("all", "information = " + information);
+//        Log.i("all", "title = " + title);
+//        Log.i("all", "address = " + address);
+//        Log.i("all", "category = " + category);
+//        Log.i("all", "description = " + description);
+//        Log.i("all", "information = " + information);
 
-        if (title != null && !title.isEmpty()) {
+        if (outputTown.getTitle()!= null && !outputTown.getTitle().isEmpty()) {
             Log.i("checkAllInformation", "title!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_title),
                     (TextView) findViewById(R.id.description_title),
                     (ImageView) findViewById(R.id.checkbox1),
-                    title);
+                    outputTown.getTitle());
         }
 
-        if (address != null && !address.isEmpty()) {
+        if (outputTown.getAddress() != null && !outputTown.getAddress().isEmpty()) {
             Log.i("checkAllInformation", "address!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_address),
                     (TextView) findViewById(R.id.description_address),
                     (ImageView) findViewById(R.id.checkbox2),
-                    address);
+                    outputTown.getAddress());
         }
 
-        if (category != null && !category.isEmpty()) {
+        if (outputTown.getCategory() != null && !outputTown.getCategory().isEmpty()) {
             Log.i("checkAllInformation", "category!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_cate),
                     (TextView) findViewById(R.id.description_cate),
                     (ImageView) findViewById(R.id.checkbox3),
-                    category);
+                    outputTown.getCategory());
         }
 
-        if (description != null && !description.isEmpty()) {
+        if (outputTown.getDescription() != null && !outputTown.getDescription().isEmpty()) {
             Log.i("checkAllInformation", "description!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_description),
                     (TextView) findViewById(R.id.description_description),
                     (ImageView) findViewById(R.id.checkbox4),
-                    description);
+                    outputTown.getDescription());
         }
 
-        if (information != null && !information.isEmpty()) {
+        if (outputTown.getUserAlias() != null && !outputTown.getUserAlias().isEmpty()) {
             Log.i("checkAllInformation", "information!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_information),
                     (TextView) findViewById(R.id.description_information),
                     (ImageView) findViewById(R.id.checkbox5),
-                    information);
+                    outputTown.getUserAlias());
         }
 
-        if (uriList != null) {
+        if (outputTown.getImageUrls() != null&&outputTown.getImageUrls().size()!=0) {
             Log.i("checkAllInformation", "uriList!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_image),
                     null,
                     (ImageView) findViewById(R.id.checkbox_0),
-                    information);
+                    outputTown.getUserAlias());
         }
 
         if (imageUri != null) {
@@ -453,6 +484,8 @@ public class NewTownActivity extends AppCompatActivity implements
 
         //return counter;
     }
+
+
 
     void enableSubmission() {
 

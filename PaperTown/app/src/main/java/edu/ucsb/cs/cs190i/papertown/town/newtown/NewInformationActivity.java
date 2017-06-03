@@ -24,13 +24,13 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewInformationActivity extends AppCompatActivity {
-
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_information);
 
-        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         String dataPassIn = passedInTown.getUserAlias();
         String[] dataPassInList = dataPassIn.split(",");
         Log.i("ed","dataPassIn = "+dataPassIn);
@@ -54,7 +54,9 @@ public class NewInformationActivity extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 EditText ev1 = (EditText) findViewById(R.id.editText_new_firstName);
                 EditText ev2 = (EditText) findViewById(R.id.editText_new_lastName);
-                returnIntent.putExtra("result", ev1.getText().toString()+","+ev2.getText().toString());
+                //returnIntent.putExtra("result", ev1.getText().toString()+","+ev2.getText().toString());
+                passedInTown.setUserAlias(ev1.getText().toString()+","+ev2.getText().toString());
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }

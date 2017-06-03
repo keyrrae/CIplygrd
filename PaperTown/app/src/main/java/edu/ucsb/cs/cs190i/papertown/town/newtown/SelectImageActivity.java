@@ -34,6 +34,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,7 +60,7 @@ public class SelectImageActivity extends AppCompatActivity {
     String[] web = {
             "Google"
     };
-
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,15 +82,28 @@ public class SelectImageActivity extends AppCompatActivity {
 
                 ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
                 Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
-                returnIntent.putParcelableArrayListExtra("multipleImage", uriList);
-                //returnIntent.putExtra("result", imageUris[0].toString());
+                //returnIntent.putParcelableArrayListExtra("multipleImage", uriList);
+
+//                uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
+//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
+//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
+//                Picasso.with(getApplicationContext()).load(uriList[0])
+//                        .into(imageView_newTown);
+
+                //process Uri array data
+                ArrayList<String> uriStringArrayList = new ArrayList<>();
+                for (int i = 0; i < uriList.size(); i++) {
+                    uriStringArrayList.add(uriList.get(i).toString());
+                }
+                passedInTown.setImageUrls(uriStringArrayList);
+                returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_FIRST_USER, returnIntent);
                 finish();
 
             }
         });
 
-        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -100,10 +116,12 @@ public class SelectImageActivity extends AppCompatActivity {
         } else {
             if (passedInTown != null) {
                 List<String> dataPassIn = passedInTown.getImageUrls();
+                if (dataPassIn != null) {
                 Log.i("ed", "dataPassIn = " + dataPassIn);
                 Log.i("ed", "dataPassIn2 = " + dataPassIn);
                 for (int i = 0; i < dataPassIn.size(); i++) {
                     imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+                }
                 }
             } else {
 

@@ -26,7 +26,7 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewTitleActivity extends AppCompatActivity {
-
+    private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
@@ -34,7 +34,7 @@ public class NewTitleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_title);
 
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
-        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         String dataPassIn = passedInTown.getTitle();
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
@@ -51,12 +51,26 @@ public class NewTitleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result",ed.getText().toString());
+
+                passedInTown.setTitle(ed.getText().toString());
+                returnIntent.putExtra("result",passedInTown);
                 Log.i("ed","text = "+ed.getText().toString());
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
         });
 
+
+
+        ((Button)findViewById(R.id.button_new_title_next)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ed","onClick");
+//                Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
+//                intent.putExtra("townPassIn", outputTown);
+//                startActivityForResult(intent, NEW_ADDRESS_REQUEST);
+//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+            }
+        });
     }
 }

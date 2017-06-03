@@ -149,6 +149,8 @@ public class GeoActivity extends AppCompatActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        toolbar.setSubtitle("");
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -175,6 +177,16 @@ public class GeoActivity extends AppCompatActivity implements
                         break;
                 }
                 return true;
+            }
+        });
+
+        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
+                townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
+                startActivity(townListIntent);
             }
         });
 
