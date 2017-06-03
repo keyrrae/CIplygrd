@@ -220,12 +220,12 @@ public class NewTownActivity extends AppCompatActivity implements
                     //save town to DB
                     final SQLiteDatabase database_w = dbHelper.getWritableDatabase();
                     final SQLiteDatabase database_r = dbHelper.getReadableDatabase();
-                    int TagID = saveTownToDB(outputTown, database_w, database_r);
+                    int TagID = dbHelper.saveTownToDB(outputTown, database_w, database_r);
 
 
 
                     //read test
-                    List<Town>  townRead = getALLTownsFromDB(database_r);
+                    List<Town>  townRead = dbHelper.getALLTownsFromDB(database_r);
 
                     Log.i("onClick", "townRead = "+townRead);
 
@@ -494,95 +494,5 @@ public class NewTownActivity extends AppCompatActivity implements
     }
 
 
-    int saveTownToDB(Town town, SQLiteDatabase database_w, SQLiteDatabase database_r) {
-        Log.i("SQLiteDatabase", "database = " + database_w.toString());
-        // Insert the new row, returning the primary key value of the new row
-        String tableName_insert = "Towns";
 
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-//        String column_name_insert = "Text";
-
-        values.put("TownID", town.getId());
-        values.put("Title", town.getTitle());
-        values.put("Address", town.getAddress());
-        values.put("Category", town.getCategory());
-        values.put("Description", town.getDescription());
-        values.put("UserAlias", town.getUserAlias());
-        values.put("Location", town.getLatLng());
-        values.put("ImageUris", town.getImageUriString());
-
-
-
-        try {
-            long newRowId = database_w.insertOrThrow(tableName_insert, null, values);
-            //  Log.i("SQLiteDatabase", "Tag saved = " + tag_input + ", index = " + newRowId);
-            return (int) newRowId;
-        } catch (Exception e) {
-//            //Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-//            int back = getTagsIndexByContent(tag_input, database_r);
-            Log.i("SQLiteDatabase", "Exception original ,   " + e.toString());
-//            Log.i("SQLiteDatabase", "Exception,   " + tag_input + "   has a duplicated value in the database, get int back = " + back);
-//            Log.i("onActivityResult", "tag not saved, existing tag with index = "+back);
-            return 1;
-        }
-    }
-
-
-    List<Town> getALLTownsFromDB(SQLiteDatabase db) {
-        String tableName_read = "Towns";
-        String query = "SELECT * FROM " + tableName_read;
-
-        Cursor cursor = db.rawQuery(query, null);
-        List<Town> towns = new ArrayList<>();
-
-
-
-        Log.i("Read from DB", "getALLTownsFromDB !");
-        ArrayList<String> itemIds = new ArrayList<>();
-        ArrayList<String> itemIds2 = new ArrayList<>();
-        ArrayList<String> itemIds_des = new ArrayList<>();
-        ArrayList<String> itemIds_uris = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String TownID = (cursor.getString(cursor.getColumnIndex("TownID")));
-            String Title = (cursor.getString(cursor.getColumnIndex("Title")));
-            String Address = (cursor.getString(cursor.getColumnIndex("Address")));
-            String Category = (cursor.getString(cursor.getColumnIndex("Category")));
-            String Description = (cursor.getString(cursor.getColumnIndex("Description")));
-            String UserAlias = (cursor.getString(cursor.getColumnIndex("UserAlias")));
-            String Location = (cursor.getString(cursor.getColumnIndex("Location")));
-            String ImageUris = (cursor.getString(cursor.getColumnIndex("ImageUris")));
-
-
-
-            //processing address to latlng
-            String[] separated = Location.split(",");
-            float lat = Float.parseFloat(separated[0]);
-            float lng = Float.parseFloat(separated[1]);
-
-
-            //Process to get ImageUris
-            ArrayList<String> uriStringArrayList_temp = new ArrayList<>();
-            separated = ImageUris.split(",");
-            for(int i = 0;i<separated.length;i++){
-                uriStringArrayList_temp.add(separated[i]);
-            }
-
-            Town outputTown = new TownBuilder()
-                    .setTitle(Title)
-                    .setAddress(Address)
-                    .setCategory(Category)
-                    .setDescription(Description)
-                    .setUserAlias(UserAlias)
-                    .setLat(lat)
-                    .setLng(lng)
-                    .setImages(uriStringArrayList_temp)
-                    .build();
-
-            outputTown.setId(TownID);
-            towns.add(outputTown);
-        }
-        cursor.close();
-        return towns;
-    }
 }
