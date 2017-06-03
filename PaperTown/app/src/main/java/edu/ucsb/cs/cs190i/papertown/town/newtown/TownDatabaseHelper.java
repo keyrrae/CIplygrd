@@ -23,20 +23,9 @@ import java.util.List;
  */
 
     public class TownDatabaseHelper extends SQLiteOpenHelper {
-    private static final String CreateImageTable = "CREATE TABLE Image (Id integer PRIMARY KEY AUTOINCREMENT, ImageUri text NOT NULL UNIQUE);";
-    private static final String CreateTagTable = "CREATE TABLE Tag (Id integer PRIMARY KEY AUTOINCREMENT, Text text NOT NULL UNIQUE);";
-    private static final String CreateLinkTable =
-            "CREATE TABLE Link (ImageId integer, TagId integer, PRIMARY KEY (ImageId, TagId), " +
-                    "FOREIGN KEY (ImageId) REFERENCES Image (Id) ON DELETE CASCADE ON UPDATE NO ACTION, " +
-                    "FOREIGN KEY (TagId) REFERENCES Tag (Id) ON DELETE CASCADE ON UPDATE NO ACTION);";
+    private static final String CreateTownTable = "CREATE TABLE Towns (Id integer PRIMARY KEY AUTOINCREMENT, TownID text, Title text, Address text, Category text, Description text, UserAlias text, Location text, ImageUris text);";
 
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + "TABLE_NAME" + " (" +
-                    "id" + " INTEGER PRIMARY KEY," +
-                    "COLUMN_NAME_TITLE "+ " TEXT," +
-                    "COLUMN_NAME_SUBTITLE" + " TEXT);";
-
-    private static final String DatabaseName = "ImageTagDatabase.db";
+    private static final String DatabaseName = "TownDatabase.db";
     private static TownDatabaseHelper Instance;
     private List<OnDatabaseChangeListener> Listeners;
 
@@ -78,10 +67,7 @@ import java.util.List;
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i("ImageTagDatabaseHelper", "onCreate");
-        db.execSQL(CreateImageTable);
-        db.execSQL(CreateTagTable);
-        db.execSQL(CreateLinkTable);
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(CreateTownTable);
         Log.i("ImageTagDatabaseHelper", "db = " + db.toString());
     }
 
@@ -94,7 +80,6 @@ import java.util.List;
 
         db.execSQL("DROP TABLE IF EXISTS " + "Image");
         db.execSQL("DROP TABLE IF EXISTS " + "Tag");
-        db.execSQL("DROP TABLE IF EXISTS " + "Link");
         db.execSQL("DROP TABLE IF EXISTS " + "TABLE_NAME");
         onCreate(db);
 

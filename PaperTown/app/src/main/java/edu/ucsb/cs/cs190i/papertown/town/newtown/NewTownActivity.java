@@ -11,8 +11,11 @@
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +60,8 @@ public class NewTownActivity extends AppCompatActivity implements
     //    private ImageSwitcher mSwitcher;
     private ImageView imageView_newTown;
 
+    TownDatabaseHelper dbHelper;
+
     final int NEW_TITLE_REQUEST = 0;
     final int NEW_ADDRESS_REQUEST = 1;
     final int NEW_CATEGORY_REQUEST = 2;
@@ -83,6 +88,8 @@ public class NewTownActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_town);
 
 
+
+
         outputTown = new TownBuilder()
                 .setTitle(title)
                 .setAddress(address)
@@ -93,6 +100,13 @@ public class NewTownActivity extends AppCompatActivity implements
                 .setLng(lng)
                 .setImages(uriStringArrayList)
                 .build();
+
+        // ==========  town database  ============
+
+        TownDatabaseHelper.Initialize(this);
+        dbHelper = TownDatabaseHelper.GetInstance();
+        // ========== end of town database  ============
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_done);
@@ -201,9 +215,24 @@ public class NewTownActivity extends AppCompatActivity implements
                 Log.i("onClick", "button_step_left click");
                 if (itemLeft > 0) {
                     Toast.makeText(getApplicationContext(), "temp town saved as draft, please fill out all fields", Toast.LENGTH_LONG).show();
+
+
+                    //save town to DB
+                    final SQLiteDatabase database_w = dbHelper.getWritableDatabase();
+                    final SQLiteDatabase database_r = dbHelper.getReadableDatabase();
+                    int TagID = saveTownToDB(outputTown, database_w, database_r);
+
+
+
+                    //read test
+                    String [] townRead = getALLTownsFromDB(database_r);
+
+                    Log.i("onClick", "townRead = "+townRead);
+
                 } else {
                     Log.i("onClick", "Preview !");
                     //passing data to the detailActivity
+                    Log.i("onClick", "Preview, outputTown. getImageUriString() = "+outputTown.getImageUriString());
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
@@ -462,5 +491,77 @@ public class NewTownActivity extends AppCompatActivity implements
     public void onDestroy() {
         super.onDestroy();
 
+    }
+
+
+    int saveTownToDB(Town town, SQLiteDatabase database_w, SQLiteDatabase database_r) {
+        Log.i("SQLiteDatabase", "database = " + database_w.toString());
+        // Insert the new row, returning the primary key value of the new row
+        String tableName_insert = "Towns";
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+//        String column_name_insert = "Text";
+
+
+        values.put("TownID", town.getId());
+        values.put("Title", town.getTitle());
+        values.put("Address", town.getAddress());
+        values.put("Category", town.getCategory());
+        values.put("Description", town.getDescription());
+        values.put("Location", town.getLatLng());
+        values.put("ImageUris", town.getImageUriString());
+
+
+
+        try {
+            long newRowId = database_w.insertOrThrow(tableName_insert, null, values);
+            //  Log.i("SQLiteDatabase", "Tag saved = " + tag_input + ", index = " + newRowId);
+            return (int) newRowId;
+        } catch (Exception e) {
+//            //Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+//            int back = getTagsIndexByContent(tag_input, database_r);
+            Log.i("SQLiteDatabase", "Exception original ,   " + e.toString());
+//            Log.i("SQLiteDatabase", "Exception,   " + tag_input + "   has a duplicated value in the database, get int back = " + back);
+//            Log.i("onActivityResult", "tag not saved, existing tag with index = "+back);
+            return 1;
+        }
+    }
+
+
+    String[] getALLTownsFromDB(SQLiteDatabase db) {
+        String tableName_read = "Towns";
+        String query = "SELECT * FROM " + tableName_read;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.i("Read from DB", "getALLTownsFromDB !");
+        ArrayList<String> itemIds = new ArrayList<>();
+        ArrayList<String> itemIds2 = new ArrayList<>();
+        ArrayList<String> itemIds_des = new ArrayList<>();
+        ArrayList<String> itemIds_uris = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String ss = (cursor.getString(cursor.getColumnIndex("Title")));
+            itemIds.add(ss);
+
+            String sss = (cursor.getString(cursor.getColumnIndex("Address")));
+            itemIds2.add(sss);
+
+            String ssss = (cursor.getString(cursor.getColumnIndex("Description")));
+            itemIds_des.add(ssss);
+
+            String sssss = (cursor.getString(cursor.getColumnIndex("ImageUris")));
+            itemIds_uris.add(sssss);
+
+        }
+        cursor.close();
+        // end of read information
+        String[] Towns = itemIds.toArray(new String[itemIds.size()]);
+
+        for (int i = 0; i < Towns.length; i++) {
+            Log.i("Read from DB", "Towns[" + i + "] = " + Towns[i]);
+        }
+
+        return Towns;
     }
 }
