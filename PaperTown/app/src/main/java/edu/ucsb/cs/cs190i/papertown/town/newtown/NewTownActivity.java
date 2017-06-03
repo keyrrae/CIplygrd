@@ -214,18 +214,7 @@ public class NewTownActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Log.i("onClick", "button_step_left click");
                 if (itemLeft > 0) {
-                    Toast.makeText(getApplicationContext(), "temp town saved as draft, please fill out all fields", Toast.LENGTH_LONG).show();
-
-
-                    //save town to DB
-                    int status = dbHelper.saveTownToDB(outputTown);
-                    Log.i("saveTownToDB", "status = "+status);
-
-
-                    //read test
-                    List<Town>  townRead = dbHelper.getALLTownsFromDB();
-
-                    Log.i("onClick", "townRead = "+townRead);
+                    Toast.makeText(getApplicationContext(), "Please fill out all fields", Toast.LENGTH_LONG).show();
 
                 } else {
                     Log.i("onClick", "Preview !");
@@ -237,6 +226,23 @@ public class NewTownActivity extends AppCompatActivity implements
                     startActivity(intent);
                     //finish();
                 }
+            }
+        });
+
+
+        button_step_left.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // TODO Auto-generated method stub
+                Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
+                //save town to DB
+                int status = dbHelper.saveTownToDB(outputTown);
+                Log.i("saveTownToDB", "status = "+status);
+
+                //read test
+                List<Town>  townRead = dbHelper.getALLTownsFromDB();
+                Log.i("onClick", "townRead = "+townRead);
+                return true;
             }
         });
     }
