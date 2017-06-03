@@ -126,7 +126,7 @@ public class TownDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_town_detail);
 
-
+        // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -145,13 +145,13 @@ public class TownDetailActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.detail_favor:
 
-                        if(item.getTitle().equals("dislike")){
+                        if (item.getTitle().equals("dislike")) {
                             Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
                             item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
                             item.setTitle("like");
                             break;
                         }
-                        if(item.getTitle().equals("like")){
+                        if (item.getTitle().equals("like")) {
                             Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
                             item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
                             item.setTitle("dislike");
@@ -166,6 +166,15 @@ public class TownDetailActivity extends AppCompatActivity {
                         break;
                 }
                 return true;
+            }
+        });
+
+        //Update Story button
+        TextView update = (TextView) findViewById(R.id.detail_update_text);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(TownDetailActivity.this, "Update story", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -270,14 +279,10 @@ public class TownDetailActivity extends AppCompatActivity {
             //change color of submission button
             button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
             button_test_detail.setText("SUBMIT !");
-
-
         } else {
             //change color of submission button
             button_test_detail.setVisibility(Button.INVISIBLE);
         }
-
-
         //process uriStringArrayList, put data into uriList
         if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
             for (int i = 0; i < uriStringArrayList.size(); i++) {
@@ -331,9 +336,8 @@ public class TownDetailActivity extends AppCompatActivity {
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 
-                detail_physical_address.setText(address+"\n"+city+", "+state+", "+country+", "+postalCode);
-            }
-            catch (Exception e){
+                detail_physical_address.setText(address + "\n" + city + ", " + state + ", " + country + ", " + postalCode);
+            } catch (Exception e) {
                 Toast.makeText(
                         TownDetailActivity.this,
                         "Unable to obtain the address from the GPS coordinates.",
@@ -390,9 +394,9 @@ public class TownDetailActivity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "Item Clicked: " + position, Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), SingleImageActivity.class);
                         Bundle extras = new Bundle();
-                        extras.putString("ImageUri",uriList.get(position).toString());
-                        extras.putParcelableArrayList("AllImageUris",uriList);
-                        extras.putInt("Position",position);
+                        extras.putString("ImageUri", uriList.get(position).toString());
+                        extras.putParcelableArrayList("AllImageUris", uriList);
+                        extras.putInt("Position", position);
                         i.putExtras(extras);
                         startActivity(i);
                         //Log.d("AllImageUris_SEND",""+uriList);
@@ -401,10 +405,7 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         }
 
-
-
         //handle the google Maps
-
         myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
 
         if (mapFragment != null) {
@@ -431,13 +432,11 @@ public class TownDetailActivity extends AppCompatActivity {
                     }
                     //end of adding markers
 
-
                     //camera animation
                     if (map != null) {
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
                     }
                     //end of camera animation
-
                 }
             });
 
@@ -448,8 +447,6 @@ public class TownDetailActivity extends AppCompatActivity {
                     mScrollView.requestDisallowInterceptTouchEvent(true);
                 }
             });
-
-
         } else {
             Log.i("manu", "Error - Map Fragment was null!!");
         }
