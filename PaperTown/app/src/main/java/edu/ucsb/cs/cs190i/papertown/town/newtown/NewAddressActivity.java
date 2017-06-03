@@ -67,6 +67,8 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             ((EditText)findViewById(R.id.editText_new_address)).setText(dataPassIn);
         }
 
+
+        //test
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_address);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
