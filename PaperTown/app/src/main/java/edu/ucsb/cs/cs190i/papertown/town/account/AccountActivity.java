@@ -26,6 +26,7 @@ import java.util.List;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 public class AccountActivity extends AppCompatActivity {
@@ -192,7 +193,19 @@ public class AccountActivity extends AppCompatActivity {
         towns_liked.add(t1);
 
 
-        towns_draft.add(t2);
+
+        //read draft towns from DB
+        TownDatabaseHelper dbHelper;
+        // ==========  town database  ============
+
+        TownDatabaseHelper.Initialize(this);
+        dbHelper = TownDatabaseHelper.GetInstance();
+
+        List<Town>  townRead = dbHelper.getALLTownsFromDB();
+        Log.i("onClick", "townRead = "+townRead);
+        // ========== end of town database  ============
+
+//        towns_draft.add(t2);
 //        towns_draft.add(t3);
 //        towns_draft.add(t1);
 //        towns_draft.add(t2);

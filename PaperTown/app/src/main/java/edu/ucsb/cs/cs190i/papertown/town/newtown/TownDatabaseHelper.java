@@ -95,7 +95,7 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
         void OnDatabaseChange();
     }
 
-    int saveTownToDB(Town town) {
+    public int saveTownToDB(Town town) {
         SQLiteDatabase database_w = this.getWritableDatabase();
         Log.i("SQLiteDatabase", "database = " + database_w.toString());
         // Insert the new row, returning the primary key value of the new row
@@ -131,7 +131,7 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
     }
 
 
-    List<Town> getALLTownsFromDB() {
+    public List<Town> getALLTownsFromDB() {
         SQLiteDatabase db = this.getReadableDatabase();
         String tableName_read = "Towns";
         String query = "SELECT * FROM " + tableName_read;

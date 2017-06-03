@@ -239,9 +239,9 @@ public class NewTownActivity extends AppCompatActivity implements
                 int status = dbHelper.saveTownToDB(outputTown);
                 Log.i("saveTownToDB", "status = "+status);
 
-                //read test
-                List<Town>  townRead = dbHelper.getALLTownsFromDB();
-                Log.i("onClick", "townRead = "+townRead);
+//                //read test  moved to the AccountActivity
+//                List<Town>  townRead = dbHelper.getALLTownsFromDB();
+//                Log.i("onClick", "townRead = "+townRead);
                 return true;
             }
         });
