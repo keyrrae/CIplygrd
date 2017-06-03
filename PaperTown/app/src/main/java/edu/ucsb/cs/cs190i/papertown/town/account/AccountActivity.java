@@ -74,8 +74,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                //Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-                Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
                 intent.putExtra("town", towns_liked.get(position));
                 startActivity(intent);
             }
