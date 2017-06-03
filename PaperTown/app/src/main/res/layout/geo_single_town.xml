@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/geo_town_category"
             android:layout_marginTop="@dimen/xs"
-            android:text="53 visitors"
+            android:text="53 likes"
             android:textAppearance="@style/SmallText" />
 
     </RelativeLayout>

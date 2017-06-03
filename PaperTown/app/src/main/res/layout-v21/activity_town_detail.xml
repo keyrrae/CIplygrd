@@ -35,7 +35,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -50,27 +50,26 @@
                 android:id="@+id/detail_town_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
                 android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m"
                 android:layout_marginTop="16dp"
                 android:text="Malibu Dream Airstream"
-                android:textAppearance="@style/TitleText_detail"
-                />
+                android:textAppearance="@style/TitleText_detail" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/m"
-                android:paddingTop="@dimen/l"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:paddingTop="@dimen/l">
 
                 <ImageView
                     android:id="@+id/detail_town_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_location_city_white_24dp"
-                    android:backgroundTint="@color/PrimaryPink"/>
+                    android:backgroundTint="@color/PrimaryPink" />
 
                 <TextView
                     android:id="@+id/detail_town_category"
@@ -79,24 +78,25 @@
                     android:layout_marginStart="@dimen/xs"
                     android:text="Place"
                     android:textAppearance="@style/MainTextBold_detail"
-                    android:textColor="@color/PrimaryPink"/>
+                    android:textColor="@color/PrimaryPink" />
 
                 <TextView
                     android:id="@+id/detail_town_visit_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/s"
+                    android:layout_marginStart="@dimen/s"
                     android:layout_toRightOf="@+id/detail_town_category"
-                    android:text="75 visitors"
-                    android:textAppearance="@style/MainTextRegular_detail"/>
+                    android:text="75 likes"
+                    android:textAppearance="@style/MainTextRegular_detail" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/m">
+                android:layout_marginBottom="@dimen/m"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/detail_town_author"
                     android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                     android:layout_marginStart="@dimen/m"
                     android:layout_marginTop="@dimen/xs"
                     android:text="Documented by"
-                    android:textAppearance="@style/MainTextRegular_detail"/>
+                    android:textAppearance="@style/MainTextRegular_detail" />
 
                 <TextView
                     android:id="@+id/detail_town_information"
@@ -121,16 +121,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/m"
-                android:background="@color/LightestGray"/>
+                android:background="@color/LightestGray" />
 
             <TextView
                 android:id="@+id/detail_town_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/m"
                 android:text="Discription"
-                android:textAppearance="@style/MainTextBold_detail"
-                />
+                android:textAppearance="@style/MainTextBold_detail" />
 
             <TextView
                 android:id="@+id/detail_town_description"
@@ -138,69 +138,106 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m"
                 android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
-                android:textAppearance="@style/MainTextRegular_detail"
-                />
+                android:textAppearance="@style/MainTextRegular_detail" />
+
+            <RelativeLayout
+                android:id="@+id/detail_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m">
+
+                <TextView
+                    android:id="@+id/detail_update_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Update Story"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/PrimaryPink"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"/>
+
+                <ImageButton
+                    android:id="@+id/detail_update_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/xs"
+                    android:layout_toLeftOf="@id/detail_update_text"
+                    android:background="@drawable/ic_add_white_18dp"
+                    android:backgroundTint="@color/PrimaryPink" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <fragment
                 android:id="@+id/detail_map"
                 class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_marginTop="@dimen/m" />
 
             <TextView
                 android:id="@+id/detail_coor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Coordinates"
                 android:layout_marginStart="@dimen/m"
                 android:layout_marginTop="@dimen/l"
-                android:textAppearance="@style/MainTextBold_detail"
-                />
+                android:text="Coordinates"
+                android:textAppearance="@style/MainTextBold_detail" />
 
             <TextView
                 android:id="@+id/detail_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Coordinate"
                 android:layout_marginStart="@dimen/m"
                 android:layout_marginTop="@dimen/m"
-                android:textAppearance="@style/MainTextRegular_detail"
-                 />
-
-            <TextView
-                android:id="@+id/detail_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                android:layout_marginStart="@dimen/m"
-                android:layout_marginTop="@dimen/l"
-                android:textAppearance="@style/MainTextBold_detail"
-                />
-
-            <TextView
-                android:id="@+id/detail_physical_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address here. Olancha, CA 93549."
-                android:layout_margin="@dimen/m"
-                android:textAppearance="@style/MainTextRegular_detail"
-                />
+                android:text="Coordinate"
+                android:textAppearance="@style/MainTextRegular_detail" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/m"
-                android:background="@color/LightestGray"/>
+                android:background="@color/LightestGray" />
+
+            <TextView
+                android:id="@+id/detail_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/m"
+                android:text="Address"
+                android:textAppearance="@style/MainTextBold_detail" />
+
+            <TextView
+                android:id="@+id/detail_physical_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/m"
+                android:text="Address here. Olancha, CA 93549."
+                android:textAppearance="@style/MainTextRegular_detail" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <TextView
                 android:id="@+id/detail_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gallery"
                 android:layout_marginStart="@dimen/m"
-                android:textAppearance="@style/MainTextBold_detail"
-                />
+                android:layout_marginTop="@dimen/m"
+                android:text="Gallery"
+                android:textAppearance="@style/MainTextBold_detail" />
 
             <edu.ucsb.cs.cs190i.papertown.town.newtown.WrappingGridView
                 android:id="@+id/detail_image_grid"
@@ -208,23 +245,70 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m"
                 android:gravity="center"
-                android:numColumns="4"
-                />
+                android:numColumns="4"/>
+
+            <RelativeLayout
+                android:id="@+id/detail_add_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m">
+
+                <TextView
+                    android:id="@+id/detail_add_image_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Upload Image"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/PrimaryPink"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"/>
+                <ImageButton
+                    android:id="@+id/detail_add_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/xs"
+                    android:layout_toLeftOf="@id/detail_add_image_text"
+                    android:background="@drawable/ic_add_white_18dp"
+                    android:backgroundTint="@color/PrimaryPink" />
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/m"
-                android:background="@color/LightestGray"/>
+                android:background="@color/LightestGray" />
+
+            <TextView
+                android:id="@+id/detail_ske"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginTop="@dimen/m"
+                android:text="Sketchboard"
+                android:textAppearance="@style/MainTextBold_detail" />
+
+            <ImageView
+                android:id="@+id/detail_sketch"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="@dimen/m"
+                android:layout_marginBottom="@dimen/s"
+                android:scaleType="centerCrop"
+                android:background="@color/LighterGray"/>
 
             <Button
                 android:id="@+id/button_test_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
-
-
-
+                android:text="Button"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/MainTextBold_detail"/>
         </LinearLayout>
 
     </ScrollView>
