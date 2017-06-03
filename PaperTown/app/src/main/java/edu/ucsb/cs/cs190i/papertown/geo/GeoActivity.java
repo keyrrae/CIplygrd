@@ -186,7 +186,7 @@ public class GeoActivity extends AppCompatActivity implements
             }
         });
 
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_account_circle_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
