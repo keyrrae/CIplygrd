@@ -135,8 +135,7 @@ public class NewTownActivity extends AppCompatActivity implements
         passedInTown = (Town) getIntent().getSerializableExtra("town");
         if(passedInTown!=null){
             outputTown = passedInTown;
-            //update view
-            checkAllInformation();
+
         }
         else {
             outputTown = new TownBuilder()
@@ -149,8 +148,11 @@ public class NewTownActivity extends AppCompatActivity implements
                     .setLng(lng)
                     .setImages(uriStringArrayList)
                     .build();
-            imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
+            //imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
         }
+
+        //update view
+        checkAndUpdateAllInformation();
 
 
         TextView title_title = (TextView) findViewById(R.id.title_title);
@@ -351,9 +353,9 @@ public class NewTownActivity extends AppCompatActivity implements
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
 
-                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
-                c.setImageResource(R.drawable.ic_check_box_white_24dp);
-                Picasso.with(getApplicationContext()).load(Uri.parse(outputTown.getImageUrls().get(0))).into(imageView_newTown);
+//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
+//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
+//                Picasso.with(getApplicationContext()).load(Uri.parse(outputTown.getImageUrls().get(0))).into(imageView_newTown);
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -362,12 +364,35 @@ public class NewTownActivity extends AppCompatActivity implements
             }
         }
 
+//        String imagePath = outputTown.getImageUrls().get(0);
+//        if(imagePath!=null&&!imagePath.isEmpty()) {
+//            Picasso.with(getApplicationContext()).load(imagePath).into(imageView_newTown);
+//        }
+//        else{
+//            Picasso.with(getApplicationContext()).load(R.drawable.defaultimage).into(imageView_newTown);
+//        }
+
         //update view
-        checkAllInformation();
+        checkAndUpdateAllInformation();
 
     }
 
-    void checkAllInformation() {
+    void checkAndUpdateAllInformation() {
+
+
+        //update imagePreview
+
+        List<String> imagePaths = outputTown.getImageUrls();
+        {
+            if (imagePaths!=null&&imagePaths.size()>0&&imagePaths.get(0) != null && !imagePaths.get(0).isEmpty()) {
+                Picasso.with(getApplicationContext()).load(imagePaths.get(0)).into(imageView_newTown);
+            } else {
+                Picasso.with(getApplicationContext()).load(R.drawable.defaultimage).into(imageView_newTown);
+            }
+        }
+
+
+
         int counter = 0;
         if (outputTown.getTitle() != null && !outputTown.getTitle().isEmpty()) {
             Log.i("checkAllInformation", "title!=null");
@@ -414,7 +439,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getUserAlias());
         }
 
-        if (outputTown.getImageUrls() != null && outputTown.getImageUrls().size() != 0) {
+        if (outputTown.getImageUrls() != null && outputTown.getImageUrls().size() != 0&&outputTown.getImageUrls().get(0)!=null&&!outputTown.getImageUrls().get(0).isEmpty()) {
             Log.i("checkAllInformation", "uriList!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_image),
