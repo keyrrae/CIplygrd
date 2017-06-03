@@ -8,6 +8,7 @@
 
 package edu.ucsb.cs.cs190i.papertown.town.account;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import java.util.List;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -39,7 +42,6 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
 
         initData();  //get towns for liked and drafts
 
@@ -63,37 +65,38 @@ public class AccountActivity extends AppCompatActivity {
             findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
         }
 
+        final GridView gridview_liked = (GridView) findViewById(R.id.gridView_liked);
+        gridview_liked.setAdapter(new GridViewImageAdapter(this, towns_liked_2));
+
+        gridview_liked.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                intent.putExtra("town", towns_liked.get(position));
+                startActivity(intent);
+            }
+        });
+
+        final GridView gridview_draft = (GridView) findViewById(R.id.gridView_draft);
+        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_2));
+
+        gridview_draft.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                intent.putExtra("town", towns_draft.get(position));
+                startActivity(intent);
+            }
+        });
 
 
 
 
 
-        // Keep all Images in array
-        final Integer[] mThumbIds = {
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square,
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square,
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square,
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square,
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square
-        };
 
-        final Integer[] mThumbIds2 = {
-                R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square
-        };
 
-        final Integer[] mThumbIds1 = {
-                R.drawable.com_facebook_profile_picture_blank_square
-        };
-
-        final Integer[] mThumbIds0 = {
-
-        };
-
-        final GridView gridview = (GridView) findViewById(R.id.gridView_liked);
-        gridview.setAdapter(new GridViewImageAdapter(this, towns_liked_2));
-
-        final GridView gridview2 = (GridView) findViewById(R.id.gridView_draft);
-        gridview2.setAdapter(new GridViewImageAdapter(this, towns_draft_2));
 
         findViewById(R.id.textView_liked_more).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +104,10 @@ public class AccountActivity extends AppCompatActivity {
                 Log.i("onClick", "textView_liked_more");
 
                 if (!ifLikedExpanded) {
-                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("Less");
                 } else {
-                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_2));
+                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_2));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("More");
                 }
                 ifLikedExpanded = !ifLikedExpanded;
@@ -118,10 +121,10 @@ public class AccountActivity extends AppCompatActivity {
 
 
                 if (!ifDraftExpanded) {
-                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
+                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("Less");
                 } else {
-                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_2));
+                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_2));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
                 ifDraftExpanded = !ifDraftExpanded;
@@ -148,7 +151,7 @@ public class AccountActivity extends AppCompatActivity {
                 .setTitle("Mother Susanna Monument")
                 .setCategory("place")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
+                .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
                 .setUserId("theUniqueEye")
@@ -160,7 +163,7 @@ public class AccountActivity extends AppCompatActivity {
                 .setTitle("Father Crowley Monument")
                 .setCategory("place")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
+                .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
                 .setUserId("theUniqueEye")
@@ -172,7 +175,7 @@ public class AccountActivity extends AppCompatActivity {
                 .setTitle("Wonder Land")
                 .setCategory("creature")
                 .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
+                .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
                 .setUserId("Sams to Go")
