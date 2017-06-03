@@ -240,7 +240,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
             }
         });
