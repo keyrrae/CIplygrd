@@ -98,6 +98,7 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.2.4'
     compile 'com.google.firebase:firebase-storage:10.2.4'
     compile 'com.google.firebase:firebase-database:10.2.4'
+    compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
     testCompile 'junit:junit:4.12'
     testCompile 'com.facebook.litho:litho-testing:0.2.0'
     annotationProcessor 'com.facebook.litho:litho-processor:0.2.0'
@@ -105,7 +106,6 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     debugCompile 'com.facebook.litho:litho-stetho:0.2.0'
     provided 'com.facebook.litho:litho-annotations:0.2.0'
-    compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
 }
 
 // ADD THIS AT THE BOTTOM

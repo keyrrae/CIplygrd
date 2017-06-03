@@ -27,6 +27,12 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewTitleActivity extends AppCompatActivity {
     private Town passedInTown;
+    final int NEW_TITLE_REQUEST = 0;
+    final int NEW_ADDRESS_REQUEST = 1;
+    final int NEW_CATEGORY_REQUEST = 2;
+    final int NEW_DESCRIPTION_REQUEST = 3;
+    final int NEW_INFORMATION_REQUEST = 4;
+    final int NEW_PHOTO_REQUEST = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
@@ -67,10 +73,39 @@ public class NewTitleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i("ed","onClick");
 //                Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
-//                intent.putExtra("townPassIn", outputTown);
+//                passedInTown.setTitle(ed.getText().toString());
+//                intent.putExtra("townPassIn", passedInTown);
+//
+//
 //                startActivityForResult(intent, NEW_ADDRESS_REQUEST);
 //                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+
+
             }
         });
     }
-}
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // Check which request we're responding to
+//        Log.i("onActivityResult", "requestCode = " + requestCode);
+//        Log.i("onActivityResult", "resultCode = " + resultCode);
+//        if (requestCode == NEW_TITLE_REQUEST) {
+//            // Make sure the request was successful
+//            if (resultCode == RESULT_OK) {
+//                passedInTown = (Town) data.getSerializableExtra("result");
+//                Intent returnIntent = new Intent();
+//                returnIntent.putExtra("result",passedInTown);
+//                setResult(Activity.RESULT_OK,returnIntent);
+//                finish();
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
+//                //Write your code if there's no result
+//            }
+//        }
+//    }
+
+
+
+    }

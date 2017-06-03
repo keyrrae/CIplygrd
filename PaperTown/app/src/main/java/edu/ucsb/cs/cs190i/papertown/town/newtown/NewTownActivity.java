@@ -68,11 +68,11 @@ public class NewTownActivity extends AppCompatActivity implements
     private String address = "";
     private String category = "";
     private String description = "";
-    private String information = "";
-    private float lat;
-    private float lng;
-    private Uri[] uriList;
-    private Uri imageUri = null;
+   private String information = "";
+    private float lat = 0;
+    private float lng = 0;
+    //private Uri[] uriList;
+    //private Uri imageUri = null;
     private  ArrayList<String> uriStringArrayList;
 
     private int itemLeft = 6;
@@ -93,6 +93,7 @@ public class NewTownActivity extends AppCompatActivity implements
                 .setAddress(address)
                 .setCategory(category)
                 .setDescription(description)
+                .setUserAlias(information)
                 .setLat(lat)
                 .setLng(lng)
                 .setImages(uriStringArrayList)
@@ -250,6 +251,8 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
+        Log.i("onActivityResult", "requestCode = " + requestCode);
+        Log.i("onActivityResult", "resultCode = " + resultCode);
         if (requestCode == NEW_TITLE_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -389,6 +392,11 @@ public class NewTownActivity extends AppCompatActivity implements
                 //Write your code if there's no result
             }
         }
+
+        outputTown = (Town)data.getSerializableExtra("result");
+        Log.i("onActivityResult", "result2 = " + outputTown.toString());
+
+
         //update view
         checkAllInformation();
 
@@ -457,10 +465,10 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getUserAlias());
         }
 
-        if (imageUri != null) {
-            Log.i("checkAllInformation", "information!=null");
-            counter++;
-        }
+//        if (imageUri != null) {
+//            Log.i("checkAllInformation", "information!=null");
+//            counter++;
+//        }
 
         //update itemLeft
         itemLeft = 6 - counter;

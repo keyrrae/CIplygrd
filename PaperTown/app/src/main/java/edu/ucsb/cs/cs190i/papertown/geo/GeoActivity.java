@@ -85,6 +85,7 @@ import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
+import edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
@@ -184,8 +185,8 @@ public class GeoActivity extends AppCompatActivity implements
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
-                townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
+                Intent townListIntent = new Intent(GeoActivity.this, AccountActivity.class);
+               // townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
                 startActivity(townListIntent);
             }
         });
