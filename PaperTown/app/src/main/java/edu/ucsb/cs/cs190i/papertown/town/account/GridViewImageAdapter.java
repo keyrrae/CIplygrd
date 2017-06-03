@@ -65,20 +65,15 @@ public class GridViewImageAdapter extends BaseAdapter {
             item = (RelativeLayout) inflater.inflate(R.layout.grid_account_item, null, true);
             ImageView image = (ImageView) item.findViewById(R.id.grid_item_image);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //image.setImageBitmap(BitmapFactory.decodeFile(mImageList.get(position)));
-            //image.setImageResource(mThumbIds[position]);
-            //Picasso.with(image.getContext()).load(this.uriList.get(position)).into(image);
             Picasso.with(image.getContext()).load(this.towns.get(position).getImageUrls().get(0)).into(image);
 
             TextView text = (TextView) item.findViewById(R.id.grid_item_title);
-            text.setText("asdf");
+            text.setText(this.towns.get(position).getTitle());
         }
         else
         {
-//            imageView = (ImageView) convertView;
             item  = (RelativeLayout) convertView;
         }
-//        imageView.setImageResource(mThumbIds[position]);
         return item;
     }
 }

@@ -30,15 +30,44 @@ public class AccountActivity extends AppCompatActivity {
 
     boolean ifLikedExpanded = false;
     boolean ifDraftExpanded = false;
-    public List<Town> towns;
+    public List<Town> towns_liked_2;
+    public List<Town> towns_liked;
+    public List<Town> towns_draft_2;
+    public List<Town> towns_draft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
 
+        initData();  //get towns for liked and drafts
 
-        initData();
+        towns_draft_2 = new ArrayList<>();
+        towns_liked_2 = new ArrayList<>();
+
+        if(towns_draft.size()>2) {
+            towns_draft_2.add(towns_draft.get(0));
+            towns_draft_2.add(towns_draft.get(1));
+        }else{
+            towns_draft_2 = towns_draft;
+            findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
+        }
+
+        if(towns_liked.size()>2) {
+            towns_liked_2.add(towns_liked.get(0));
+            towns_liked_2.add(towns_liked.get(1));
+        }
+        else{
+            towns_liked_2 = towns_liked;
+            findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
+        }
+
+
+
+
+
+
         // Keep all Images in array
         final Integer[] mThumbIds = {
                 R.drawable.com_facebook_profile_picture_blank_square, R.drawable.com_facebook_profile_picture_blank_square,
@@ -61,52 +90,50 @@ public class AccountActivity extends AppCompatActivity {
         };
 
         final GridView gridview = (GridView) findViewById(R.id.gridView_liked);
-        gridview.setAdapter(new GridViewImageAdapter(this,towns));
+        gridview.setAdapter(new GridViewImageAdapter(this, towns_liked_2));
 
         final GridView gridview2 = (GridView) findViewById(R.id.gridView_draft);
-        gridview2.setAdapter(new GridViewImageAdapter(this,towns));
+        gridview2.setAdapter(new GridViewImageAdapter(this, towns_draft_2));
 
         findViewById(R.id.textView_liked_more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("onClick","textView_liked_more");
+                Log.i("onClick", "textView_liked_more");
 
-                if(!ifLikedExpanded) {
-                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns));
-                    ((TextView)findViewById(R.id.textView_liked_more)).setText("Less");
+                if (!ifLikedExpanded) {
+                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+                    ((TextView) findViewById(R.id.textView_liked_more)).setText("Less");
+                } else {
+                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_2));
+                    ((TextView) findViewById(R.id.textView_liked_more)).setText("More");
                 }
-                else{
-                    gridview.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns));
-                    ((TextView)findViewById(R.id.textView_liked_more)).setText("More");
-                }
-                ifLikedExpanded =!ifLikedExpanded;
+                ifLikedExpanded = !ifLikedExpanded;
             }
         });
 
         findViewById(R.id.textView_draft_more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("onClick","textView_draft_more");
+                Log.i("onClick", "textView_draft_more");
 
 
-                if(!ifLikedExpanded) {
-                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(),towns));
-                    ((TextView)findViewById(R.id.textView_draft_more)).setText("Less");
+                if (!ifDraftExpanded) {
+                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
+                    ((TextView) findViewById(R.id.textView_draft_more)).setText("Less");
+                } else {
+                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_2));
+                    ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
-                else{
-                    gridview2.setAdapter(new GridViewImageAdapter(getApplicationContext(),towns));
-                    ((TextView)findViewById(R.id.textView_draft_more)).setText("More");
-                }
-                ifLikedExpanded =!ifLikedExpanded;
+                ifDraftExpanded = !ifDraftExpanded;
 
             }
         });
     }
 
 
-        private void initData() {
-        towns = new ArrayList<>();
-
+    private void initData() {
+        towns_draft = new ArrayList<>();
+        towns_liked = new ArrayList<>();
         List<String> imgs1 = new ArrayList<>();
         imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
 
@@ -153,14 +180,21 @@ public class AccountActivity extends AppCompatActivity {
                 .setSketch("")
                 .build();
 
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
+        towns_liked.add(t1);
+        towns_liked.add(t1);
+        towns_liked.add(t3);
+        towns_liked.add(t2);
+        towns_liked.add(t2);
+        towns_liked.add(t3);
+        towns_liked.add(t1);
+
+
+        towns_draft.add(t2);
+//        towns_draft.add(t3);
+//        towns_draft.add(t1);
+//        towns_draft.add(t2);
+//        towns_draft.add(t3);
+//        towns_draft.add(t1);
+//        towns_draft.add(t2);
     }
 }

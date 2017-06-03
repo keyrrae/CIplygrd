@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/grid_item_image"
         android:layout_centerHorizontal="true"
-        android:text="fsdgsdfg"
+        android:textSize = "15dp"
+        android:text="untitled"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>
