@@ -169,13 +169,12 @@ public class Town implements Serializable {
     public String getImageUriString() {
         String temp = "";
 
-        for (int i = 0; i < this.imageUrls.size() - 1; i++) {
-
-            temp += this.imageUrls.get(i) + ",";
-
+        if(imageUrls!=null&&imageUrls.size()>0) {
+            for (int i = 0; i < this.imageUrls.size() - 1; i++) {
+                temp += this.imageUrls.get(i) + ",";
+            }
+            temp += this.imageUrls.get(this.imageUrls.size() - 1);
         }
-
-        temp += this.imageUrls.get(this.imageUrls.size() - 1);
         return temp;
     }
 

@@ -225,7 +225,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
 
                     //read test
-                    String [] townRead = getALLTownsFromDB(database_r);
+                    List<Town>  townRead = getALLTownsFromDB(database_r);
 
                     Log.i("onClick", "townRead = "+townRead);
 
@@ -503,12 +503,12 @@ public class NewTownActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 //        String column_name_insert = "Text";
 
-
         values.put("TownID", town.getId());
         values.put("Title", town.getTitle());
         values.put("Address", town.getAddress());
         values.put("Category", town.getCategory());
         values.put("Description", town.getDescription());
+        values.put("UserAlias", town.getUserAlias());
         values.put("Location", town.getLatLng());
         values.put("ImageUris", town.getImageUriString());
 
@@ -529,11 +529,14 @@ public class NewTownActivity extends AppCompatActivity implements
     }
 
 
-    String[] getALLTownsFromDB(SQLiteDatabase db) {
+    List<Town> getALLTownsFromDB(SQLiteDatabase db) {
         String tableName_read = "Towns";
         String query = "SELECT * FROM " + tableName_read;
 
         Cursor cursor = db.rawQuery(query, null);
+        List<Town> towns = new ArrayList<>();
+
+
 
         Log.i("Read from DB", "getALLTownsFromDB !");
         ArrayList<String> itemIds = new ArrayList<>();
@@ -541,27 +544,45 @@ public class NewTownActivity extends AppCompatActivity implements
         ArrayList<String> itemIds_des = new ArrayList<>();
         ArrayList<String> itemIds_uris = new ArrayList<>();
         while (cursor.moveToNext()) {
-            String ss = (cursor.getString(cursor.getColumnIndex("Title")));
-            itemIds.add(ss);
+            String TownID = (cursor.getString(cursor.getColumnIndex("TownID")));
+            String Title = (cursor.getString(cursor.getColumnIndex("Title")));
+            String Address = (cursor.getString(cursor.getColumnIndex("Address")));
+            String Category = (cursor.getString(cursor.getColumnIndex("Category")));
+            String Description = (cursor.getString(cursor.getColumnIndex("Description")));
+            String UserAlias = (cursor.getString(cursor.getColumnIndex("UserAlias")));
+            String Location = (cursor.getString(cursor.getColumnIndex("Location")));
+            String ImageUris = (cursor.getString(cursor.getColumnIndex("ImageUris")));
 
-            String sss = (cursor.getString(cursor.getColumnIndex("Address")));
-            itemIds2.add(sss);
 
-            String ssss = (cursor.getString(cursor.getColumnIndex("Description")));
-            itemIds_des.add(ssss);
 
-            String sssss = (cursor.getString(cursor.getColumnIndex("ImageUris")));
-            itemIds_uris.add(sssss);
+            //processing address to latlng
+            String[] separated = Location.split(",");
+            float lat = Float.parseFloat(separated[0]);
+            float lng = Float.parseFloat(separated[1]);
 
+
+            //Process to get ImageUris
+            ArrayList<String> uriStringArrayList_temp = new ArrayList<>();
+            separated = ImageUris.split(",");
+            for(int i = 0;i<separated.length;i++){
+                uriStringArrayList_temp.add(separated[i]);
+            }
+
+            Town outputTown = new TownBuilder()
+                    .setTitle(Title)
+                    .setAddress(Address)
+                    .setCategory(Category)
+                    .setDescription(Description)
+                    .setUserAlias(UserAlias)
+                    .setLat(lat)
+                    .setLng(lng)
+                    .setImages(uriStringArrayList_temp)
+                    .build();
+
+            outputTown.setId(TownID);
+            towns.add(outputTown);
         }
         cursor.close();
-        // end of read information
-        String[] Towns = itemIds.toArray(new String[itemIds.size()]);
-
-        for (int i = 0; i < Towns.length; i++) {
-            Log.i("Read from DB", "Towns[" + i + "] = " + Towns[i]);
-        }
-
-        return Towns;
+        return towns;
     }
 }
