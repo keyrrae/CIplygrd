@@ -26,6 +26,7 @@ import java.util.List;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
@@ -73,7 +74,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
                 intent.putExtra("town", towns_liked.get(position));
                 startActivity(intent);
             }
@@ -86,7 +88,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
                 intent.putExtra("town", towns_draft.get(position));
                 startActivity(intent);
             }
@@ -201,8 +204,8 @@ public class AccountActivity extends AppCompatActivity {
         TownDatabaseHelper.Initialize(this);
         dbHelper = TownDatabaseHelper.GetInstance();
 
-        List<Town>  townRead = dbHelper.getALLTownsFromDB();
-        Log.i("onClick", "townRead = "+townRead);
+        towns_draft = dbHelper.getALLTownsFromDB();
+        Log.i("onClick", "townRead = "+towns_draft);
         // ========== end of town database  ============
 
 //        towns_draft.add(t2);

@@ -65,7 +65,14 @@ public class GridViewImageAdapter extends BaseAdapter {
             item = (RelativeLayout) inflater.inflate(R.layout.grid_account_item, null, true);
             ImageView image = (ImageView) item.findViewById(R.id.grid_item_image);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            Picasso.with(image.getContext()).load(this.towns.get(position).getImageUrls().get(0)).into(image);
+
+            String imagePath = this.towns.get(position).getImageUrls().get(0);
+            if(imagePath!=null&&!imagePath.isEmpty()) {
+                Picasso.with(image.getContext()).load(imagePath).into(image);
+            }
+            else{
+                Picasso.with(image.getContext()).load(R.drawable.defaultimage).into(image);
+            }
 
             TextView text = (TextView) item.findViewById(R.id.grid_item_title);
             text.setText(this.towns.get(position).getTitle());

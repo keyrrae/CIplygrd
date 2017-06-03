@@ -82,24 +82,13 @@ public class NewTownActivity extends AppCompatActivity implements
 
     private Town outputTown;
 
+    private Town passedInTown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_town);
 
-
-
-
-        outputTown = new TownBuilder()
-                .setTitle(title)
-                .setAddress(address)
-                .setCategory(category)
-                .setDescription(description)
-                .setUserAlias(information)
-                .setLat(lat)
-                .setLng(lng)
-                .setImages(uriStringArrayList)
-                .build();
 
         // ==========  town database  ============
 
@@ -123,7 +112,8 @@ public class NewTownActivity extends AppCompatActivity implements
         });
         imageView_newTown = (ImageView) findViewById(R.id.imageView_newTown);
 
-        imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
+
+
         imageView_newTown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +130,28 @@ public class NewTownActivity extends AppCompatActivity implements
                 }
             }
         });
+
+        //get extra, see  if the passed in town is null or not to decide if need to initialize a new town
+        passedInTown = (Town) getIntent().getSerializableExtra("town");
+        if(passedInTown!=null){
+            outputTown = passedInTown;
+            //update view
+            checkAllInformation();
+        }
+        else {
+            outputTown = new TownBuilder()
+                    .setTitle(title)
+                    .setAddress(address)
+                    .setCategory(category)
+                    .setDescription(description)
+                    .setUserAlias(information)
+                    .setLat(lat)
+                    .setLng(lng)
+                    .setImages(uriStringArrayList)
+                    .build();
+            imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
+        }
+
 
         TextView title_title = (TextView) findViewById(R.id.title_title);
         title_title.setOnClickListener(new View.OnClickListener() {
@@ -341,8 +353,7 @@ public class NewTownActivity extends AppCompatActivity implements
 
                 ImageView c = (ImageView) findViewById(R.id.checkbox_0);
                 c.setImageResource(R.drawable.ic_check_box_white_24dp);
-                Picasso.with(getApplicationContext()).load(Uri.parse(outputTown.getImageUrls().get(0)))
-                        .into(imageView_newTown);
+                Picasso.with(getApplicationContext()).load(Uri.parse(outputTown.getImageUrls().get(0))).into(imageView_newTown);
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
