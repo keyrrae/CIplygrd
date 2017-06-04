@@ -30,7 +30,7 @@ public class NewDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_description);
 
         passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-        String dataPassIn = passedInTown.getDescription();
+        String dataPassIn = passedInTown.getDescription().get(0);
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
             Log.i("ed","dataPassIn2 = "+dataPassIn);
@@ -50,7 +50,9 @@ public class NewDescriptionActivity extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 EditText ev = (EditText) findViewById(R.id.editText_new_description);
                 //returnIntent.putExtra("result", ev.getText().toString());
-                passedInTown.setDescription(ev.getText().toString());
+
+                //passedInTown.setDescription(ev.getText().toString());
+
                 returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();

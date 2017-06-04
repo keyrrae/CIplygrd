@@ -69,6 +69,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -89,7 +90,7 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
+//import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import permissions.dispatcher.NeedsPermission;
@@ -495,6 +496,7 @@ public class GeoActivity extends AppCompatActivity implements
 
                     List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
                     if (database != null) {
 
                         for (String code : allGeoCodes) {
@@ -505,8 +507,6 @@ public class GeoActivity extends AppCompatActivity implements
 
                                     currentMapZoomLeverl = map.getCameraPosition().zoom;
                                     Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
-
-
                                     //only update when zoom level is higher than a threshold
                                     if (currentMapZoomLeverl > zoomLevelThreshold) {
 
@@ -519,11 +519,33 @@ public class GeoActivity extends AppCompatActivity implements
                                         towns.clear();
 
 
+
+
+
+
+
+
+
+
+
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                             Town town = ds.getValue(Town.class);
                                             //Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
                                             towns.add(town);
                                         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                         //compare towns lists
                                         boolean isEqual = true;

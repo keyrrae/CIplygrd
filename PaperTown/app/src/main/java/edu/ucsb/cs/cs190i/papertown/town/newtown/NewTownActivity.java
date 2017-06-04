@@ -60,7 +60,7 @@ public class NewTownActivity extends AppCompatActivity implements
     //    private ImageSwitcher mSwitcher;
     private ImageView imageView_newTown;
 
-    TownDatabaseHelper dbHelper;
+    //TownDatabaseHelper dbHelper;
 
     final int NEW_TITLE_REQUEST = 0;
     final int NEW_ADDRESS_REQUEST = 1;
@@ -90,11 +90,11 @@ public class NewTownActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_town);
 
 
-        // ==========  town database  ============
-
-        TownDatabaseHelper.Initialize(this);
-        dbHelper = TownDatabaseHelper.GetInstance();
-        // ========== end of town database  ============
+//        // ==========  town database  ============
+//
+//       TownDatabaseHelper.Initialize(this);
+//        dbHelper = TownDatabaseHelper.GetInstance();
+//        // ========== end of town database  ============
 
 
 
@@ -141,7 +141,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     .setTitle(title)
                     .setAddress(address)
                     .setCategory(category)
-                    .setDescription(description)
+                    //.setDescription(description)
                     .setUserAlias(information)
                     .setLat(lat)
                     .setLng(lng)
@@ -248,9 +248,11 @@ public class NewTownActivity extends AppCompatActivity implements
             public boolean onLongClick(View v) {
                 // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
-                //save town to DB
-                int status = dbHelper.saveTownToDB(outputTown);
-                Log.i("saveTownToDB", "status = "+status);
+
+
+//                //save town to DB
+//                int status = dbHelper.saveTownToDB(outputTown);
+//                Log.i("saveTownToDB", "status = "+status);
 
 //                //read test  moved to the AccountActivity
 //                List<Town>  townRead = dbHelper.getALLTownsFromDB();
@@ -426,7 +428,7 @@ public class NewTownActivity extends AppCompatActivity implements
             setChecked((TextView) findViewById(R.id.title_description),
                     (TextView) findViewById(R.id.description_description),
                     (ImageView) findViewById(R.id.checkbox4),
-                    outputTown.getDescription());
+                    outputTown.getDescription().get(0));
         }
 
         if (outputTown.getUserAlias() != null && !outputTown.getUserAlias().isEmpty()) {

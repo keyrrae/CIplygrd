@@ -24,7 +24,7 @@ public class TownBuilder {
     private String geoHash = "";
     private String title = "";
     private String category = "";
-    private String description = "";
+    private List<String> description;
     private String address = "";
     private double lat = 0.0f;
     private double lng = 0.0f;
@@ -71,7 +71,7 @@ public class TownBuilder {
         return this;
     }
 
-    public TownBuilder setDescription(String des){
+    public TownBuilder setDescription(List<String> des){
         this.description = des;
         return this;
     }

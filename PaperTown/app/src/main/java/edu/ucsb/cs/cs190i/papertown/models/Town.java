@@ -24,7 +24,7 @@ public class Town implements Serializable {
     private String geoHash = "";
     private String title;
     private String category;
-    private String description;
+    private List<String> description;
     private String address;
     private double lat;
     private double lng;
@@ -32,6 +32,16 @@ public class Town implements Serializable {
     private List<String> imageUrls;
     private String sketch;
     private String userAlias;
+    private int numOfLikes = 0;
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getId() {
         return id;
@@ -41,8 +51,7 @@ public class Town implements Serializable {
         this.id = id;
     }
 
-    public Town() {
-    }
+    public Town(){}
 
     public String getGeoHash() {
         return geoHash;
@@ -57,7 +66,7 @@ public class Town implements Serializable {
             String geoHash,
             String title,
             String category,
-            String description,
+            List<String> description,
             String address,
             double lat,
             double lng,
@@ -65,7 +74,7 @@ public class Town implements Serializable {
             List<String> imageUrls,
             String sketch,
             String ual
-    ) {
+    ){
         this.id = id;
         this.geoHash = geoHash;
         this.title = title;
@@ -96,11 +105,11 @@ public class Town implements Serializable {
         this.category = category;
     }
 
-    public String getDescription() {
+    public List<String> getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(List<String> description) {
         this.description = description;
     }
 
@@ -118,7 +127,6 @@ public class Town implements Serializable {
 
     public void setLat(float lat) {
         this.lat = lat;
-        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public double getLng() {
@@ -127,7 +135,6 @@ public class Town implements Serializable {
 
     public void setLng(float lng) {
         this.lng = lng;
-        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public String getUserId() {
@@ -160,6 +167,24 @@ public class Town implements Serializable {
 
     public void setUserAlias(String userAlias) {
         this.userAlias = userAlias;
+    }
+
+    public int getNumOfLikes() {
+        return numOfLikes;
+    }
+
+    public void setNumOfLikes(int numOfLikes) {
+        this.numOfLikes = numOfLikes;
+    }
+
+    public void increaseLikes() {
+        this.numOfLikes++;
+    }
+
+    public void decreaseLikes() {
+        if(this.numOfLikes > 0){
+            this.numOfLikes--;
+        }
     }
 
     public String getLatLng() {

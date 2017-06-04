@@ -27,7 +27,7 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
+//import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 public class AccountActivity extends AppCompatActivity {
@@ -154,7 +154,7 @@ public class AccountActivity extends AppCompatActivity {
         Town t1 = new TownBuilder()
                 .setTitle("Mother Susanna Monument")
                 .setCategory("place")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
@@ -166,7 +166,7 @@ public class AccountActivity extends AppCompatActivity {
         Town t2 = new TownBuilder()
                 .setTitle("Father Crowley Monument")
                 .setCategory("place")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
@@ -178,7 +178,7 @@ public class AccountActivity extends AppCompatActivity {
         Town t3 = new TownBuilder()
                 .setTitle("Wonder Land")
                 .setCategory("creature")
-                .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
+               // .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
                 .setAddress("35.594559f,-117.899149f")
                 .setLat(35.594559f)
                 .setLng(-117.899149f)
@@ -197,16 +197,19 @@ public class AccountActivity extends AppCompatActivity {
 
 
 
-        //read draft towns from DB
-        TownDatabaseHelper dbHelper;
-        // ==========  town database  ============
+//        //read draft towns from DB
+//        TownDatabaseHelper dbHelper;
+//        // ==========  town database  ============
+//
+//        TownDatabaseHelper.Initialize(this);
+//        dbHelper = TownDatabaseHelper.GetInstance();
+//
+//        towns_draft = dbHelper.getALLTownsFromDB();
+//        Log.i("onClick", "townRead = "+towns_draft);
+//        // ========== end of town database  ============
 
-        TownDatabaseHelper.Initialize(this);
-        dbHelper = TownDatabaseHelper.GetInstance();
 
-        towns_draft = dbHelper.getALLTownsFromDB();
-        Log.i("onClick", "townRead = "+towns_draft);
-        // ========== end of town database  ============
+
 
 //        towns_draft.add(t2);
 //        towns_draft.add(t3);
