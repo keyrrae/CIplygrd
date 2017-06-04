@@ -49,9 +49,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.models.MyBook;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.town.account.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -84,11 +88,20 @@ public class NewTownActivity extends AppCompatActivity implements
 
     private Town passedInTown;
 
+    private Realm mRealm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_town);
 
+
+//        //handle the migration changes
+//        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
+//                .deleteRealmIfMigrationNeeded()
+//                .build();
+
+        mRealm = Realm.getInstance(getApplicationContext());
 
 //        // ==========  town database  ============
 //
@@ -250,6 +263,16 @@ public class NewTownActivity extends AppCompatActivity implements
                 // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
 
+                Log.i("toJson", "result = " + outputTown.toJson());
+                //save town to realm
+                mRealm.beginTransaction();
+
+                TownRealm townRealm = mRealm.createObject(TownRealm.class);
+                townRealm.setTownId(outputTown.getId());
+                townRealm.setTownJson(outputTown.toJson());
+
+
+                mRealm.commitTransaction();
 
 //                //save town to DB
 //                int status = dbHelper.saveTownToDB(outputTown);
@@ -262,6 +285,7 @@ public class NewTownActivity extends AppCompatActivity implements
             }
         });
     }
+
 
 
     @Override
