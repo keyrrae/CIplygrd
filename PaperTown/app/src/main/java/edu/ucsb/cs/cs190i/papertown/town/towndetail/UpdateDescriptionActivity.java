@@ -31,7 +31,7 @@ public class UpdateDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_description);
 
         Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-        String dataPassIn = passedInTown.getDescription();
+        String dataPassIn = passedInTown.getDescription().get(0);
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
             Log.i("ed","dataPassIn2 = "+dataPassIn);

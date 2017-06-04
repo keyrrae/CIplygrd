@@ -1,10 +1,9 @@
 /*
- *  Copyright (c) 2017 - present, Xuan Wang
+ *  Copyright (c) 2017 - present, Zhenyu Yang
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
  *  LICENSE file in the root directory of this source tree.
- *
  */
 
 package edu.ucsb.cs.cs190i.papertown;
@@ -63,7 +62,7 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         Picasso.with(holder.imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(holder.imageView);
         holder.titleTextView.setText(towns.get(position).getTitle());
         holder.categoryTextView.setText(towns.get(position).getCategory());
-        holder.descriptionTextView.setText(towns.get(position).getDescription());
+        holder.descriptionTextView.setText(towns.get(position).getDescription().get(0));
     }
 
     @Override

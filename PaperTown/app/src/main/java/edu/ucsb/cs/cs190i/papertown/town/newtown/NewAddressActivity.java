@@ -67,7 +67,6 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             ((EditText)findViewById(R.id.editText_new_address)).setText(dataPassIn);
         }
 
-
         //test
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_address);
         setSupportActionBar(toolbar);
@@ -87,7 +86,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                     String address = ev.getText().toString();
                     passedInTown.setAddress(address);
 
-                    //processing address to latlng
+                    //processing address to lat lng
                     String[] separated = address.split(",");
                     float lat = Float.parseFloat(separated[0]);
                     float lng = Float.parseFloat(separated[1]);

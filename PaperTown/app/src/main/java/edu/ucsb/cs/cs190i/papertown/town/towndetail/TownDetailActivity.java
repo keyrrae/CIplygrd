@@ -267,7 +267,7 @@ public class TownDetailActivity extends AppCompatActivity {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
             title = passedInTown.getTitle();
             address = passedInTown.getLatLng();
-            description = passedInTown.getDescription();
+            description = passedInTown.getDescription().get(0);
             category = passedInTown.getCategory();
             information = passedInTown.getUserAlias();
             uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
