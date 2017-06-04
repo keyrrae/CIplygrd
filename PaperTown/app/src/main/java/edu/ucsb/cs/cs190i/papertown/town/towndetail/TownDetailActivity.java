@@ -84,6 +84,7 @@ import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 
 
 public class TownDetailActivity extends AppCompatActivity {
+    final int NEW_PHOTO_REQUEST = 10;
 
     private GridView imageGrid;
     private ArrayList<Uri> uriList;
@@ -174,7 +175,33 @@ public class TownDetailActivity extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TownDetailActivity.this, "Update story", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TownDetailActivity.this, "Update story", Toast.LENGTH_SHORT).show();
+                Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
+                updateDesIntent.putExtra("townDescription",description);
+                startActivity(updateDesIntent);
+            }
+        });
+
+        String update_text = ((TextView)findViewById(R.id.detail_town_update)).getText().toString();
+        if(update_text.equals("")){
+            (findViewById(R.id.detail_town_upd)).setVisibility(View.INVISIBLE);
+            (findViewById(R.id.detail_town_update)).setVisibility(View.INVISIBLE);
+        }
+
+        //Update Gallery button
+        TextView upload = (TextView) findViewById(R.id.detail_add_image_text);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(TownDetailActivity.this, "Upload Image", Toast.LENGTH_SHORT).show();
+
+                //start camera
+                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);
+
+                //Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
+                //startActivity(updateDesIntent);
             }
         });
 
@@ -262,7 +289,6 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         });
 
-
         if (passedInTown != null) {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
             title = passedInTown.getTitle();
@@ -271,7 +297,6 @@ public class TownDetailActivity extends AppCompatActivity {
             category = passedInTown.getCategory();
             information = passedInTown.getUserAlias();
             uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
-
         }
 
         //change button color

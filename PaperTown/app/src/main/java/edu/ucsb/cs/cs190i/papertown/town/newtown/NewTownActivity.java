@@ -110,10 +110,9 @@ public class NewTownActivity extends AppCompatActivity implements
                 finish();
             }
         });
+
+
         imageView_newTown = (ImageView) findViewById(R.id.imageView_newTown);
-
-
-
         imageView_newTown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

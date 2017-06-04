@@ -200,12 +200,6 @@ public class GeoActivity extends AppCompatActivity implements
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
         }
 
-
-
-
-
-
-
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {

@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/m"
                 android:layout_marginTop="@dimen/m"
-                android:text="Discription"
+                android:text="Description"
                 android:textAppearance="@style/MainTextBold_detail" />
 
             <TextView
@@ -137,7 +137,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m"
-                android:text="Discription here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
+                android:text="Description here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
+                android:textAppearance="@style/MainTextRegular_detail" />
+
+            <TextView
+                android:id="@+id/detail_town_upd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/m"
+                android:text="Update"
+                android:textAppearance="@style/MainTextBold_detail" />
+
+            <TextView
+                android:id="@+id/detail_town_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m"
+                android:text=""
                 android:textAppearance="@style/MainTextRegular_detail" />
 
             <RelativeLayout
@@ -248,7 +264,6 @@
                 android:numColumns="4"/>
 
             <RelativeLayout
-                android:id="@+id/detail_add_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/m"
