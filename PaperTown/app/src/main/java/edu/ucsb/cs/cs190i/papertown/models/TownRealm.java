@@ -15,15 +15,24 @@ import io.realm.annotations.Required;
  * Created by Zhenyu on 2017-06-04.
  */
 
-public class MyBook extends RealmObject {
+public class TownRealm extends RealmObject {
     @Required
-    private String title;
+    private String townJson;
+    private String townId = "";
 
-    public String getTitle() {
-        return title;
+    public String getTownJson() {
+        return townJson;
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
+    public void setTownJson(final String townJson) {
+        this.townJson = townJson;
+    }
+
+    public String getTownId(){
+        return this.townId;
+    }
+
+    public void setTownId(String townId){
+        this.townId = townId;
     }
 }

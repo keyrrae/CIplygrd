@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.GeoHash;
@@ -117,6 +118,13 @@ public class Town implements Serializable {
 
     public void setDescription(List<String> description) {
         this.description = description;
+    }
+
+    public void addDescription(String description){
+        if(this.description==null){
+            this.description = new ArrayList<>();
+        }
+        this.description.add(description);
     }
 
     public String getAddress() {

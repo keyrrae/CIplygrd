@@ -11,12 +11,7 @@
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -24,19 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,19 +30,14 @@ import android.widget.ViewSwitcher;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
-import edu.ucsb.cs.cs190i.papertown.models.MyBook;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
-import edu.ucsb.cs.cs190i.papertown.town.account.TownRealm;
+import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class NewTownActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {

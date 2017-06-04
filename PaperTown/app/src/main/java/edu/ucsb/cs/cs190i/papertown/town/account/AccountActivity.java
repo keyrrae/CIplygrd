@@ -11,11 +11,8 @@ package edu.ucsb.cs.cs190i.papertown.town.account;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -24,13 +21,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
-import edu.ucsb.cs.cs190i.papertown.models.MyBook;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
