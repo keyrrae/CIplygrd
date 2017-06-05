@@ -36,6 +36,8 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         public TextView titleTextView;
         public TextView categoryTextView;
         public TextView descriptionTextView;
+        public TextView likeCountTextView;
+        public TextView list_town_author;
 
         public ListTownViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +45,9 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
             titleTextView = (TextView) itemView.findViewById(R.id.list_town_title);
             categoryTextView = (TextView) itemView.findViewById(R.id.list_town_category);
             descriptionTextView = (TextView) itemView.findViewById(R.id.list_town_description);
+            likeCountTextView =  (TextView) itemView.findViewById(R.id.list_favor_count);
+            list_town_author =  (TextView) itemView.findViewById(R.id.list_town_author);
+
         }
     }
 
@@ -65,6 +70,10 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         if(towns.get(position).getDescription()!=null&&towns.get(position).getDescription().size()>0) {
             holder.descriptionTextView.setText(towns.get(position).getDescription().get(0));
         }
+        holder.likeCountTextView.setText(""+towns.get(position).getNumOfLikes());
+        holder.list_town_author.setText(""+towns.get(position).getAuthor());
+
+
     }
 
     @Override

@@ -404,7 +404,7 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
         //load like count
-        detail_town_visit_count.setText(""+passedInTown.getNumOfLikes());
+        detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
 
 
         //load description
@@ -424,7 +424,7 @@ public class TownDetailActivity extends AppCompatActivity {
         //load information
         if (passedInTown.getUserAlias() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
-            detail_town_description.setText(passedInTown.getUserAlias());
+            detail_town_description.setText(passedInTown.getAuthor());
             //   townBuilder.setUserAlias(information);
         }
 

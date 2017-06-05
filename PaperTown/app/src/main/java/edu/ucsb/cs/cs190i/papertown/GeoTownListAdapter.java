@@ -81,7 +81,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
 
         titleTextView.setText(towns.get(position).getTitle());
         categoryTextView.setText(towns.get(position).getCategory());
-        countTextView.setText(""+towns.get(position).getNumOfLikes());
+        countTextView.setText(""+towns.get(position).getNumOfLikes()+" likes");
     }
 
     @Override
