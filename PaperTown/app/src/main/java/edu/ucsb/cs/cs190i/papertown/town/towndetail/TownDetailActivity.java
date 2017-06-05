@@ -84,7 +84,7 @@ import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 import io.realm.Realm;
 import io.realm.RealmResults;
-
+//test
 
 public class TownDetailActivity extends AppCompatActivity {
 
