@@ -68,19 +68,30 @@ public class TownManager {
         //informTownDataChanged();
     }
 
+    public HashMap<String,Integer> getIdPositionMap(){
+        return this.idPositionMap;
+    }
+
     public void addTownList(List<Town> townList){
-        boolean ifNotify = false;
+        if(townList.size()>0) {
+            boolean ifNotify = false;
 
-        for(Town town: townList){
-            addTown(town);
-            town = townMapOld.put(town.toJson(),town);
-            if(town==null){
-                ifNotify = true;
+            for (Town town : townList) {
+                addTown(town);
+                town = townMapOld.put(town.toJson(), town);
+                if (town == null) {
+                    ifNotify = true;
+                }
             }
-        }
 
-        if(ifNotify){
-            informTownDataChanged();
+            if (ifNotify) {
+                clearTowns();
+                for (Town town : townList) {
+                    addTown(town);
+                    townMapOld.put(town.toJson(), town);
+                }
+                informTownDataChanged();
+            }
         }
     }
 
@@ -113,6 +124,7 @@ public class TownManager {
 
     public void clearTowns(){
         townMap.clear();
+        townMapOld.clear();
         informTownDataChanged();
     }
 }
