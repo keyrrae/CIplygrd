@@ -129,7 +129,7 @@ public class GeoActivity extends AppCompatActivity implements
 
     private final int zoomLevelThreshold = 16;
 
-    private boolean ifCollasped = true;
+    private boolean ifCollasped = false;
 
     private String lastSnapId = "";
 
@@ -241,36 +241,20 @@ public class GeoActivity extends AppCompatActivity implements
                                         Log.i("TownManager", "town size2 = " + townList.size());
                                     }
 
-
-                                    if(!ifCollasped){
-                                        setRecyclerViewCollapse(mRecyclerView);
-                                        ifCollasped  = true;
+                                    if (!(currentMapZoomLeverl > zoomLevelThreshold)) {
+                                        if (!ifCollasped) {
+                                            setRecyclerViewCollapse(mRecyclerView);
+                                            ifCollasped = true;
+                                        }
                                     }
 
-//                                if (currentMapZoomLeverl > zoomLevelThreshold) {
+
                                     updateMapMarkers();
-                                    //override adapter
-                                    //towns = townList;
+
                                     mAdapter = new GeoTownListAdapter(townList, getApplicationContext());
-
-                                    //mAdapter.setTowns(townList);
-
                                     mRecyclerView.setAdapter(mAdapter);
-//                                    if (idPositionHashMap.size() != 0 && pressedTownId != null) {
-//                                        int position = idPositionHashMap.get(pressedTownId);
-//                                        mRecyclerView.scrollToPosition(position);
-//
-//                                    }
-
-//                                    if (townList.size() > 0) {
-//                                        expand(mRecyclerView);
-//                                    }
 
 
-//                                }
-//                                else {
-//                                    collapse(mRecyclerView);
-//                                }
                             }
                             }
                         });
@@ -524,11 +508,12 @@ public class GeoActivity extends AppCompatActivity implements
                 @Override
                 public void onCameraIdle() {
 
-
-                    if(ifCollasped){
-                        setRecyclerViewExpand(mRecyclerView);
-                        ifCollasped = false;
-                    }
+                                if ((currentMapZoomLeverl > zoomLevelThreshold)) {
+                                    if (ifCollasped) {
+                                        setRecyclerViewExpand(mRecyclerView);
+                                        ifCollasped = false;
+                                    }
+                                }
 
                     LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
                     double neLat = bounds.northeast.latitude;

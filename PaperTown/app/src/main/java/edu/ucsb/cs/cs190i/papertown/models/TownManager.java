@@ -103,12 +103,18 @@ public class TownManager {
         return town;
     }
 
+    public int getIdByTown(Town town){
+        return idPositionMap.get(town.getId());
+    }
+
     public void removeTownById(String id){
         if (townMap.containsKey(id)) {
             townMap.remove(id);
         }
         informTownDataChanged();
     }
+
+
 
     public void removeTown(Town town) {
         removeTownById(town.getId());
