@@ -242,6 +242,11 @@ public class GeoActivity extends AppCompatActivity implements
                                     }
 
 
+                                    if(!ifCollasped){
+                                        setRecyclerViewCollapse(mRecyclerView);
+                                        ifCollasped  = true;
+                                    }
+
 //                                if (currentMapZoomLeverl > zoomLevelThreshold) {
                                     updateMapMarkers();
                                     //override adapter
@@ -380,7 +385,7 @@ public class GeoActivity extends AppCompatActivity implements
         }
     }
 
-    public static void expand(final View v) {
+    public static void setRecyclerViewExpand(final View v) {
         v.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
         final int targetHeight = v.getMeasuredHeight();
 
@@ -407,7 +412,7 @@ public class GeoActivity extends AppCompatActivity implements
         v.startAnimation(a);
     }
 
-    public void collapse(final View v) {
+    public void setRecyclerViewCollapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
         //clear things
@@ -518,6 +523,13 @@ public class GeoActivity extends AppCompatActivity implements
             map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                 @Override
                 public void onCameraIdle() {
+
+
+                    if(ifCollasped){
+                        setRecyclerViewExpand(mRecyclerView);
+                        ifCollasped = false;
+                    }
+
                     LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
                     double neLat = bounds.northeast.latitude;
                     double swLat = bounds.southwest.latitude;
@@ -577,7 +589,7 @@ public class GeoActivity extends AppCompatActivity implements
 //                                        Log.i("dataSnapshot", "town size = " + towns.size());
 //
 //                                        //compare towns lists
-//                                        boolean isEqual = true;
+//                                        boolean isEqual = true;*
 //                                        if (townsOld.size() == towns.size()) {
 //                                            for (int i = 0; i < towns.size(); i++) {
 //                                                if (!townsOld.get(i).getId().equals(towns.get(i).getId())) {
