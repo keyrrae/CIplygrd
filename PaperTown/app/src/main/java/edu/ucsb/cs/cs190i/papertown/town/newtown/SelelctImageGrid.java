@@ -12,7 +12,6 @@ package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;

@@ -13,6 +13,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
+    <dimen name="grid_expected_size">150dp</dimen>
+
     <dimen name="fab_l">100dp</dimen>
     <dimen name="fab_m">40dp</dimen>
 

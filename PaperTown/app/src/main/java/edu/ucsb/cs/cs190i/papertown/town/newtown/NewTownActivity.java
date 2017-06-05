@@ -103,10 +103,9 @@ public class NewTownActivity extends AppCompatActivity implements
                 finish();
             }
         });
+
+
         imageView_newTown = (ImageView) findViewById(R.id.imageView_newTown);
-
-
-
         imageView_newTown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +114,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     //stat camera rool
                     Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
                     startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);//one can be replaced with any action code
                 } else {
                     Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);

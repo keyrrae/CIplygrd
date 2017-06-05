@@ -493,6 +493,7 @@ public class GeoActivity extends AppCompatActivity implements
         return true;
     }
 
+    // Hallo, I am a bonus!
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {

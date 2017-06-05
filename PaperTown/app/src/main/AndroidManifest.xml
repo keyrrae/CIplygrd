@@ -99,9 +99,8 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".town.towndetail.SingleImageActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".town.towndetail.UpdateDescriptionActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".town.newtown.NewTitleActivity"
             android:configChanges="orientation|screenSize" />

@@ -55,7 +55,7 @@
     <!-- Detail -->
     <style name="TitleText_detail">
         <item name="android:textColor">@color/PrimaryGray</item>
-        <item name="android:textSize">@dimen/xlT</item>
+        <item name="android:textSize">@dimen/lT</item>
         <item name="android:fontFamily">"sans-serif-medium"</item>
     </style>
 
