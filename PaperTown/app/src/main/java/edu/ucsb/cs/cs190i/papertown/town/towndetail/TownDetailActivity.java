@@ -87,10 +87,12 @@ import butterknife.ButterKnife;
 import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 import permissions.dispatcher.NeedsPermission;
@@ -211,13 +213,6 @@ public class TownDetailActivity extends AppCompatActivity {
                 dispatchImagePicking();
             }
         });
-
-        // Add related Towns
-        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        //GeoTownListAdapter mAdapter = new GeoTownListAdapter(, getApplicationContext());
-        //mRecyclerView.setAdapter(mAdapter);
 
 
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
@@ -478,6 +473,37 @@ public class TownDetailActivity extends AppCompatActivity {
         } else {
             Log.i("manu", "Error - Map Fragment was null!!");
         }
+
+
+        // Add related Towns
+        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        final List<Town> towns = TownManager.getInstance().getAllTowns();
+        // remove the current town from list
+        for(int i=0; i<towns.size();i++){
+            if(towns.get(i).getId().equals(passedInTown.getId())){
+                towns.remove(towns.get(i));
+                break;
+            }
+        }
+        GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                        intent.putExtra("town", towns.get(position));
+                        startActivity(intent);
+                        finish(); // back to main screen
+                    }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
+
+                })
+        );
 
     }
 
