@@ -63,9 +63,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -177,12 +179,78 @@ public class TownDetailActivity extends AppCompatActivity {
                             Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
                             item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
                             item.setTitle("like");
+
+                            //increase number of likes and sync data with server
+                            passedInTown.increaseLikes();
+                            DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId()).child("numOfLikes");
+                            likesRef.setValue(passedInTown.getNumOfLikes(),
+                                    new DatabaseReference.CompletionListener() {
+                                        public void onComplete(DatabaseError err, DatabaseReference ref){
+                                            if (err == null) {
+                                                Log.d("INC_LIKE", "Setting num of likes succeeded");
+                                            }
+                                        }
+                                    }
+                            );
+
+
+                            //update town
+                            DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId());
+                            dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Log.d("Like", dataSnapshot.getValue().toString());
+                                    passedInTown = dataSnapshot.getValue(Town.class);  //update town
+                                    detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
                             break;
                         }
                         if (item.getTitle().equals("like")) {
                             Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
                             item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
                             item.setTitle("dislike");
+
+
+                            //decrease number of likes and sync data with server
+                            passedInTown.decreaseLikes();
+                            DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId()).child("numOfLikes");
+                            likesRef.setValue(passedInTown.getNumOfLikes(),
+                                    new DatabaseReference.CompletionListener() {
+                                        public void onComplete(DatabaseError err, DatabaseReference ref){
+                                            if (err == null) {
+                                                Log.d("INC_LIKE", "Setting num of likes succeeded");
+                                            }
+                                        }
+                                    }
+                            );
+
+
+                            //update town
+                            DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId());
+                            dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Log.d("Like", dataSnapshot.getValue().toString());
+                                    passedInTown = dataSnapshot.getValue(Town.class);  //update town
+                                    detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+
                             break;
                         }
                         break;
