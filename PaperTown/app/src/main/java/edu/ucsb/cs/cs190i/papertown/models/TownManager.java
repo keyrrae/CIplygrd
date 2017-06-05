@@ -150,8 +150,43 @@ public class TownManager {
 
 
     //=========  add by ZY, remove if needed
+
+
     public void increaseTownLikesById(String id) {
         getTownById(id).increaseLikes();
+        DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(id).child("numOfLikes");
+        likesRef.setValue(getTownById(id).getNumOfLikes(),
+                new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError err, DatabaseReference ref) {
+                        if (err == null) {
+                            Log.d("INC_LIKE", "Setting num of likes succeeded");
+                        }
+                    }
+                }
+        );
+
+        //update town
+        DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(getTownById(id).getId());
+        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                addTown(dataSnapshot.getValue(Town.class));  //update town
+                informSingleTownLChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
+
+    public void decreaseTownLikesById(String id) {
+        getTownById(id).decreaseLikes();
         DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(id).child("numOfLikes");
         likesRef.setValue(getTownById(id).getNumOfLikes(),
                 new DatabaseReference.CompletionListener() {

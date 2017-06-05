@@ -188,38 +188,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                     detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
                                 }
                             });
-
-//                            //increase number of likes and sync data with server
-//                            passedInTown.increaseLikes();
-//                            DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId()).child("numOfLikes");
-//                            likesRef.setValue(passedInTown.getNumOfLikes(),
-//                                    new DatabaseReference.CompletionListener() {
-//                                        public void onComplete(DatabaseError err, DatabaseReference ref){
-//                                            if (err == null) {
-//                                                Log.d("INC_LIKE", "Setting num of likes succeeded");
-//                                            }
-//                                        }
-//                                    }
-//                            );
-//
-//
-//                            //update town
-//                            DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId());
-//                            dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    //Log.d("Like", dataSnapshot.getValue().toString());
-//                                    passedInTown = dataSnapshot.getValue(Town.class);  //update town
-//                                    detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
-
-
                             break;
                         }
                         if (item.getTitle().equals("like")) {
@@ -228,36 +196,14 @@ public class TownDetailActivity extends AppCompatActivity {
                             item.setTitle("dislike");
 
 
-                            //decrease number of likes and sync data with server
-                            passedInTown.decreaseLikes();
-                            DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId()).child("numOfLikes");
-                            likesRef.setValue(passedInTown.getNumOfLikes(),
-                                    new DatabaseReference.CompletionListener() {
-                                        public void onComplete(DatabaseError err, DatabaseReference ref){
-                                            if (err == null) {
-                                                Log.d("INC_LIKE", "Setting num of likes succeeded");
-                                            }
-                                        }
-                                    }
-                            );
-
-
-                            //update town
-                            DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(passedInTown.getId());
-                            dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            TownManager.getInstance().decreaseTownLikesById(passedInTown.getId());
+                            TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    //Log.d("Like", dataSnapshot.getValue().toString());
-                                    passedInTown = dataSnapshot.getValue(Town.class);  //update town
+                                public void onSingleTownChanged() {
+                                    passedInTown = TownManager.getInstance().getTownById(passedInTown.getId());
                                     detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
                                 }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
                             });
-
 
 
                             break;
