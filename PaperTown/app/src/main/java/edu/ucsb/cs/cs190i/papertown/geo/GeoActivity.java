@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -156,6 +157,8 @@ public class GeoActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo);
         ButterKnife.bind(this);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -526,13 +529,16 @@ public class GeoActivity extends AppCompatActivity implements
                                     Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
 
 
-                                    TownManager.getInstance().clearTowns();
+                                    //TownManager.getInstance().clearTowns();
+                                    towns.clear();
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Town town = ds.getValue(Town.class);
                                         //Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
-                                        //towns.add(town);
-                                        TownManager.getInstance().addTown(town);
+                                        towns.add(town);
+                                        //TownManager.getInstance().addTown(town);
                                     }
+                                    TownManager.getInstance().addTownList(towns);
+
 
 
 //                                    //only update when zoom level is higher than a threshold

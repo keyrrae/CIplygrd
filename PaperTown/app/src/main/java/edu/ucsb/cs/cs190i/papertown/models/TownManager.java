@@ -8,6 +8,8 @@
 
 package edu.ucsb.cs.cs190i.papertown.models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,17 +65,22 @@ public class TownManager {
     public void addTown(Town town){
         townMap.put(town.getId(), town);
         idPositionMap.put(town.getId(),townMap.size()-1);
-        informTownDataChanged();
         //informTownDataChanged();
     }
 
     public void addTownList(List<Town> townList){
+        boolean ifNotify = false;
+
         for(Town town: townList){
             addTown(town);
             town = townMapOld.put(town.toJson(),town);
             if(town==null){
-                informTownDataChanged();
+                ifNotify = true;
             }
+        }
+
+        if(ifNotify){
+            informTownDataChanged();
         }
     }
 
