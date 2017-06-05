@@ -111,15 +111,16 @@ public class TownDetailActivity extends AppCompatActivity {
 
     private String mode = "detail";
 
-    private String title = "";
-    private String address = "";
-    private String category = "";
-    private String description = "";
-    private String information = "";
+    //private String title = "";
+    //private String address = "";
+    //private String category = "";
+    //private String description = "";
+    //private String information = "";
     private ArrayList<String> uriStringArrayList;
     private String update_text;
 
     private TextView update_view;
+    private TextView detail_town_visit_count;
     private RecyclerView  mRecyclerView;
 
     private TownMapIcon tmi;
@@ -202,7 +203,7 @@ public class TownDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
-                updateDesIntent.putExtra("townDescription", description);
+                updateDesIntent.putExtra("townDescription", passedInTown.getDescription().get(0));
                 startActivityForResult(updateDesIntent, NEW_UPDATE_REQUEST);
             }
         });
@@ -222,6 +223,8 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         });
 
+
+        detail_town_visit_count = (TextView)findViewById(R.id.detail_town_visit_count);
 
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
         this.uriList = new ArrayList<Uri>();
@@ -318,11 +321,11 @@ public class TownDetailActivity extends AppCompatActivity {
 
         if (passedInTown != null) {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
-            title = passedInTown.getTitle();
-            address = passedInTown.getLatLng();
-            description = passedInTown.getDescription().get(0);
-            category = passedInTown.getCategory();
-            information = passedInTown.getUserAlias();
+            //title = passedInTown.getTitle();
+            //address = passedInTown.getLatLng();
+            //description = passedInTown.getDescription().get(0);
+            //category = passedInTown.getCategory();
+            //information = passedInTown.getUserAlias();
             uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
         }
 
@@ -352,20 +355,20 @@ public class TownDetailActivity extends AppCompatActivity {
         }
 
         //load title
-        if (title != null) {
+        if (passedInTown.getTitle() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
-            detail_town_description.setText(title);
+            detail_town_description.setText(passedInTown.getTitle());
             // townBuilder.setTitle(title);
         }
 
         //load address and physical address
-        if (address != null) {
+        if (passedInTown.getLatLng() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
-            detail_town_description.setText(address);
+            detail_town_description.setText(passedInTown.getLatLng());
             // townBuilder.setAddress(address);
 
             //processing address to latlng
-            String[] separated = address.split(",");
+            String[] separated = passedInTown.getLatLng().split(",");
             if (separated.length > 0) {
                 lat = Float.parseFloat(separated[0]);
                 lng = Float.parseFloat(separated[1]);
@@ -399,24 +402,29 @@ public class TownDetailActivity extends AppCompatActivity {
 
         }
 
+
+        //load like count
+        detail_town_visit_count.setText(""+passedInTown.getNumOfLikes());
+
+
         //load description
-        if (description != null) {
+        if (passedInTown.getDescription().get(0) != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
-            detail_town_description.setText(description);
+            detail_town_description.setText(passedInTown.getDescription().get(0));
             //   townBuilder.setDescription(description);
         }
 
         //load category
-        if (category != null) {
+        if (passedInTown.getCategory() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
-            detail_town_description.setText(category);
+            detail_town_description.setText(passedInTown.getCategory());
             //  townBuilder.setCategory(category);
         }
 
         //load information
-        if (information != null) {
+        if (passedInTown.getUserAlias() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
-            detail_town_description.setText(information);
+            detail_town_description.setText(passedInTown.getUserAlias());
             //   townBuilder.setUserAlias(information);
         }
 
@@ -465,11 +473,11 @@ public class TownDetailActivity extends AppCompatActivity {
                     }
 
                     //add markers
-                    if (category != null && !category.isEmpty()) {
-                        tmi = new TownMapIcon(getApplicationContext(), category, false);
+                    if (passedInTown.getCategory() != null && !passedInTown.getCategory().isEmpty()) {
+                        tmi = new TownMapIcon(getApplicationContext(), passedInTown.getCategory(), false);
                         map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .title(title)
-                                .snippet(category)
+                                .title(passedInTown.getTitle())
+                                .snippet(passedInTown.getCategory())
                                 .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                     }
 
