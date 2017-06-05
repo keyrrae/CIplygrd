@@ -30,12 +30,14 @@ public class NewDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_description);
 
         passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-        String dataPassIn = passedInTown.getDescription().get(0);
-        Log.i("ed","dataPassIn = "+dataPassIn);
-        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
-            Log.i("ed","dataPassIn2 = "+dataPassIn);
-            ((EditText)findViewById(R.id.editText_new_description)).setText(dataPassIn);
-        }
+
+            if (passedInTown.getDescription()!=null&&passedInTown.getDescription().size()>0&&!passedInTown.getDescription().get(0).isEmpty() && passedInTown.getDescription().get(0) != null) {
+                String dataPassIn = passedInTown.getDescription().get(0);
+                Log.i("ed", "dataPassIn = " + dataPassIn);
+                Log.i("ed", "dataPassIn2 = " + dataPassIn);
+                ((EditText) findViewById(R.id.editText_new_description)).setText(dataPassIn);
+            }
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_description);
@@ -51,7 +53,7 @@ public class NewDescriptionActivity extends AppCompatActivity {
                 EditText ev = (EditText) findViewById(R.id.editText_new_description);
                 //returnIntent.putExtra("result", ev.getText().toString());
 
-                //passedInTown.setDescription(ev.getText().toString());
+                passedInTown.addDescription(ev.getText().toString());
 
                 returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_OK, returnIntent);

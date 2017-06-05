@@ -49,6 +49,13 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
         }
     }
 
+    public void setTowns(List<Town> towns){
+        this.towns = towns;
+
+
+        notifyDataSetChanged();
+    }
+
     public GeoTownListAdapter(List<Town> towns, Context contextInput){
         this.towns = towns;
         this.context = contextInput;

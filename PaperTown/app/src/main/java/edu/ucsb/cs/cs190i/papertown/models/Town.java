@@ -10,16 +10,23 @@ package edu.ucsb.cs.cs190i.papertown.models;
 
 import android.icu.util.ULocale;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.GeoHash;
+import io.realm.RealmObject;
+import io.realm.annotations.Required;
 
 /**
  * Created by xuanwang on 5/4/17.
  */
 
 public class Town implements Serializable {
+
     private String id = "";
     private String geoHash = "";
     private String title;
@@ -113,6 +120,13 @@ public class Town implements Serializable {
         this.description = description;
     }
 
+    public void addDescription(String description){
+        if(this.description==null){
+            this.description = new ArrayList<>();
+        }
+        this.description.add(description);
+    }
+
     public String getAddress() {
         return address;
     }
@@ -201,6 +215,23 @@ public class Town implements Serializable {
             temp += this.imageUrls.get(this.imageUrls.size() - 1);
         }
         return temp;
+    }
+
+    public String getDescriptionListString() {
+        String temp = "";
+
+        if(description!=null&&description.size()>0) {
+            for (int i = 0; i < this.description.size() - 1; i++) {
+                temp += this.description.get(i) + "!@#";
+            }
+            temp += this.description.get(this.description.size() - 1);
+        }
+        return temp;
+    }
+
+    public String toJson(){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return  gson.toJson(this);
     }
 
 }

@@ -11,14 +11,14 @@ package edu.ucsb.cs.cs190i.papertown.town.account;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,12 @@ import java.util.List;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -39,11 +42,15 @@ public class AccountActivity extends AppCompatActivity {
     public List<Town> towns_liked;
     public List<Town> towns_draft_2;
     public List<Town> towns_draft;
+    private Realm mRealm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+
+
 
         initData();  //get towns for liked and drafts
 
@@ -194,6 +201,18 @@ public class AccountActivity extends AppCompatActivity {
         towns_liked.add(t2);
         towns_liked.add(t3);
         towns_liked.add(t1);
+
+
+
+//        //read draft towns from realm
+        mRealm = Realm.getInstance(getApplicationContext());
+        RealmResults<TownRealm> TownRealm =mRealm.allObjects(TownRealm.class);
+        ArrayList<TownRealm> list = new ArrayList(mRealm.where(TownRealm.class).findAll());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        for(int i = 0;i<list.size();i++){
+            Town t = gson.fromJson(list.get(i).getTownJson(),Town.class);
+            towns_draft.add(t);
+        }
 
 
 

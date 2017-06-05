@@ -68,6 +68,7 @@ dependencies {
     // For integration with Fresco
 
     // For testin
+    compile 'io.realm:realm-android:0.87.4'
     compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     compile 'com.facebook.soloader:soloader:0.2.0'

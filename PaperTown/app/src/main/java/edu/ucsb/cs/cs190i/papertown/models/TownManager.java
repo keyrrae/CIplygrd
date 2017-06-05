@@ -8,7 +8,10 @@
 
 package edu.ucsb.cs.cs190i.papertown.models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -19,7 +22,11 @@ import java.util.TreeMap;
 
 public class TownManager {
     private SortedMap<String, Town> townMap = new TreeMap<>();
-    private TownDataChangedListener listener = null;
+    private HashMap<String, Town>  townMapOld = new HashMap<>();
+    private HashMap <String, Integer> idPositionMap = new HashMap<>();
+    private TownDataChangedListener townDataChangedListener = null;
+    private TownDataUpdatedListener townDataUpdatedListener = null;
+
 
     private static TownManager instance = null;
 
@@ -27,16 +34,24 @@ public class TownManager {
     }
 
     public interface TownDataChangedListener{
-        void onDataChanged(List<Town> townList);
+        void onDataChanged(List<Town> townList, HashMap<String, Integer> idPositionHashMap);
+    }
+
+    public interface TownDataUpdatedListener{
+        void onDataUpdated(List<Town> townList);
     }
 
     public void setOnTownDataChangedListener( TownDataChangedListener listener ){
-        this.listener = listener;
+        this.townDataChangedListener = listener;
+    }
+
+    public void setOnTownDataUpdatedListener( TownDataUpdatedListener listener ){
+        this.townDataUpdatedListener = listener;
     }
 
     public void informTownDataChanged() {
-        if(listener != null) {
-            listener.onDataChanged(getAllTowns());
+        if(townDataChangedListener != null) {
+            townDataChangedListener.onDataChanged(getAllTowns(),idPositionMap);
         }
     }
 
@@ -49,7 +64,24 @@ public class TownManager {
 
     public void addTown(Town town){
         townMap.put(town.getId(), town);
-        informTownDataChanged();
+        idPositionMap.put(town.getId(),townMap.size()-1);
+        //informTownDataChanged();
+    }
+
+    public void addTownList(List<Town> townList){
+        boolean ifNotify = false;
+
+        for(Town town: townList){
+            addTown(town);
+            town = townMapOld.put(town.toJson(),town);
+            if(town==null){
+                ifNotify = true;
+            }
+        }
+
+        if(ifNotify){
+            informTownDataChanged();
+        }
     }
 
     public Town getTownById(String id){
@@ -75,6 +107,7 @@ public class TownManager {
         List<Town> res = new ArrayList<>();
         townMap.values();
         res.addAll(townMap.values());
+
         return res;
     }
 
