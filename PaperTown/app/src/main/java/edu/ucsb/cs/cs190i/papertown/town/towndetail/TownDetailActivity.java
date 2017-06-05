@@ -94,10 +94,13 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
-
+@RuntimePermissions
 public class TownDetailActivity extends AppCompatActivity {
     final int NEW_PHOTO_REQUEST = 10;
     final int NEW_UPDATE_REQUEST = 11;
@@ -210,7 +213,8 @@ public class TownDetailActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchImagePicking();
+                TownDetailActivityPermissionsDispatcher.dispatchImagePickingWithCheck(TownDetailActivity.this);
+
             }
         });
 
@@ -534,6 +538,17 @@ public class TownDetailActivity extends AppCompatActivity {
                 Log.i("onActivityResult", "RESULT_CANCELED");
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        TownDetailActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void showDeniedForCamera() {
+        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
     }
 
     @NeedsPermission({

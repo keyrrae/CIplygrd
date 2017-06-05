@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/m"
                     android:layout_marginTop="@dimen/xs"
-                    android:text="Documented by"
+                    android:text="by"
                     android:textAppearance="@style/footerText_list" />
 
                 <TextView
@@ -170,7 +170,7 @@
                 android:layout_marginEnd="@dimen/m"
                 android:layout_marginBottom="@dimen/m"
                 android:text="Description here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
-                android:textAppearance="@style/MainTextRegular_detail" />
+                android:textAppearance="@style/MainText_list" />
 
             <!--<TextView-->
             <!--android:id="@+id/detail_town_upd"-->
@@ -189,12 +189,6 @@
                 android:text=""
                 android:textAppearance="@style/MainTextRegular_detail" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginEnd="@dimen/m"
-                android:layout_marginStart="@dimen/m"
-                android:background="@color/LightestGray" />
 
             <fragment
                 android:id="@+id/detail_map"
@@ -218,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m"
                 android:text="Coordinate"
-                android:textAppearance="@style/MainTextRegular_detail" />
+                android:textAppearance="@style/MainText_list" />
 
             <View
                 android:layout_width="match_parent"
@@ -242,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/m"
                 android:text="Address here. Olancha, CA 93549."
-                android:textAppearance="@style/MainTextRegular_detail" />
+                android:textAppearance="@style/MainText_list" />
 
             <View
                 android:layout_width="match_parent"

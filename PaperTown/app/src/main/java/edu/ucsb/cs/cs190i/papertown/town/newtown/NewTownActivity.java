@@ -10,8 +10,10 @@
 
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -28,23 +30,30 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.squareup.picasso.Picasso;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import io.realm.Realm;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class NewTownActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {
-    //    private ImageSwitcher mSwitcher;
-    private ImageView imageView_newTown;
 
-    //TownDatabaseHelper dbHelper;
+    private ImageView imageView_newTown;
 
     final int NEW_TITLE_REQUEST = 0;
     final int NEW_ADDRESS_REQUEST = 1;
@@ -63,33 +72,16 @@ public class NewTownActivity extends AppCompatActivity implements
     private ArrayList<String> uriStringArrayList;
 
     private int itemLeft = 6;
-
     private Town outputTown;
-
     private Town passedInTown;
-
     private Realm mRealm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_town);
-
-
-//        //handle the migration changes
-//        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
-//                .deleteRealmIfMigrationNeeded()
-//                .build();
-
+        ButterKnife.bind(this);
         mRealm = Realm.getInstance(getApplicationContext());
-
-//        // ==========  town database  ============
-//
-//       TownDatabaseHelper.Initialize(this);
-//        dbHelper = TownDatabaseHelper.GetInstance();
-//        // ========== end of town database  ============
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_done);
         setSupportActionBar(toolbar);
@@ -104,18 +96,13 @@ public class NewTownActivity extends AppCompatActivity implements
             }
         });
 
-
         imageView_newTown = (ImageView) findViewById(R.id.imageView_newTown);
         imageView_newTown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (outputTown.getImageUrls() == null || outputTown.getImageUrls().size() == 0) {
-                    //stat camera rool
-                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                    startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);//one can be replaced with any action code
+                    //dispatchImagePicking();
+                    NewTownActivityPermissionsDispatcher.dispatchImagePickingWithCheck(NewTownActivity.this);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
                     intent.putExtra("townPassIn", outputTown);
@@ -123,14 +110,36 @@ public class NewTownActivity extends AppCompatActivity implements
                 }
             }
         });
+//        imageView_newTown.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (outputTown.getImageUrls() == null || outputTown.getImageUrls().size() == 0) {
+//                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
+//                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);
+//                } else {
+//                    Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
+//                    intent.putExtra("townPassIn", outputTown);
+//                    startActivityForResult(intent, NEW_PHOTO_REQUEST);
+//                }
+//            }
+//        });
+
+//        @OnClick(R.id.imageView_newTown)
+//        public void startImagePicking (View v){
+//            if (imagesSelected) {
+//                Intent intent = new Intent(this, SelectImageActivity.class);
+//                intent.putParcelableArrayListExtra("multipleImages", (ArrayList<Uri>) townBuilder.getUrisLocal());
+//            } else {
+//                NewTownActivityPermissionsDispatcher.dispatchImagePickingWithCheck(this);
+//            }
+//        }
 
         //get extra, see  if the passed in town is null or not to decide if need to initialize a new town
         passedInTown = (Town) getIntent().getSerializableExtra("town");
-        if(passedInTown!=null){
+        if (passedInTown != null) {
             outputTown = passedInTown;
-
-        }
-        else {
+        } else {
             outputTown = new TownBuilder()
                     .setTitle(title)
                     .setAddress(address)
@@ -147,7 +156,6 @@ public class NewTownActivity extends AppCompatActivity implements
         //update view
         checkAndUpdateAllInformation();
 
-
         TextView title_title = (TextView) findViewById(R.id.title_title);
         title_title.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +165,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_TITLE_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
-
             }
         });
 
@@ -170,8 +177,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_ADDRESS_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
-
-
             }
         });
 
@@ -184,7 +189,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_CATEGORY_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
-
             }
         });
 
@@ -197,7 +201,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
-
             }
         });
 
@@ -210,7 +213,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_INFORMATION_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
-
             }
         });
 
@@ -222,11 +224,10 @@ public class NewTownActivity extends AppCompatActivity implements
                 Log.i("onClick", "button_step_left click");
                 if (itemLeft > 0) {
                     Toast.makeText(getApplicationContext(), "Please fill out all fields", Toast.LENGTH_LONG).show();
-
                 } else {
                     Log.i("onClick", "Preview !");
                     //passing data to the detailActivity
-                    Log.i("onClick", "Preview, outputTown. getImageUriString() = "+outputTown.getImageUriString());
+                    Log.i("onClick", "Preview, outputTown. getImageUriString() = " + outputTown.getImageUriString());
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
@@ -242,162 +243,141 @@ public class NewTownActivity extends AppCompatActivity implements
             public boolean onLongClick(View v) {
                 // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
-
                 Log.i("toJson", "result = " + outputTown.toJson());
                 //save town to realm
                 mRealm.beginTransaction();
-
                 TownRealm townRealm = mRealm.createObject(TownRealm.class);
                 townRealm.setTownId(outputTown.getId());
                 townRealm.setTownJson(outputTown.toJson());
-
-
                 mRealm.commitTransaction();
-
-//                //save town to DB
-//                int status = dbHelper.saveTownToDB(outputTown);
-//                Log.i("saveTownToDB", "status = "+status);
-
-//                //read test  moved to the AccountActivity
-//                List<Town>  townRead = dbHelper.getALLTownsFromDB();
-//                Log.i("onClick", "townRead = "+townRead);
                 return true;
             }
         });
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        Log.i("onActivityResult", "requestCode = " + requestCode);
-        Log.i("onActivityResult", "resultCode = " + resultCode);
+        //Log.i("onActivityResult", "requestCode = " + requestCode);
+        //Log.i("onActivityResult", "resultCode = " + resultCode);
         if (requestCode == NEW_TITLE_REQUEST) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
 
-
         if (requestCode == NEW_ADDRESS_REQUEST) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
 
         if (requestCode == NEW_CATEGORY_REQUEST) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
 
         if (requestCode == NEW_DESCRIPTION_REQUEST) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
         if (requestCode == NEW_INFORMATION_REQUEST) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-//                String result = data.getStringExtra("result");
-//                Log.i("onActivityResult", "result = " + result);
-//                information = result;
-//                outputTown.setUserAlias(result);
-
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
 
         if (requestCode == NEW_PHOTO_REQUEST) {
-            // Make sure the request was successful
             Log.i("onActivityResult", "NEW_PHOTO_REQUEST");
             if (resultCode == RESULT_OK) {
-                Uri selectedImageURI = data.getData();
-                Log.i("onActivityResult", "result = " + selectedImageURI.toString());
+                List<Uri> selected = Matisse.obtainResult(data);
+//                Log.i("onActivityResult", "result = " + selectedImageURI.toString());
                 Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
                 //intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
-                ArrayList<String> tempList = new ArrayList<>();
-                tempList.add(selectedImageURI.toString());
+               ArrayList<String> tempList = new ArrayList<>();
+                for(int i=0; i<selected.size(); i++){
+                    tempList.add(selected.get(i).toString());
+                }
                 outputTown.setImageUrls(tempList);
                 intent.putExtra("townPassIn", outputTown);
                 startActivityForResult(intent, NEW_PHOTO_REQUEST);
             }
-
             if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
-                //ArrayList<Uri> arrayList = data.getParcelableArrayListExtra("multipleImage");
-
                 outputTown = (Town) data.getSerializableExtra("result");
                 Log.i("onActivityResult", "result = " + outputTown.toString());
-
-//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
-//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
-//                Picasso.with(getApplicationContext()).load(Uri.parse(outputTown.getImageUrls().get(0))).into(imageView_newTown);
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
-                //Write your code if there's no result
             }
         }
 
-//        String imagePath = outputTown.getImageUrls().get(0);
-//        if(imagePath!=null&&!imagePath.isEmpty()) {
-//            Picasso.with(getApplicationContext()).load(imagePath).into(imageView_newTown);
-//        }
-//        else{
-//            Picasso.with(getApplicationContext()).load(R.drawable.defaultimage).into(imageView_newTown);
-//        }
-
         //update view
         checkAndUpdateAllInformation();
-
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        NewTownActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void showDeniedForCamera() {
+        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+    }
+
+    @NeedsPermission({
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    })
+    public void dispatchImagePicking() {
+        Matisse.from(this)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
+                .countable(true)
+                .maxSelectable(9)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new PicassoEngine())
+                .forResult(NEW_PHOTO_REQUEST);
+    }
+
+
+
+
     void checkAndUpdateAllInformation() {
-
-
         //update imagePreview
 
         List<String> imagePaths = outputTown.getImageUrls();
         {
-            if (imagePaths!=null&&imagePaths.size()>0&&imagePaths.get(0) != null && !imagePaths.get(0).isEmpty()) {
+            if (imagePaths != null && imagePaths.size() > 0 && imagePaths.get(0) != null && !imagePaths.get(0).isEmpty()) {
                 Picasso.with(getApplicationContext()).load(imagePaths.get(0)).into(imageView_newTown);
             } else {
                 Picasso.with(getApplicationContext()).load(R.drawable.defaultimage).into(imageView_newTown);
             }
         }
-
-
 
         int counter = 0;
         if (outputTown.getTitle() != null && !outputTown.getTitle().isEmpty()) {
@@ -445,7 +425,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getUserAlias());
         }
 
-        if (outputTown.getImageUrls() != null && outputTown.getImageUrls().size() != 0&&outputTown.getImageUrls().get(0)!=null&&!outputTown.getImageUrls().get(0).isEmpty()) {
+        if (outputTown.getImageUrls() != null && outputTown.getImageUrls().size() != 0 && outputTown.getImageUrls().get(0) != null && !outputTown.getImageUrls().get(0).isEmpty()) {
             Log.i("checkAllInformation", "uriList!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_image),
@@ -473,24 +453,20 @@ public class NewTownActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), "All information ready!", Toast.LENGTH_SHORT).show();
             enableSubmission();
         }
-
         //return counter;
     }
 
 
     void enableSubmission() {
-
         //change color of submission button
         Button button_step_left = (Button) findViewById(R.id.button_step_left);
         button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
         button_step_left.setText("PREVIEW !");
 
-
         //change the color of the progress bar
         ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
         pb.setProgress(0);  //only show background
         pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
-
     }
 
     void setChecked(TextView t1, TextView t2, ImageView i1, String desctiption_in) {
@@ -503,12 +479,10 @@ public class NewTownActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override
@@ -519,7 +493,6 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -530,15 +503,12 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     public void onStop() {
         super.onStop();
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
-
 
 
 }

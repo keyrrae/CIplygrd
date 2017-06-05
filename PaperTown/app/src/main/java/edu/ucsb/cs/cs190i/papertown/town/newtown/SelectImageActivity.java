@@ -83,13 +83,7 @@ public class SelectImageActivity extends AppCompatActivity {
                 ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
                 Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
                 //returnIntent.putParcelableArrayListExtra("multipleImage", uriList);
-
-//                uriList = arrayList.toArray(new Uri[0]);  //put URiaa arrayList to array
-//                ImageView c = (ImageView) findViewById(R.id.checkbox_0);
-//                c.setImageResource(R.drawable.ic_check_box_white_24dp);
-//                Picasso.with(getApplicationContext()).load(uriList[0])
-//                        .into(imageView_newTown);
-
+                
                 //process Uri array data
                 ArrayList<String> uriStringArrayList = new ArrayList<>();
                 for (int i = 0; i < uriList.size(); i++) {
