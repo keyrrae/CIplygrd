@@ -120,7 +120,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
                 android:background="@color/LightestGray" />
 
             <TextView
@@ -140,19 +141,20 @@
                 android:text="Description here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
                 android:textAppearance="@style/MainTextRegular_detail" />
 
-            <TextView
-                android:id="@+id/detail_town_upd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
-                android:text="Update"
-                android:textAppearance="@style/MainTextBold_detail" />
+            <!--<TextView-->
+                <!--android:id="@+id/detail_town_upd"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="@dimen/m"-->
+                <!--android:text="Update"-->
+                <!--android:textAppearance="@style/MainTextBold_detail" />-->
 
             <TextView
                 android:id="@+id/detail_town_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
                 android:text=""
                 android:textAppearance="@style/MainTextRegular_detail" />
 
@@ -189,7 +191,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginTop="@dimen/m"
                 android:background="@color/LightestGray" />
 
             <fragment
@@ -199,29 +203,29 @@
                 android:layout_height="160dp"
                 android:layout_marginTop="@dimen/m" />
 
-            <TextView
-                android:id="@+id/detail_coor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
-                android:layout_marginTop="@dimen/l"
-                android:text="Coordinates"
-                android:textAppearance="@style/MainTextBold_detail" />
+            <!--<TextView-->
+                <!--android:id="@+id/detail_coor"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="@dimen/m"-->
+                <!--android:layout_marginTop="@dimen/l"-->
+                <!--android:text="Coordinates"-->
+                <!--android:textAppearance="@style/MainTextBold_detail" />-->
 
-            <TextView
-                android:id="@+id/detail_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/m"
-                android:layout_marginTop="@dimen/m"
-                android:text="Coordinate"
-                android:textAppearance="@style/MainTextRegular_detail" />
+            <!--<TextView-->
+                <!--android:id="@+id/detail_address"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="@dimen/m"-->
+                <!--android:layout_marginTop="@dimen/m"-->
+                <!--android:text="Coordinate"-->
+                <!--android:textAppearance="@style/MainTextRegular_detail" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
-                android:background="@color/LightestGray" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_margin="@dimen/m"-->
+                <!--android:background="@color/LightestGray" />-->
 
             <TextView
                 android:id="@+id/detail_add"
@@ -243,7 +247,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
                 android:background="@color/LightestGray" />
 
             <TextView
@@ -295,7 +300,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginTop="@dimen/m"
                 android:background="@color/LightestGray" />
 
             <TextView
@@ -315,6 +322,13 @@
                 android:layout_marginBottom="@dimen/s"
                 android:scaleType="centerCrop"
                 android:background="@color/LighterGray"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detail_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_shadow_end_color" />
+
 
             <Button
                 android:id="@+id/button_test_detail"

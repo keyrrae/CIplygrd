@@ -50,31 +50,32 @@
             android:background="@android:color/transparent"/>
 
         <TextView
-            android:id="@+id/geo_town_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/geo_town_image"
-            android:layout_marginTop="@dimen/s"
-            android:text="@string/town_category_place"
-            android:textAppearance="@style/TitleText" />
-
-        <TextView
             android:id="@+id/geo_town_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/geo_town_image"
-            android:layout_marginLeft="@dimen/s"
             android:layout_marginTop="@dimen/s"
-            android:layout_toEndOf="@+id/geo_town_category"
             android:text="Town A"
-            android:textAppearance="@style/SubText" />
+            android:textAppearance="@style/TitleText" />
+
+        <TextView
+            android:id="@+id/geo_town_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/geo_town_title"
+            android:layout_marginTop="@dimen/xs"
+            android:text="@string/town_category_place"
+            android:textAppearance="@style/SmallText"
+            android:textColor="@color/PrimaryPink"/>
 
         <TextView
             android:id="@+id/geo_town_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/geo_town_category"
+            android:layout_below="@+id/geo_town_title"
             android:layout_marginTop="@dimen/xs"
+            android:layout_marginLeft="@dimen/s"
+            android:layout_toEndOf="@+id/geo_town_category"
             android:text="53 likes"
             android:textAppearance="@style/SmallText" />
 

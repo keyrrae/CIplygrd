@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,15 +57,7 @@ public class UpdateDescriptionActivity extends AppCompatActivity {
 
         EditText editText = (EditText) findViewById(R.id.update_text);
         editText.setHint(DateFormat.getDateInstance().format(new Date()));
-
-        // TODO dynamically change the height of the scrollView
-        ScrollView scrollView = (ScrollView) findViewById(R.id.update_scroll);
-        ViewGroup.LayoutParams layoutParams = scrollView.getLayoutParams();
-        Log.d("scroll_height_1",""+layoutParams.height);
-        if(layoutParams.height>5){
-            layoutParams.height = 5;
-            Log.d("scroll_height_2",""+layoutParams.height);
-        }
+        updateReference.setMovementMethod(new ScrollingMovementMethod());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_update_desctiption);
         setSupportActionBar(toolbar);

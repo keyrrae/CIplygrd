@@ -10,11 +10,14 @@ package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,6 +34,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -65,6 +70,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.stfalcon.frescoimageviewer.ImageViewer;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,17 +83,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import butterknife.ButterKnife;
+import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
+import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
+import permissions.dispatcher.NeedsPermission;
 
 
 public class TownDetailActivity extends AppCompatActivity {
     final int NEW_PHOTO_REQUEST = 10;
+    final int NEW_UPDATE_REQUEST = 11;
 
     private GridView imageGrid;
     private ArrayList<Uri> uriList;
@@ -97,6 +111,10 @@ public class TownDetailActivity extends AppCompatActivity {
     private String description = "";
     private String information = "";
     private ArrayList<String> uriStringArrayList;
+    private String update_text;
+
+    private TextView update_view;
+    private RecyclerView  mRecyclerView;
 
     private TownMapIcon tmi;
 
@@ -118,7 +136,6 @@ public class TownDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
-
         return true;
     }
 
@@ -126,6 +143,8 @@ public class TownDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_town_detail);
+
+        ButterKnife.bind(this);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -161,49 +180,45 @@ public class TownDetailActivity extends AppCompatActivity {
                         break;
                     case R.id.detail_share:
                         Toast.makeText(TownDetailActivity.this, "Want to share it?", Toast.LENGTH_SHORT).show();
-//                        Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
-//                        townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
-//                        startActivity(townListIntent);
                         break;
                 }
                 return true;
             }
         });
 
-        //Update Story button
+        // Update Description
         TextView update = (TextView) findViewById(R.id.detail_update_text);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(TownDetailActivity.this, "Update story", Toast.LENGTH_SHORT).show();
                 Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
-                updateDesIntent.putExtra("townDescription",description);
-                startActivity(updateDesIntent);
+                updateDesIntent.putExtra("townDescription", description);
+                startActivityForResult(updateDesIntent, NEW_UPDATE_REQUEST);
             }
         });
-
-        String update_text = ((TextView)findViewById(R.id.detail_town_update)).getText().toString();
-        if(update_text.equals("")){
-            (findViewById(R.id.detail_town_upd)).setVisibility(View.INVISIBLE);
-            (findViewById(R.id.detail_town_update)).setVisibility(View.INVISIBLE);
+        update_view = (TextView) findViewById(R.id.detail_town_update);
+        update_text = update_view.getText().toString();
+        if (update_text.equals("")) {
+            update_view.setVisibility(View.INVISIBLE);
         }
 
-        //Update Gallery button
+
+        // Update Gallery button
         TextView upload = (TextView) findViewById(R.id.detail_add_image_text);
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TownDetailActivity.this, "Upload Image", Toast.LENGTH_SHORT).show();
-
-                //start camera
-                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);
-
-                //Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
-                //startActivity(updateDesIntent);
+                dispatchImagePicking();
             }
         });
+
+        // Add related Towns
+        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        //GeoTownListAdapter mAdapter = new GeoTownListAdapter(, getApplicationContext());
+        //mRecyclerView.setAdapter(mAdapter);
+
 
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
         this.uriList = new ArrayList<Uri>();
@@ -312,7 +327,6 @@ public class TownDetailActivity extends AppCompatActivity {
         if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
             for (int i = 0; i < uriStringArrayList.size(); i++) {
                 uriList.add(Uri.parse(uriStringArrayList.get(i)));
-//                Log.i("manu", "uriList[" + i + "] = " + uriList.get(i));
             }
         } else {
             Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
@@ -409,22 +423,14 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
 
                 this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-
-                // click to show fullscreen single image
                 imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        //Toast.makeText(getApplicationContext(), "Item Clicked: " + position, Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(), SingleImageActivity.class);
-                        Bundle extras = new Bundle();
-                        extras.putString("ImageUri", uriList.get(position).toString());
-                        extras.putParcelableArrayList("AllImageUris", uriList);
-                        extras.putInt("Position", position);
-                        i.putExtras(extras);
-                        startActivity(i);
-                        //Log.d("AllImageUris_SEND",""+uriList);
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // click to show fullscreen single image
+                        new ImageViewer.Builder<>(TownDetailActivity.this, uriList)
+                                .setStartPosition(position)
+                                .show();
                     }
                 });
             }
@@ -445,7 +451,6 @@ public class TownDetailActivity extends AppCompatActivity {
                     } else {
                         Log.i("manu", "Error - checkSelfPermission!!");
                     }
-                    //end of enabling myLocationButton
 
                     //add markers
                     if (category != null && !category.isEmpty()) {
@@ -455,13 +460,11 @@ public class TownDetailActivity extends AppCompatActivity {
                                 .snippet(category)
                                 .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
                     }
-                    //end of adding markers
 
                     //camera animation
                     if (map != null) {
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
                     }
-                    //end of camera animation
                 }
             });
 
@@ -477,4 +480,50 @@ public class TownDetailActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == NEW_UPDATE_REQUEST) {
+
+            if (resultCode == RESULT_OK) {
+                update_text = intent.getStringExtra("updateText");
+                update_view.setVisibility(View.VISIBLE);
+                update_view.setText(update_text);
+                Log.i("onActivityResult", "result = " + update_text);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("onActivityResult", "RESULT_CANCELED");
+            }
+        }
+        if (requestCode == NEW_PHOTO_REQUEST) {
+            if (resultCode == RESULT_OK ) {
+                List<Uri> mSelected = Matisse.obtainResult(intent);
+                for(int i=0; i<mSelected.size(); i++){
+                    uriList.add(mSelected.get(i));
+                }
+                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+                Log.i("Matisse", "result = "+ mSelected);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("onActivityResult", "RESULT_CANCELED");
+            }
+        }
+    }
+
+    @NeedsPermission({
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    })
+    public void dispatchImagePicking(){
+        Matisse.from(this)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
+                .countable(true)
+                .maxSelectable(9)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new PicassoEngine())
+                .forResult(NEW_PHOTO_REQUEST);
+    }
+
 }

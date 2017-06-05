@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
@@ -31,31 +30,27 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/m"
         android:text="* Update :"
-        android:textAppearance="@style/TitleText_detail"/>
+        android:textAppearance="@style/TitleText_detail" />
 
-    <ScrollView
-        android:id="@+id/update_scroll"
+    <TextView
+        android:id="@+id/update_reference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/m">
-        <TextView
-            android:id="@+id/update_reference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/MainTextRegular_detail"
-            android:textColor="@color/LighterGray"
-            android:text="Here is the reference"/>
-    </ScrollView>
+        android:layout_margin="@dimen/m"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:text="Here is the reference"
+        android:textAppearance="@style/MainTextRegular_detail"
+        android:textColor="@color/LighterGray" />
 
     <EditText
         android:id="@+id/update_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/m"
-        android:textAppearance="@style/MainTextRegular_detail"
         android:background="@android:color/transparent"
-        android:hint="May 23rd 2017 ..."/>
-
+        android:hint="May 23rd 2017 ..."
+        android:textAppearance="@style/MainTextRegular_detail" />
 
 
 </LinearLayout>
