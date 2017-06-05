@@ -120,10 +120,22 @@ public class SelectImageActivity extends AppCompatActivity {
                 Log.i("ed", "dataPassIn = " + dataPassIn);
                 Log.i("ed", "dataPassIn2 = " + dataPassIn);
                 for (int i = 0; i < dataPassIn.size(); i++) {
-                    imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+                    //imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+
+
+                    //compress the image from the uri
+                    Uri uri = Uri.parse(dataPassIn.get(i));
+                    File f = new File(dataPassIn.get(i));
+                    // Log.i("original_image","f.getName(); = "+f.getName());
+                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                    uri = (Uri.fromFile(f));
+
+                    imageUris = addUri(imageUris, uri);
+
                 }
                 }
             } else {
+
 
                 String s = getIntent().getStringExtra(EXTRA_MESSAGE);
                 Log.i("onActivityResult", "getStringExtra = " + s);

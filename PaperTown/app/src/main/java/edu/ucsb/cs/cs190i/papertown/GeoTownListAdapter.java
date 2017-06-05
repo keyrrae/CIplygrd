@@ -36,6 +36,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
     private ImageView imageView;
     private TextView titleTextView;
     private TextView categoryTextView;
+    private TextView countTextView;
     private CardView cardView;
     private Context context;
 
@@ -45,6 +46,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
             imageView = (ImageView) itemView.findViewById(R.id.geo_town_image);
             titleTextView = (TextView) itemView.findViewById(R.id.geo_town_title);
             categoryTextView = (TextView) itemView.findViewById(R.id.geo_town_category);
+            countTextView = (TextView) itemView.findViewById(R.id.geo_town_count);
             cardView = (CardView) itemView.findViewById(R.id.geo_card);
         }
     }
@@ -79,7 +81,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
 
         titleTextView.setText(towns.get(position).getTitle());
         categoryTextView.setText(towns.get(position).getCategory());
-
+        countTextView.setText(""+towns.get(position).getNumOfLikes());
     }
 
     @Override

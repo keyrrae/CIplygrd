@@ -141,6 +141,7 @@ public class Town implements Serializable {
 
     public void setLat(float lat) {
         this.lat = lat;
+        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public double getLng() {
@@ -149,6 +150,7 @@ public class Town implements Serializable {
 
     public void setLng(float lng) {
         this.lng = lng;
+        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public String getUserId() {
