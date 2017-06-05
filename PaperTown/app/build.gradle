@@ -107,6 +107,7 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     debugCompile 'com.facebook.litho:litho-stetho:0.2.0'
     provided 'com.facebook.litho:litho-annotations:0.2.0'
+    compile 'com.zhihu.android:matisse:0.4.3'
 }
 
 // ADD THIS AT THE BOTTOM

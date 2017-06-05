@@ -7,10 +7,13 @@
   -->
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android.support.v7.cardview="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/m"
+    android:layout_marginBottom="@dimen/s"
+    android:layout_marginTop="@dimen/s"
+    android.support.v7.cardview:cardElevation="0dp"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -21,98 +24,99 @@
             android:id="@+id/list_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/m"
-            android:layout_marginTop="@dimen/s"
-            android:layout_marginEnd="@dimen/m"
-            android:layout_marginBottom="@dimen/s">
+            android:layout_margin="@dimen/m">
 
             <TextView
                 android:id="@+id/list_town_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="Place"
-                android:textAppearance="@style/footerText_list"/>
-
-            <TextView
-                android:id="@+id/list_town_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/list_town_category"
-                android:layout_marginStart="@dimen/s"
-                android:text="Alan Cooper"
                 android:textAppearance="@style/footerText_list"
-                android:textColor="@color/PrimaryPink"/>
+                android:textColor="@color/PrimaryPink" />
 
             <TextView
                 android:id="@+id/list_town_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/list_town_author"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/s"
                 android:layout_marginTop="2dp"
-                android:text="on May 12 2017"
-                android:textAppearance="@style/footerText_list"/>
+                android:layout_toEndOf="@id/list_town_category"
+                android:text="May 12 2017"
+                android:textAppearance="@style/footerText_list"
+                android:textColor="@color/LighterGray"/>
+
+            <TextView
+                android:id="@+id/list_town_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/s"
+                android:layout_toEndOf="@id/list_town_date"
+                android:text="Alan Cooper"
+                android:textAppearance="@style/footerText_list"
+                android:textColor="@color/LighterGray"
+
+                />
 
             <ImageButton
                 android:id="@+id/list_favor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_favorite_border_white_18dp"
-                android:backgroundTint="@color/LighterGray"
+                android:layout_centerInParent="true"
                 android:layout_marginEnd="@dimen/xs"
                 android:layout_toStartOf="@+id/list_favor_count"
-                android:layout_centerInParent="true"/>
+                android:background="@drawable/ic_favorite_border_white_18dp"
+                android:backgroundTint="@color/LighterGray" />
 
             <TextView
                 android:id="@+id/list_favor_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1.1K"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:textAppearance="@style/footerText_list"/>
-
+                android:text="1.1K"
+                android:textColor="@color/LighterGray"
+                android:textAppearance="@style/footerText_list" />
         </RelativeLayout>
-
 
         <ImageView
             android:id="@+id/list_town_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/list_header"
+            android:layout_height="220dp"
+            android:layout_below="@id/list_header"
             android:adjustViewBounds="true"
             android:focusable="false"
             android:scaleType="centerCrop"
-            android:src="@drawable/door"
-
-           />
+            android:src="@drawable/door" />
 
         <TextView
             android:id="@+id/list_town_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/list_town_image"
-            android:layout_marginStart="@dimen/m"
+            android:layout_marginTop="@dimen/m"
             android:layout_marginEnd="@dimen/m"
-            android:layout_marginTop="@dimen/s"
-            android:layout_marginBottom="@dimen/s"
+            android:layout_marginStart="@dimen/m"
+            android:maxLines="2"
             android:text="Kathy Griffin's Art is Terrible"
-            android:textAppearance="@style/TitleText_list"
-            android:maxLines="2"/>
+            android:textAppearance="@style/TitleText_list" />
 
         <TextView
             android:id="@+id/list_town_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/list_town_title"
-            android:layout_marginStart="@dimen/m"
             android:layout_marginEnd="@dimen/m"
+            android:layout_marginStart="@dimen/m"
+            android:layout_marginTop="@dimen/xs"
             android:layout_marginBottom="@dimen/m"
             android:ellipsize="end"
             android:maxLines="3"
             android:scrollHorizontally="true"
             android:text="Discription here. ipsum dolor sit amet, consectetur adipisi elitlit, sed do eiusmod temp, sed do eiusmod tempor "
-            android:textAppearance="@style/MainText_list"/>
-
+            android:textAppearance="@style/MainText_list" />
 
     </RelativeLayout>
 

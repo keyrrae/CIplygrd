@@ -79,11 +79,8 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
-import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 
 public class TownDetailActivity extends AppCompatActivity {
@@ -250,15 +247,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                                             "Successfully submitted network",
                                                             Toast.LENGTH_SHORT
                                                     ).show();
-
-                                                    Realm.getInstance(getApplicationContext()).executeTransaction(new Realm.Transaction() {
-                                                        @Override
-                                                        public void execute(Realm realm) {
-                                                            RealmResults<TownRealm> result = realm.where(TownRealm.class).equalTo("townId",passedInTown.getId()).findAll();
-                                                            result.clear();
-                                                        }
-                                                    });
-
                                                     finish();
                                                 }
                                             });

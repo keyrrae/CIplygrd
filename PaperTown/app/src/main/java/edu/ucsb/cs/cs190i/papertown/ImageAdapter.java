@@ -29,6 +29,7 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
     //private ArrayList<Bitmap> bitmapList;
     private ArrayList<Uri> uriList;
+    private final int gridSize = 220;
 
     public ImageAdapter(Context context, ArrayList<Uri> uriList) {
         this.context = context;
@@ -53,13 +54,16 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(this.context);
-            imageView.setLayoutParams(new GridView.LayoutParams(220,220));
+            imageView.setLayoutParams(new GridView.LayoutParams(gridSize,gridSize));
             imageView.setPadding(0,0,0,0);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
         }
-        Picasso.with(imageView.getContext()).load(this.uriList.get(position)).into(imageView);
+        Picasso.with(imageView.getContext()).load(this.uriList.get(position))
+                .resize(gridSize, gridSize)
+                .centerCrop()
+                .into(imageView);
 
         return imageView;
     }

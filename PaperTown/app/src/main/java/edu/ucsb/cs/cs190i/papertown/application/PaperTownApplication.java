@@ -10,6 +10,9 @@ package edu.ucsb.cs.cs190i.papertown.application;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import com.facebook.soloader.SoLoader;
 import com.facebook.stetho.Stetho;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -31,6 +34,13 @@ public class PaperTownApplication extends Application {
     //built.setIndicatorsEnabled(true);
     built.setLoggingEnabled(true);
     Picasso.setSingletonInstance(built);
+
+    ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+            .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+            .setResizeAndRotateEnabledForNetwork(true)
+            .setDownsampleEnabled(true)
+            .build();
+    Fresco.initialize(this,config);
 
     SoLoader.init(this, false);
   }
