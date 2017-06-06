@@ -124,6 +124,7 @@ public class TownDetailActivity extends AppCompatActivity {
     private TextView update_view;
     private TextView detail_town_visit_count;
     private RecyclerView  mRecyclerView;
+    private Button button_test_detail;
 
     private TownMapIcon tmi;
 
@@ -156,6 +157,17 @@ public class TownDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+
+        TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
+            @Override
+            public void onSingleTownChanged() {
+                passedInTown = TownManager.getInstance().getTownById(passedInTown.getId());
+                //detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
+                updateTownDetailActivityUI();
+            }
+        });
+
+
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
@@ -181,13 +193,7 @@ public class TownDetailActivity extends AppCompatActivity {
                             item.setTitle("like");
 
                             TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
-                            TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
-                                @Override
-                                public void onSingleTownChanged() {
-                                    passedInTown = TownManager.getInstance().getTownById(passedInTown.getId());
-                                    detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
-                                }
-                            });
+
                             break;
                         }
                         if (item.getTitle().equals("like")) {
@@ -197,13 +203,6 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
                             TownManager.getInstance().decreaseTownLikesById(passedInTown.getId());
-                            TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
-                                @Override
-                                public void onSingleTownChanged() {
-                                    passedInTown = TownManager.getInstance().getTownById(passedInTown.getId());
-                                    detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
-                                }
-                            });
 
 
                             break;
@@ -265,7 +264,7 @@ public class TownDetailActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         townRef = database.getReference("towns");
 
-        Button button_test_detail = (Button) findViewById(R.id.button_test_detail);
+        button_test_detail = (Button) findViewById(R.id.button_test_detail);
         button_test_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,6 +341,268 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         });
 
+        updateTownDetailActivityUI();
+
+//        if (passedInTown != null) {
+//            Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
+//            //title = passedInTown.getTitle();
+//            //address = passedInTown.getLatLng();
+//            //description = passedInTown.getDescription().get(0);
+//            //category = passedInTown.getCategory();
+//            //information = passedInTown.getUserAlias();
+//            uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
+//        }
+//
+//        //change button color
+//        if (mode != null && mode.equals("preview")) {
+//            //change color of submission button
+//            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
+//            button_test_detail.setText("SUBMIT !");
+//        } else {
+//            //change color of submission button
+//            button_test_detail.setVisibility(Button.INVISIBLE);
+//        }
+//        //process uriStringArrayList, put data into uriList
+//        if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
+//            for (int i = 0; i < uriStringArrayList.size(); i++) {
+//                uriList.add(Uri.parse(uriStringArrayList.get(i)));
+//            }
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
+//
+//        }
+//
+//        //load title
+//        if (passedInTown.getTitle() != null) {
+//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
+//            detail_town_description.setText(passedInTown.getTitle());
+//            // townBuilder.setTitle(title);
+//        }
+//
+//        //load address and physical address
+//        if (passedInTown.getLatLng() != null) {
+//            TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
+//            detail_town_description.setText(passedInTown.getLatLng());
+//            // townBuilder.setAddress(address);
+//
+//            //processing address to latlng
+//            String[] separated = passedInTown.getLatLng().split(",");
+//            if (separated.length > 0) {
+//                lat = Float.parseFloat(separated[0]);
+//                lng = Float.parseFloat(separated[1]);
+//                //   townBuilder.setLatLng(lat, lng);
+//            }
+//
+//            TextView detail_physical_address = (TextView) findViewById(R.id.detail_physical_address);
+//            Geocoder geocoder;
+//            List<Address> addresses;
+//            geocoder = new Geocoder(this, Locale.getDefault());
+//
+//            try {
+//                addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//
+//                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//                String city = addresses.get(0).getLocality();
+//                String state = addresses.get(0).getAdminArea();
+//                String country = addresses.get(0).getCountryName();
+//                String postalCode = addresses.get(0).getPostalCode();
+//                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+//
+//                detail_physical_address.setText(address + "\n" + city + ", " + state + ", " + country + ", " + postalCode);
+//            } catch (Exception e) {
+//                Toast.makeText(
+//                        TownDetailActivity.this,
+//                        "Unable to obtain the address from the GPS coordinates.",
+//                        Toast.LENGTH_SHORT
+//                ).show();
+//                detail_physical_address.setText("NOT AVAILABLE");
+//            }
+//
+//        }
+//
+//
+//        //load like count
+//        detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
+//
+//
+//        //load description
+//        if (passedInTown.getDescription().get(0) != null) {
+//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
+//            detail_town_description.setText(passedInTown.getDescription().get(0));
+//            //   townBuilder.setDescription(description);
+//        }
+//
+//        //load category
+//        if (passedInTown.getCategory() != null) {
+//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
+//            detail_town_description.setText(passedInTown.getCategory());
+//            //  townBuilder.setCategory(category);
+//        }
+//
+//        //load information
+//        if (passedInTown.getUserAlias() != null) {
+//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
+//            detail_town_description.setText(passedInTown.getAuthor());
+//            //   townBuilder.setUserAlias(information);
+//        }
+//
+//        //load uriStringArrayList
+//        if (uriList != null) {
+//            if (uriList.size() > 0) {
+//                final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
+//                detail_town_image.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Picasso.with(getApplicationContext()).load(uriList.get(0))
+//                                .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
+//                                .centerCrop()
+//                                .into(detail_town_image);
+//                    }
+//                });
+//
+//                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+//                imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        // click to show fullscreen single image
+//                        new ImageViewer.Builder<>(TownDetailActivity.this, uriList)
+//                                .setStartPosition(position)
+//                                .show();
+//                    }
+//                });
+//            }
+//        }
+
+        //handle the google Maps
+        myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap map) {
+                    //enable myLocationButton
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        map.setMyLocationEnabled(true);
+                        //map.getUiSettings().setMyLocationButtonEnabled(true);
+                    } else {
+                        Log.i("manu", "Error - checkSelfPermission!!");
+                    }
+
+                    //add markers
+                    if (passedInTown.getCategory() != null && !passedInTown.getCategory().isEmpty()) {
+                        tmi = new TownMapIcon(getApplicationContext(), passedInTown.getCategory(), false);
+                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .title(passedInTown.getTitle())
+                                .snippet(passedInTown.getCategory())
+                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
+                    }
+
+                    //camera animation
+                    if (map != null) {
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
+                    }
+                }
+            });
+
+            mapFragment.setListener(new myMapFragment.OnTouchListener() {
+                @Override
+                public void onTouch() {
+                    ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollView_detail);
+                    mScrollView.requestDisallowInterceptTouchEvent(true);
+                }
+            });
+        } else {
+            Log.i("manu", "Error - Map Fragment was null!!");
+        }
+
+
+        // Add related Towns
+        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        final List<Town> towns = TownManager.getInstance().getAllTowns();
+        // remove the current town from list
+        for(int i=0; i<towns.size();i++){
+            if(towns.get(i).getId().equals(passedInTown.getId())){
+                towns.remove(towns.get(i));
+                break;
+            }
+        }
+        GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                        intent.putExtra("town", towns.get(position));
+                        startActivity(intent);
+                        finish(); // back to main screen
+                    }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
+
+                })
+        );
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == NEW_UPDATE_REQUEST) {
+
+            if (resultCode == RESULT_OK) {
+                update_text = intent.getStringExtra("updateText");
+                update_view.setVisibility(View.VISIBLE);
+                update_view.setText(update_text);
+                Log.i("onActivityResult", "result = " + update_text);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("onActivityResult", "RESULT_CANCELED");
+            }
+        }
+        if (requestCode == NEW_PHOTO_REQUEST) {
+            if (resultCode == RESULT_OK ) {
+                List<Uri> mSelected = Matisse.obtainResult(intent);
+                for(int i=0; i<mSelected.size(); i++){
+                    uriList.add(mSelected.get(i));
+                }
+                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+                Log.i("Matisse", "result = "+ mSelected);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("onActivityResult", "RESULT_CANCELED");
+            }
+        }
+    }
+
+    @NeedsPermission({
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    })
+    public void dispatchImagePicking(){
+        Matisse.from(this)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
+                .countable(true)
+                .maxSelectable(9)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new PicassoEngine())
+                .forResult(NEW_PHOTO_REQUEST);
+    }
+
+
+    public void updateTownDetailActivityUI(){
         if (passedInTown != null) {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
             //title = passedInTown.getTitle();
@@ -478,126 +739,6 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
             }
         }
-
-        //handle the google Maps
-        myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
-
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    //enable myLocationButton
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        map.setMyLocationEnabled(true);
-                        //map.getUiSettings().setMyLocationButtonEnabled(true);
-                    } else {
-                        Log.i("manu", "Error - checkSelfPermission!!");
-                    }
-
-                    //add markers
-                    if (passedInTown.getCategory() != null && !passedInTown.getCategory().isEmpty()) {
-                        tmi = new TownMapIcon(getApplicationContext(), passedInTown.getCategory(), false);
-                        map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .title(passedInTown.getTitle())
-                                .snippet(passedInTown.getCategory())
-                                .icon(BitmapDescriptorFactory.fromBitmap(tmi.getIconBitmap())));
-                    }
-
-                    //camera animation
-                    if (map != null) {
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
-                    }
-                }
-            });
-
-            mapFragment.setListener(new myMapFragment.OnTouchListener() {
-                @Override
-                public void onTouch() {
-                    ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollView_detail);
-                    mScrollView.requestDisallowInterceptTouchEvent(true);
-                }
-            });
-        } else {
-            Log.i("manu", "Error - Map Fragment was null!!");
-        }
-
-
-        // Add related Towns
-        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        final List<Town> towns = TownManager.getInstance().getAllTowns();
-        // remove the current town from list
-        for(int i=0; i<towns.size();i++){
-            if(towns.get(i).getId().equals(passedInTown.getId())){
-                towns.remove(towns.get(i));
-                break;
-            }
-        }
-        GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-                        intent.putExtra("town", towns.get(position));
-                        startActivity(intent);
-                        finish(); // back to main screen
-                    }
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                    }
-
-                })
-        );
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == NEW_UPDATE_REQUEST) {
-
-            if (resultCode == RESULT_OK) {
-                update_text = intent.getStringExtra("updateText");
-                update_view.setVisibility(View.VISIBLE);
-                update_view.setText(update_text);
-                Log.i("onActivityResult", "result = " + update_text);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "RESULT_CANCELED");
-            }
-        }
-        if (requestCode == NEW_PHOTO_REQUEST) {
-            if (resultCode == RESULT_OK ) {
-                List<Uri> mSelected = Matisse.obtainResult(intent);
-                for(int i=0; i<mSelected.size(); i++){
-                    uriList.add(mSelected.get(i));
-                }
-                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-                Log.i("Matisse", "result = "+ mSelected);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "RESULT_CANCELED");
-            }
-        }
-    }
-
-    @NeedsPermission({
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    })
-    public void dispatchImagePicking(){
-        Matisse.from(this)
-                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
-                .countable(true)
-                .maxSelectable(9)
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f)
-                .imageEngine(new PicassoEngine())
-                .forResult(NEW_PHOTO_REQUEST);
     }
 
 }
