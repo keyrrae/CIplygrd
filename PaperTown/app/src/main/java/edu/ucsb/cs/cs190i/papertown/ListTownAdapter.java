@@ -67,8 +67,8 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         Picasso.with(holder.imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(holder.imageView);
         holder.titleTextView.setText(towns.get(position).getTitle());
         holder.categoryTextView.setText(towns.get(position).getCategory());
-        if(towns.get(position).getDescriptionList()!=null&&towns.get(position).getDescriptionList().size()>0) {
-            holder.descriptionTextView.setText(towns.get(position).getDescriptionList().get(0));
+        if(towns.get(position).getDescription()!=null&&towns.get(position).getDescription().size()>0) {
+            holder.descriptionTextView.setText(towns.get(position).getDescription().get(0));
         }
         holder.likeCountTextView.setText(""+towns.get(position).getNumOfLikes());
         holder.list_town_author.setText(""+towns.get(position).getAuthor());

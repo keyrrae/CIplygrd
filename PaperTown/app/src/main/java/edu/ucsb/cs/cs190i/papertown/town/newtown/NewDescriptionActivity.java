@@ -31,8 +31,8 @@ public class NewDescriptionActivity extends AppCompatActivity {
 
         passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
 
-            if (passedInTown.getDescriptionList()!=null&&passedInTown.getDescriptionList().size()>0&&!passedInTown.getDescriptionList().get(0).isEmpty() && passedInTown.getDescriptionList().get(0) != null) {
-                String dataPassIn = passedInTown.getDescriptionList().get(0);
+            if (passedInTown.getDescription()!=null&&passedInTown.getDescription().size()>0&&!passedInTown.getDescription().get(0).isEmpty() && passedInTown.getDescription().get(0) != null) {
+                String dataPassIn = passedInTown.getDescription().get(0);
                 Log.i("ed", "dataPassIn = " + dataPassIn);
                 Log.i("ed", "dataPassIn2 = " + dataPassIn);
                 ((EditText) findViewById(R.id.editText_new_description)).setText(dataPassIn);

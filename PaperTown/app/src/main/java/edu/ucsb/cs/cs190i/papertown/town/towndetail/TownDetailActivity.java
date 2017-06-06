@@ -225,7 +225,7 @@ public class TownDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
-                updateDesIntent.putExtra("townDescription", passedInTown.getDescriptionList().get(0));
+                updateDesIntent.putExtra("townDescription", passedInTown.getDescription().get(0));
                 startActivityForResult(updateDesIntent, NEW_UPDATE_REQUEST);
             }
         });
@@ -439,7 +439,7 @@ public class TownDetailActivity extends AppCompatActivity {
                 update_text = intent.getStringExtra("updateText");
 //                update_view.setVisibility(View.VISIBLE);
 //                update_view.setText(update_text);
-                passedInTown.getDescriptionList().add(update_text);
+                passedInTown.getDescription().add(update_text);
 
                 Log.i("onActivityResult", "result = " + update_text);
             }
@@ -569,9 +569,9 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
         //load description
-        if (passedInTown.getDescriptionList().get(0) != null) {
+        if (passedInTown.getDescription()!=null&&passedInTown.getDescription().get(0) != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
-            detail_town_description.setText(passedInTown.getDescriptionList().get(0));
+            detail_town_description.setText(passedInTown.getDescriptionListString());
             //   townBuilder.setDescription(description);
         }
 

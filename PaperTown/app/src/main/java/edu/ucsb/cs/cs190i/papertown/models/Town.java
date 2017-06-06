@@ -113,7 +113,7 @@ public class Town implements Serializable {
         this.category = category;
     }
 
-    public List<String> getDescriptionList() {
+    public List<String> getDescription() {
         return description;
     }
 
@@ -247,7 +247,8 @@ public class Town implements Serializable {
         String temp = "";
 
         if (description != null && description.size() > 0) {
-            for (int i = 0; i < this.description.size() - 1; i++) {
+            temp += this.description.get(0);
+            for (int i = 1; i < this.description.size() - 1; i++) {
                 temp += this.description.get(i) + "!@#";
             }
             temp += this.description.get(this.description.size() - 1);
