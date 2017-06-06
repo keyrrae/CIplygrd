@@ -241,4 +241,33 @@ public class TownManager {
     }
 
 
+    public void addTownImageUrisById(String id, List<String> imageUris) {
+        getTownById(id).addImageUris(imageUris);
+
+
+        DatabaseReference descriptionRef = FirebaseDatabase.getInstance().getReference().child("towns").child(id).child("imageUrls");
+        descriptionRef.setValue(getTownById(id).getImageUrls(),
+                new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError err, DatabaseReference ref){
+                        if (err == null) {
+                            Log.d("IMAGES", "Setting images succeeded");
+                        }
+                    }
+                });
+
+        //update town
+        DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(getTownById(id).getId());
+        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                addTown(dataSnapshot.getValue(Town.class));  //update town
+                informSingleTownLChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+
 }

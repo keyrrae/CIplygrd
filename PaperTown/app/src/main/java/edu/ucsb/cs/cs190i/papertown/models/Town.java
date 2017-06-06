@@ -170,6 +170,14 @@ public class Town implements Serializable {
         this.imageUrls = imageUrls;
     }
 
+    public  void addImageUri(String imageUri){
+        this.imageUrls.add(imageUri);
+    }
+
+    public void addImageUris(List<String> imageUrisIn){
+        this.imageUrls.addAll(imageUrisIn);
+    }
+
     public String getSketch() {
         return sketch;
     }
@@ -189,16 +197,13 @@ public class Town implements Serializable {
 //        }
 //        else
 
-        if(userAlias.isEmpty()){
+        if (userAlias.isEmpty()) {
             return "Anonymous";
-        }
-        else if(names.length==1){
+        } else if (names.length == 1) {
             return names[0];
-        }
-        else if (names.length == 2) {
+        } else if (names.length == 2) {
             return names[0] + " " + names[1];
-        }
-        else{
+        } else {
             return "Anonymous";
         }
 
