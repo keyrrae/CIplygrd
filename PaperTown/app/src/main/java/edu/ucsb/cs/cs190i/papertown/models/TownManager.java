@@ -206,13 +206,38 @@ public class TownManager {
                 addTown(dataSnapshot.getValue(Town.class));  //update town
                 informSingleTownLChanged();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
+    }
 
+
+    public void addTownDescriptionById(String id, String des) {
+        getTownById(id).addDescription(des);
+
+        DatabaseReference descriptionRef =  FirebaseDatabase.getInstance().getReference().child("towns").child(id).child("description");
+        descriptionRef.setValue(getTownById(id).getDescription(),
+                new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError err, DatabaseReference ref){
+                        if (err == null) {
+                            Log.d("SET_DES", "Setting description succeeded");
+                        }
+                    }
+                });
+
+        //update town
+        DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(getTownById(id).getId());
+        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                addTown(dataSnapshot.getValue(Town.class));  //update town
+                informSingleTownLChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 

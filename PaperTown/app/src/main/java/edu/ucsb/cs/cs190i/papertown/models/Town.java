@@ -248,10 +248,9 @@ public class Town implements Serializable {
 
         if (description != null && description.size() > 0) {
             temp += this.description.get(0);
-            for (int i = 1; i < this.description.size() - 1; i++) {
-                temp += this.description.get(i) + "!@#";
+            for (int i = 1; i < this.description.size(); i++) {
+                temp += "\n\nUpdate:  " + this.description.get(i);
             }
-            temp += this.description.get(this.description.size() - 1);
         }
         return temp;
     }

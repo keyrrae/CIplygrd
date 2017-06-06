@@ -439,7 +439,9 @@ public class TownDetailActivity extends AppCompatActivity {
                 update_text = intent.getStringExtra("updateText");
 //                update_view.setVisibility(View.VISIBLE);
 //                update_view.setText(update_text);
-                passedInTown.getDescription().add(update_text);
+                //passedInTown.addDescription(update_text);
+                TownManager.getInstance().addTownDescriptionById(passedInTown.getId(),update_text);
+                updateTownDetailActivityUI();
 
                 Log.i("onActivityResult", "result = " + update_text);
             }
