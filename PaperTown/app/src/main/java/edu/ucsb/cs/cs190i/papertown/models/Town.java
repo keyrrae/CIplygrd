@@ -113,7 +113,7 @@ public class Town implements Serializable {
         this.category = category;
     }
 
-    public List<String> getDescription() {
+    public List<String> getDescriptionList() {
         return description;
     }
 

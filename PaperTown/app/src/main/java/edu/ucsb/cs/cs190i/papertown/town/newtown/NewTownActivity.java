@@ -427,13 +427,13 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getCategory());
         }
 
-        if (outputTown.getDescription() != null && !outputTown.getDescription().isEmpty()) {
+        if (outputTown.getDescriptionList() != null && !outputTown.getDescriptionList().isEmpty()) {
             Log.i("checkAllInformation", "description!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_description),
                     (TextView) findViewById(R.id.description_description),
                     (ImageView) findViewById(R.id.checkbox4),
-                    outputTown.getDescription().get(0));
+                    outputTown.getDescriptionList().get(0));
         }
 
         if (outputTown.getUserAlias() != null && !outputTown.getUserAlias().isEmpty()) {
