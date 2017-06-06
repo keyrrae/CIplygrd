@@ -341,144 +341,19 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         });
 
-        updateTownDetailActivityUI();
+        this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+        imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-//        if (passedInTown != null) {
-//            Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
-//            //title = passedInTown.getTitle();
-//            //address = passedInTown.getLatLng();
-//            //description = passedInTown.getDescription().get(0);
-//            //category = passedInTown.getCategory();
-//            //information = passedInTown.getUserAlias();
-//            uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
-//        }
-//
-//        //change button color
-//        if (mode != null && mode.equals("preview")) {
-//            //change color of submission button
-//            button_test_detail.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
-//            button_test_detail.setText("SUBMIT !");
-//        } else {
-//            //change color of submission button
-//            button_test_detail.setVisibility(Button.INVISIBLE);
-//        }
-//        //process uriStringArrayList, put data into uriList
-//        if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
-//            for (int i = 0; i < uriStringArrayList.size(); i++) {
-//                uriList.add(Uri.parse(uriStringArrayList.get(i)));
-//            }
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Cannot get images, default images used!", Toast.LENGTH_SHORT).show();
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//            this.uriList.add(Uri.parse("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg"));
-//
-//        }
-//
-//        //load title
-//        if (passedInTown.getTitle() != null) {
-//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
-//            detail_town_description.setText(passedInTown.getTitle());
-//            // townBuilder.setTitle(title);
-//        }
-//
-//        //load address and physical address
-//        if (passedInTown.getLatLng() != null) {
-//            TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
-//            detail_town_description.setText(passedInTown.getLatLng());
-//            // townBuilder.setAddress(address);
-//
-//            //processing address to latlng
-//            String[] separated = passedInTown.getLatLng().split(",");
-//            if (separated.length > 0) {
-//                lat = Float.parseFloat(separated[0]);
-//                lng = Float.parseFloat(separated[1]);
-//                //   townBuilder.setLatLng(lat, lng);
-//            }
-//
-//            TextView detail_physical_address = (TextView) findViewById(R.id.detail_physical_address);
-//            Geocoder geocoder;
-//            List<Address> addresses;
-//            geocoder = new Geocoder(this, Locale.getDefault());
-//
-//            try {
-//                addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-//
-//                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//                String city = addresses.get(0).getLocality();
-//                String state = addresses.get(0).getAdminArea();
-//                String country = addresses.get(0).getCountryName();
-//                String postalCode = addresses.get(0).getPostalCode();
-//                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-//
-//                detail_physical_address.setText(address + "\n" + city + ", " + state + ", " + country + ", " + postalCode);
-//            } catch (Exception e) {
-//                Toast.makeText(
-//                        TownDetailActivity.this,
-//                        "Unable to obtain the address from the GPS coordinates.",
-//                        Toast.LENGTH_SHORT
-//                ).show();
-//                detail_physical_address.setText("NOT AVAILABLE");
-//            }
-//
-//        }
-//
-//
-//        //load like count
-//        detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
-//
-//
-//        //load description
-//        if (passedInTown.getDescription().get(0) != null) {
-//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
-//            detail_town_description.setText(passedInTown.getDescription().get(0));
-//            //   townBuilder.setDescription(description);
-//        }
-//
-//        //load category
-//        if (passedInTown.getCategory() != null) {
-//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
-//            detail_town_description.setText(passedInTown.getCategory());
-//            //  townBuilder.setCategory(category);
-//        }
-//
-//        //load information
-//        if (passedInTown.getUserAlias() != null) {
-//            TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
-//            detail_town_description.setText(passedInTown.getAuthor());
-//            //   townBuilder.setUserAlias(information);
-//        }
-//
-//        //load uriStringArrayList
-//        if (uriList != null) {
-//            if (uriList.size() > 0) {
-//                final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
-//                detail_town_image.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Picasso.with(getApplicationContext()).load(uriList.get(0))
-//                                .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
-//                                .centerCrop()
-//                                .into(detail_town_image);
-//                    }
-//                });
-//
-//                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-//                imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        // click to show fullscreen single image
-//                        new ImageViewer.Builder<>(TownDetailActivity.this, uriList)
-//                                .setStartPosition(position)
-//                                .show();
-//                    }
-//                });
-//            }
-//        }
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // click to show fullscreen single image
+                new ImageViewer.Builder<>(TownDetailActivity.this, uriList)
+                        .setStartPosition(position)
+                        .show();
+            }
+        });
+
+        updateTownDetailActivityUI();
 
         //handle the google Maps
         myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
@@ -723,18 +598,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                 .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
                                 .centerCrop()
                                 .into(detail_town_image);
-                    }
-                });
-
-                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-                imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // click to show fullscreen single image
-                        new ImageViewer.Builder<>(TownDetailActivity.this, uriList)
-                                .setStartPosition(position)
-                                .show();
                     }
                 });
             }
