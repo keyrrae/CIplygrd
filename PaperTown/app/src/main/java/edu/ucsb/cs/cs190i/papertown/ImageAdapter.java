@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by EYE on 08/05/2017.
@@ -28,13 +29,18 @@ public class ImageAdapter extends BaseAdapter {
 
     private Context context;
     //private ArrayList<Bitmap> bitmapList;
-    private ArrayList<Uri> uriList;
+    private List<String> uriList;
     private final int gridSize = 220;
 
-    public ImageAdapter(Context context, ArrayList<Uri> uriList) {
+    public ImageAdapter(Context context, List<String> uriList) {
         this.context = context;
         //this.bitmapList = bitmapList;
         this.uriList = uriList;
+    }
+
+    public void setUriList(List<String> uriList){
+        this.uriList = uriList;
+        notifyDataSetChanged();
     }
 
     public int getCount() {

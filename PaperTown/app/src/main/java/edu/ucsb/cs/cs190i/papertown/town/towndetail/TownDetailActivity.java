@@ -111,6 +111,8 @@ public class TownDetailActivity extends AppCompatActivity {
     private GridView imageGrid;
     private ArrayList<Uri> uriList;
 
+    private ImageAdapter imageAdapter;
+
     private String mode = "detail";
 
     //private String title = "";
@@ -341,7 +343,12 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         });
 
-        this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+        List<String> urisString = new ArrayList<>();
+        for (int i = 0; i < uriList.size(); i++) {
+            urisString.add(uriList.get(i).toString());
+        }
+        imageAdapter = new ImageAdapter(this, urisString);
+        this.imageGrid.setAdapter(imageAdapter);
         imageGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -452,11 +459,16 @@ public class TownDetailActivity extends AppCompatActivity {
         if (requestCode == NEW_PHOTO_REQUEST) {
             if (resultCode == RESULT_OK ) {
                 List<Uri> mSelected = Matisse.obtainResult(intent);
-                for(int i=0; i<mSelected.size(); i++){
-                    uriList.add(mSelected.get(i));
+                List<String> uris = new ArrayList<>();
+                for (int i = 0; i < mSelected.size(); i++) {
+                    uris.add(mSelected.get(i).toString());
                 }
-                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
-                Log.i("Matisse", "result = "+ mSelected);
+//                for(int i=0; i<mSelected.size(); i++){
+//                    uriList.add(mSelected.get(i));
+//                }
+//                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
+//                Log.i("Matisse", "result = "+ mSelected);
+                TownManager.getInstance().addTownImageUrisById(passedInTown.getId(),uris);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "RESULT_CANCELED");
@@ -592,13 +604,13 @@ public class TownDetailActivity extends AppCompatActivity {
         }
 
         //load uriStringArrayList
-        if (uriList != null) {
-            if (uriList.size() > 0) {
+        if (passedInTown.getImageUrls() != null) {
+            if (passedInTown.getImageUrls().size() > 0) {
                 final ImageView detail_town_image = (ImageView) findViewById(R.id.detail_town_image);
                 detail_town_image.post(new Runnable() {
                     @Override
                     public void run() {
-                        Picasso.with(getApplicationContext()).load(uriList.get(0))
+                        Picasso.with(getApplicationContext()).load(passedInTown.getImageUrls().get(0))
                                 .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
                                 .centerCrop()
                                 .into(detail_town_image);
@@ -606,6 +618,10 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
             }
         }
+
+
+        //update gridView
+        imageAdapter.setUriList(passedInTown.getImageUrls());
     }
 
 }
