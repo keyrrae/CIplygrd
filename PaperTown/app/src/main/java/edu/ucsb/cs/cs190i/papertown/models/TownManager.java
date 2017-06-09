@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
+
 /**
  * Created by xuanwang on 6/2/17.
  */

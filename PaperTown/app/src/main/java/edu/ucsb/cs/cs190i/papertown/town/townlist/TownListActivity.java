@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -175,6 +176,40 @@ public class TownListActivity extends AppCompatActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.menu_list, menu);
+
+    final SearchView searchView = (SearchView) findViewById(R.id.search);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+
+        Log.i("onQueryTextSubmit", "query = "+query);
+//        if( ! searchView.isIconified()) {
+//          searchView.setIconified(true);
+//        }
+
+
+
+
+        return false;
+      }
+      @Override
+      public boolean onQueryTextChange(String s) {
+        // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+        List<Town> searchResults = new ArrayList<Town>();
+        for(int i = 0 ; i<allTowns.size();i++){
+          if(allTowns.get(i).getTitle().toLowerCase().contains(s.toLowerCase())){
+            //Log.i("onQueryTextChange", "found = "+allTowns.get(i).getTitle());
+            searchResults.add(allTowns.get(i));
+          }
+        }
+        ListTownAdapter mAdapter = new ListTownAdapter(searchResults);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return false;
+      }
+    });
+
+
     return true;
   }
 
