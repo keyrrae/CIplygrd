@@ -119,7 +119,10 @@
         <activity
             android:name=".town.newtown.SelectImageActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".town.account.AccountActivity"></activity>
+        <activity
+            android:name=".town.account.AccountActivity"
+            android:configChanges="orientation|screenSize" />
+
     </application>
 
 </manifest>

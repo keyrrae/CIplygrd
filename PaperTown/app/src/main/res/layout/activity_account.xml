@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
@@ -15,146 +14,148 @@
     android:orientation="vertical"
     tools:context="edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_account"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/PrimaryPink"
+            android:elevation="0dp"
+            android:minHeight="130dp" />
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollView_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/m">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
-
-                <!--<ImageView-->
-                <!--android:id="@+id/imageView_profile_image"-->
-                <!--android:layout_width="130dp"-->
-                <!--android:layout_height="133dp"-->
-                <!--android:padding="15dp"-->
-                <!--app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />-->
-
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textView_username_initial"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/circle"
                     android:gravity="center"
-                    android:text="ZY"
-                    android:textSize="60dp" />
+                    android:text="S"
+                    android:textSize="@dimen/lT"
+                    android:textColor="@android:color/white"/>
 
+                <TextView
+                    android:id="@+id/textView_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/textView_username_initial"
+                    android:layout_marginStart="@dimen/m"
+                    android:text="Samantha"
+                    android:textAppearance="@style/TitleText_detail"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_user_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/textView_username_initial"
+                    android:layout_marginStart="@dimen/m"
+                    android:layout_below="@id/textView_username"
+                    android:text="23 posts" />
 
-
-                    <TextView
-                        android:id="@+id/textView_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="Zhenyu Yang" />
-
-                    <TextView
-                        android:id="@+id/textView_user_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="109 posts" />
-                </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/darker_gray"
-                android:padding="10dp" />
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/m"
+                android:background="@color/LightestGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/m">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Liked" />
+                    android:text="Liked Posts"
+                    android:textAppearance="@style/MainTextBold_detail"/>
 
                 <TextView
                     android:id="@+id/textView_liked_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="More" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:text="More"
+                    android:textAppearance="@style/footerText_list"
+                    android:textAllCaps="true"
+                    android:textColor="@color/PrimaryPink"/>
             </LinearLayout>
 
             <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
                 android:id="@+id/gridView_liked"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:columnWidth="90dp"
+                android:layout_marginTop="@dimen/m"
                 android:gravity="center"
-                android:horizontalSpacing="10dp"
-                android:numColumns="2"
-                android:padding="10dp"
-                android:stretchMode="columnWidth"
-
-                android:verticalSpacing="10dp" />
-
+                android:numColumns="3"
+                android:horizontalSpacing="@dimen/s"
+                android:verticalSpacing="@dimen/l" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/darker_gray"
-                android:padding="10dp" />
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/m"
+                android:background="@color/LightestGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/m"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Draft" />
+                    android:text="My Drafts"
+                    android:textAppearance="@style/MainTextBold_detail"/>
 
                 <TextView
                     android:id="@+id/textView_draft_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="More" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:text="More"
+                    android:textAppearance="@style/footerText_list"
+                    android:textAllCaps="true"
+                    android:textColor="@color/PrimaryPink"/>
             </LinearLayout>
 
             <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
                 android:id="@+id/gridView_draft"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m"
                 android:columnWidth="90dp"
-
                 android:gravity="center"
                 android:horizontalSpacing="10dp"
-                android:numColumns="2"
-                android:padding="10dp"
+                android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp"
-
-                />
-
+                android:verticalSpacing="10dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
