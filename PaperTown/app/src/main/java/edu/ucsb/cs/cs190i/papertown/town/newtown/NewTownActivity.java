@@ -442,11 +442,11 @@ public class NewTownActivity extends AppCompatActivity implements
         pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
     }
 
-    void setChecked(TextView t1, TextView t2, ImageView i1, String desctiption_in) {
+    void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
         i1.setImageResource(R.drawable.ic_check_box_black_24dp);
         t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
         if (t2 != null) {
-            t2.setText(desctiption_in);
+            t2.setText(description_in);
         }
     }
 

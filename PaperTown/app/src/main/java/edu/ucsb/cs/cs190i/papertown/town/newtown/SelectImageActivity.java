@@ -9,6 +9,7 @@
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -53,6 +54,8 @@ import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -120,23 +123,30 @@ public class SelectImageActivity extends AppCompatActivity {
                 if (dataPassIn != null) {
                 Log.i("ed", "dataPassIn = " + dataPassIn);
                 Log.i("ed", "dataPassIn2 = " + dataPassIn);
-                for (int i = 0; i < dataPassIn.size(); i++) {
-                    //imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
 
 
                     //compress the image from the uri
+                    ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                    progress.setTitle("UPLOADING");
+                    progress.setMessage("Compressing Images");
+                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                    progress.show();
+                for (int i = 0; i < dataPassIn.size(); i++) {
                     Uri uri = Uri.parse(dataPassIn.get(i));
                     String[] split = uri.toString().split(":");
                     if(!split[0].equals("file")) {
-                        File f = new File(dataPassIn.get(i));
-                        //Log.i("original_image", "f.getName(); = " + f.getName());
-                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                        uri = (Uri.fromFile(f));
+//                        File f = new File(dataPassIn.get(i));
+//                        //Log.i("original_image", "f.getName(); = " + f.getName());
+//                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                        uri = (Uri.fromFile(f));
+                        ImageCompressor imageCompressor = new ImageCompressor();
+                        uri = imageCompressor.compress(dataPassIn.get(i),getApplicationContext());
                     }
 
                     imageUris = addUri(imageUris, uri);
 
                 }
+                    progress.dismiss();
                 }
             } else {
 
@@ -147,11 +157,12 @@ public class SelectImageActivity extends AppCompatActivity {
 
                 //compress the image from the uri
                 Uri uri = Uri.parse(s);
-                File f = new File(uri.toString());
-                // Log.i("original_image","f.getName(); = "+f.getName());
-                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                uri = (Uri.fromFile(f));
-
+//                File f = new File(uri.toString());
+//                // Log.i("original_image","f.getName(); = "+f.getName());
+//                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                uri = (Uri.fromFile(f));
+                ImageCompressor imageCompressor = new ImageCompressor();
+                uri = imageCompressor.compress(s,getApplicationContext());
                 imageUris = addUri(imageUris, uri);
 
 
@@ -189,12 +200,21 @@ public class SelectImageActivity extends AppCompatActivity {
                 
                 // TODO Crash when update more images.
                 List<Uri> selected = Matisse.obtainResult(data);
+                //compress the image from the uri
+                ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                progress.setTitle("UPLOADING");
+                progress.setMessage("Compressing Images");
+                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                progress.show();
                 for(int i=0; i<selected.size(); i++){
-                    File f = new File(selected.get(i).toString());
-                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                    Uri uri = (Uri.fromFile(f));
+//                    File f = new File(selected.get(i).toString());
+//                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                    Uri uri = (Uri.fromFile(f));
+                    ImageCompressor imageCompressor = new ImageCompressor();
+                    Uri uri = imageCompressor.compress(selected.get(i).toString(),getApplicationContext());
                     imageUris = addUri(imageUris, uri);
                 }
+                progress.dismiss();
 
                 SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
                 Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
@@ -223,17 +243,37 @@ public class SelectImageActivity extends AppCompatActivity {
                     Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
                         if (passedInTown != null) {
                             List<String> dataPassIn = passedInTown.getImageUrls();
+
+
+                            //compress the image from the uri
+                            ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                            progress.setTitle("UPLOADING");
+                            progress.setMessage("Compressing Images");
+                            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                            progress.show();
+
                             for (int i = 0; i < dataPassIn.size(); i++) {
-                                imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+                                //compress the image from the uri
+//                                Uri uri = Uri.parse(dataPassIn.get(i));
+//                                File f = new File(uri.toString());
+//                                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                                uri = (Uri.fromFile(f));
+                                ImageCompressor imageCompressor = new ImageCompressor();
+                                Uri uri = imageCompressor.compress(dataPassIn.get(i),getApplicationContext());
+
+                                imageUris = addUri(imageUris, uri);
                             }
+                            progress.dismiss();
                         } else {
                             String s = getIntent().getStringExtra(EXTRA_MESSAGE);
 
                             //compress the image from the uri
-                            Uri uri = Uri.parse(s);
-                            File f = new File(uri.toString());
-                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                            uri = (Uri.fromFile(f));
+//                            Uri uri = Uri.parse(s);
+//                            File f = new File(uri.toString());
+//                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                            uri = (Uri.fromFile(f));
+                            ImageCompressor imageCompressor = new ImageCompressor();
+                            Uri uri = imageCompressor.compress(s,getApplicationContext());
                             imageUris = addUri(imageUris, uri);
                         }
 
@@ -276,115 +316,115 @@ public class SelectImageActivity extends AppCompatActivity {
         }
     }
 
-    public String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
-        String filePath = getRealPathFromURI2(context, inputUri);
-        //String filePath = inputUri.toString();
-        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
-
-        // First decode with inJustDecodeBounds=true to check dimensions of image
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filePath, options);
-
-        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
-        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
-        options.inSampleSize = calculateInSampleSize(options, 800, 800);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
-
-
-        int compressQuality = 100; // quality decreasing by 5 every loop.
-        int streamLength;
-        do {
-            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
-            Log.d("compressBitmap", "Quality: " + compressQuality);
-            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
-            byte[] bmpPicByteArray = bmpStream.toByteArray();
-            streamLength = bmpPicByteArray.length;
-            compressQuality -= 5;
-            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
-        } while (streamLength >= MAX_IMAGE_SIZE);
-
-        try {
-            //save the resized and compressed file to disk cache
-            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
-            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
-            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
-            bmpFile.flush();
-            bmpFile.close();
-        } catch (Exception e) {
-            Log.e("compressBitmap", "Error on saving file");
-        }
-        //return the path of resized and compressed file
-        return context.getCacheDir() + fileName;
-    }
-
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        String debugTag = "MemoryInformation";
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        Log.d(debugTag, "image height: " + height + "---image width: " + width);
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        Log.d(debugTag, "inSampleSize: " + inSampleSize);
-        return inSampleSize;
-    }
-
-    public String getRealPathFromURI(Context context, Uri uri) {
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{id}, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
-
-    public String getRealPathFromURI2(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
+//    public String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
+//        String filePath = getRealPathFromURI2(context, inputUri);
+//        //String filePath = inputUri.toString();
+//        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
+//
+//        // First decode with inJustDecodeBounds=true to check dimensions of image
+//        final BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(filePath, options);
+//
+//        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
+//        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
+//        options.inSampleSize = calculateInSampleSize(options, 800, 800);
+//
+//        // Decode bitmap with inSampleSize set
+//        options.inJustDecodeBounds = false;
+//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//
+//        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
+//
+//
+//        int compressQuality = 100; // quality decreasing by 5 every loop.
+//        int streamLength;
+//        do {
+//            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
+//            Log.d("compressBitmap", "Quality: " + compressQuality);
+//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
+//            byte[] bmpPicByteArray = bmpStream.toByteArray();
+//            streamLength = bmpPicByteArray.length;
+//            compressQuality -= 5;
+//            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
+//        } while (streamLength >= MAX_IMAGE_SIZE);
+//
+//        try {
+//            //save the resized and compressed file to disk cache
+//            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
+//            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
+//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
+//            bmpFile.flush();
+//            bmpFile.close();
+//        } catch (Exception e) {
+//            Log.e("compressBitmap", "Error on saving file");
+//        }
+//        //return the path of resized and compressed file
+//        return context.getCacheDir() + fileName;
+//    }
+//
+//
+//    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        String debugTag = "MemoryInformation";
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        Log.d(debugTag, "image height: " + height + "---image width: " + width);
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+//        Log.d(debugTag, "inSampleSize: " + inSampleSize);
+//        return inSampleSize;
+//    }
+//
+//    public String getRealPathFromURI(Context context, Uri uri) {
+//        String filePath = "";
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = {MediaStore.Images.Media.DATA};
+//
+//        // where id is equal to
+//        String sel = MediaStore.Images.Media._ID + "=?";
+//
+//
+//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                column, sel, new String[]{id}, null);
+//
+//        int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//        if (cursor.moveToFirst()) {
+//            filePath = cursor.getString(columnIndex);
+//        }
+//        cursor.close();
+//        return filePath;
+//    }
+//
+//    public String getRealPathFromURI2(Context context, Uri contentUri) {
+//        Cursor cursor = null;
+//        try {
+//            String[] proj = { MediaStore.Images.Media.DATA };
+//            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//            return cursor.getString(column_index);
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//    }
 
 
     @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})

@@ -99,6 +99,7 @@ import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
+import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
 import io.realm.Realm;
 import io.realm.RealmResults;
 //test
@@ -464,20 +465,14 @@ public class TownDetailActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK ) {
                 List<Uri> mSelected = Matisse.obtainResult(intent);
                 List<String> uris = new ArrayList<>();
-//                for (int i = 0; i < mSelected.size(); i++) {
-//
-//
-//
-//
-//
-//                    uris.add(mSelected.get(i).toString());
-//                }
 
                 //file compression
                 for(int i=0; i<mSelected.size(); i++){
-                    File f = new File(mSelected.get(i).toString());
-                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), mSelected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                    Uri uri = (Uri.fromFile(f));
+//                    File f = new File(mSelected.get(i).toString());
+//                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), mSelected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                    Uri uri = (Uri.fromFile(f));
+                    ImageCompressor imageCompressor = new ImageCompressor();
+                    Uri uri = imageCompressor.compress(mSelected.get(i).toString(),getApplicationContext());
                     uris.add(uri.toString());
                 }
 
