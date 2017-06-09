@@ -126,10 +126,13 @@ public class SelectImageActivity extends AppCompatActivity {
 
                     //compress the image from the uri
                     Uri uri = Uri.parse(dataPassIn.get(i));
-                    File f = new File(dataPassIn.get(i));
-                    // Log.i("original_image","f.getName(); = "+f.getName());
-                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                    uri = (Uri.fromFile(f));
+                    String[] split = uri.toString().split(":");
+                    if(!split[0].equals("file")) {
+                        File f = new File(dataPassIn.get(i));
+                        //Log.i("original_image", "f.getName(); = " + f.getName());
+                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                        uri = (Uri.fromFile(f));
+                    }
 
                     imageUris = addUri(imageUris, uri);
 
@@ -274,7 +277,8 @@ public class SelectImageActivity extends AppCompatActivity {
     }
 
     public String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
-        String filePath = getRealPathFromURI(context, inputUri);
+        String filePath = getRealPathFromURI2(context, inputUri);
+        //String filePath = inputUri.toString();
         final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
 
         // First decode with inJustDecodeBounds=true to check dimensions of image
@@ -365,6 +369,21 @@ public class SelectImageActivity extends AppCompatActivity {
         }
         cursor.close();
         return filePath;
+    }
+
+    public String getRealPathFromURI2(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
 
