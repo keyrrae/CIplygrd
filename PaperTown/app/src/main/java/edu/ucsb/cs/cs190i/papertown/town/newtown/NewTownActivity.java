@@ -380,7 +380,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getCategory());
         }
 
-        if (outputTown.getDescription() != null && !outputTown.getDescription().isEmpty()) {
+        if (outputTown.getDescription() != null && outputTown.getDescription().get(0)!=null&& !outputTown.getDescription().get(0).isEmpty()) {
             Log.i("checkAllInformation", "description!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_description),
@@ -389,7 +389,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getDescription().get(0));
         }
 
-        if (outputTown.getUserAlias() != null && !outputTown.getUserAlias().isEmpty()) {
+        if (outputTown.getUserAlias() != null && !outputTown.getUserAlias().replace(",", "").isEmpty()) {
             Log.i("checkAllInformation", "information!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_information),
@@ -445,7 +445,7 @@ public class NewTownActivity extends AppCompatActivity implements
     void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
         i1.setImageResource(R.drawable.ic_check_box_black_24dp);
         t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
-        if (t2 != null) {
+        if (t2 != null&&!(description_in.isEmpty())) {
             t2.setText(description_in);
         }
     }

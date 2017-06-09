@@ -69,9 +69,7 @@ public class SelectImageActivity extends AppCompatActivity {
     Uri[] imageUris;
     final int NEW_PHOTO_REQUEST = 5;
     GridView grid;
-    String[] web = {
-            "Google"
-    };
+
     private Town passedInTown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

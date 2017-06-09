@@ -54,6 +54,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     private Location location;
     private LocationManager locationManager;
     private Town passedInTown;
+    private  EditText ev;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,8 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             ((EditText)findViewById(R.id.editText_new_address)).setText(dataPassIn);
         }
 
-        //test
+        ev = ((EditText) findViewById(R.id.editText_new_address));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_address);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -79,8 +81,8 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
 
-                if(location!=null) {
-                    EditText ev = ((EditText) findViewById(R.id.editText_new_address));
+                if(location!=null&&!(ev.getText().toString().isEmpty())) {
+
                     //returnIntent.putExtra("result", ev.getText().toString());
 
                     String address = ev.getText().toString();
@@ -98,7 +100,10 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                     finish();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Location unset!", Toast.LENGTH_SHORT).show();
+                    passedInTown.setAddress("");
+                    returnIntent.putExtra("result",passedInTown);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
                 }
             }
         });
