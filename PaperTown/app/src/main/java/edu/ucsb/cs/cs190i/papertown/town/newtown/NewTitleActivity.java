@@ -71,15 +71,17 @@ public class NewTitleActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.button_new_title_next)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ed","onClick");
+//                Log.i("ed","onClick");
 //                Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
 //                passedInTown.setTitle(ed.getText().toString());
 //                intent.putExtra("townPassIn", passedInTown);
 //
+//                setResult(Activity.RESULT_OK,intent);
 //
 //                startActivityForResult(intent, NEW_ADDRESS_REQUEST);
 //                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-
+//
+//                finish();
 
             }
         });
