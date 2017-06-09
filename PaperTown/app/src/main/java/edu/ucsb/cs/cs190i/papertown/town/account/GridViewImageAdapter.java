@@ -77,8 +77,7 @@ public class GridViewImageAdapter extends BaseAdapter {
             TextView text = (TextView) item.findViewById(R.id.grid_item_title);
             text.setText(this.towns.get(position).getTitle());
         }
-        else
-        {
+        else {
             item  = (RelativeLayout) convertView;
         }
         return item;
