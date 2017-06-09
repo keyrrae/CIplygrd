@@ -8,43 +8,33 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/LighterGray"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewCategoryActivity">
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_new_category"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/Almost_White"/>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_vertical">
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="@dimen/mT"
-            android:gravity="center_horizontal"
-            android:text="What type of secret item \n do you want to add?"/>
+            android:layout_margin="@dimen/m"
+            android:textAppearance="@style/MainTextBold_detail"
+            android:text="What type of secret item do you want to add?"/>
     </LinearLayout>
 
     <Button
@@ -52,7 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="A Place"
-        android:background="@color/Almost_White">
+        android:textAllCaps="true"
+        android:textAppearance="@style/MainTextBold_detail"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/LighterGray">
         </Button>
 
     <Button
@@ -60,14 +53,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="A Creature"
-        android:background="@color/Almost_White"/>
+        android:textAllCaps="true"
+        android:textAppearance="@style/MainTextBold_detail"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/LighterGray"/>
 
     <Button
         android:id="@+id/button_cate3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="An Event"
-        android:background="@color/Almost_White"
+        android:textAllCaps="true"
+        android:textAppearance="@style/MainTextBold_detail"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/LighterGray"
         />
 
 </LinearLayout>

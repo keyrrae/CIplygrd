@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
@@ -8,47 +7,55 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/LighterGray"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewDescriptionActivity">
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_new_description"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/Almost_White" />
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/textView_new_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Description"
-        android:textAppearance="@style/TitleText_detail"
-       />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editText_new_description"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/m"
-        android:background="@color/Almost_White"
-        android:padding="@dimen/s"
-        android:hint="Describe the item with a precise, concise, and professional tone." />
+        <TextView
+            android:id="@+id/textView_new_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m"
+            android:text="Description"
+            android:textAppearance="@style/MainTextBold_detail" />
+
+        <EditText
+            android:id="@+id/editText_new_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m"
+            android:layout_below="@id/textView_new_description"
+            android:background="@color/Almost_White"
+            android:hint="Describe the item with a precise, concise, and professional tone."
+            android:textAppearance="@style/MainTextRegular_detail"/>
+
+        <Button
+            android:id="@+id/button_new_description_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/PrimaryPink"
+            android:text="Next"
+            android:textAllCaps="true"
+            android:textAppearance="@style/MainTextBold_detail"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>
