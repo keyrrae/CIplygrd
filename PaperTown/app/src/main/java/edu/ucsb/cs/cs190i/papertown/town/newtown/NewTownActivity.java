@@ -101,7 +101,6 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 if (outputTown.getImageUrls() == null || outputTown.getImageUrls().size() == 0) {
-                    //dispatchImagePicking();
                     NewTownActivityPermissionsDispatcher.dispatchImagePickingWithCheck(NewTownActivity.this);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
@@ -110,30 +109,6 @@ public class NewTownActivity extends AppCompatActivity implements
                 }
             }
         });
-//        imageView_newTown.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (outputTown.getImageUrls() == null || outputTown.getImageUrls().size() == 0) {
-//                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT,
-//                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    startActivityForResult(pickPhoto, NEW_PHOTO_REQUEST);
-//                } else {
-//                    Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
-//                    intent.putExtra("townPassIn", outputTown);
-//                    startActivityForResult(intent, NEW_PHOTO_REQUEST);
-//                }
-//            }
-//        });
-
-//        @OnClick(R.id.imageView_newTown)
-//        public void startImagePicking (View v){
-//            if (imagesSelected) {
-//                Intent intent = new Intent(this, SelectImageActivity.class);
-//                intent.putParcelableArrayListExtra("multipleImages", (ArrayList<Uri>) townBuilder.getUrisLocal());
-//            } else {
-//                NewTownActivityPermissionsDispatcher.dispatchImagePickingWithCheck(this);
-//            }
-//        }
 
         //get extra, see  if the passed in town is null or not to decide if need to initialize a new town
         passedInTown = (Town) getIntent().getSerializableExtra("town");
@@ -312,9 +287,7 @@ public class NewTownActivity extends AppCompatActivity implements
             Log.i("onActivityResult", "NEW_PHOTO_REQUEST");
             if (resultCode == RESULT_OK) {
                 List<Uri> selected = Matisse.obtainResult(data);
-//                Log.i("onActivityResult", "result = " + selectedImageURI.toString());
                 Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
-                //intent.putExtra(EXTRA_MESSAGE, selectedImageURI.toString());
                ArrayList<String> tempList = new ArrayList<>();
                 for(int i=0; i<selected.size(); i++){
                     tempList.add(selected.get(i).toString());

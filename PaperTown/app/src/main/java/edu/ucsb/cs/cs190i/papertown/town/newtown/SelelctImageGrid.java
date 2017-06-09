@@ -36,11 +36,11 @@ import static edu.ucsb.cs.cs190i.papertown.town.newtown.SelectImageActivity.MY_P
 
 public class SelelctImageGrid extends BaseAdapter {
     private Context mContext;
-    private  int[] Imageid;
-    private  Uri[] ImageUris;
+    private Uri[] ImageUris;
     ImageView imageView;
+    int imageViewSize = 100;
 
-    public SelelctImageGrid(Context c,Uri[] ImageUris ) {
+    public SelelctImageGrid(Context c, Uri[] ImageUris) {
         mContext = c;
         this.ImageUris = ImageUris;
     }
@@ -48,7 +48,7 @@ public class SelelctImageGrid extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return ImageUris.length+1;
+        return ImageUris.length + 1;
     }
 
     @Override
@@ -71,36 +71,34 @@ public class SelelctImageGrid extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            if(position!=ImageUris.length) {
+            if (position != ImageUris.length) {
 //                grid = new View(mContext);
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
                 imageView = (ImageView) grid.findViewById(R.id.grid_image);
-                Log.i("addOnItemTouchListener", "ImageUris["+position+"] = "+ImageUris[position]);
+                Log.i("addOnItemTouchListener", "ImageUris[" + position + "] = " + ImageUris[position]);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (mContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
-                        if (ActivityCompat.shouldShowRequestPermissionRationale((SelectImageActivity)mContext,
+                        if (ActivityCompat.shouldShowRequestPermissionRationale((SelectImageActivity) mContext,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             Log.i("my", "permission.READ_EXTERNAL_STORAGE");
 
                         }
-                        ActivityCompat.requestPermissions((SelectImageActivity)mContext,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        ActivityCompat.requestPermissions((SelectImageActivity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    }
-                    else{
+                    } else {
                         Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-                Picasso.with(mContext).load(ImageUris[position])
-                        .fit()
-                        .into(imageView);
+                        Picasso.with(mContext).load(ImageUris[position])
+                                .resize(imageViewSize, imageViewSize)
+                                .centerCrop()
+                                .into(imageView);
                     }
                 }
-            }
-            else{
-//                grid = new View(mContext);
+            } else {
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
                 ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-                imageView.setBackgroundColor(Color.GRAY);
-                imageView.setImageResource(R.drawable.ic_add_white_24dp);
+                imageView.setBackgroundColor(Color.LTGRAY);
+                imageView.setImageResource(R.drawable.ic_add_white_18dp);
             }
         } else {
             grid = (View) convertView;
