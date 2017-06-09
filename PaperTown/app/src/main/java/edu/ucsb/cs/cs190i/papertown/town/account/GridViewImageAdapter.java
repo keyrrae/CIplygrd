@@ -66,8 +66,8 @@ public class GridViewImageAdapter extends BaseAdapter {
             ImageView image = (ImageView) item.findViewById(R.id.grid_item_image);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            String imagePath = this.towns.get(position).getImageUrls().get(0);
-            if(imagePath!=null&&!imagePath.isEmpty()) {
+            if(this.towns.get(position).getImageUrls()!=null&&this.towns.get(position).getImageUrls().get(0)!=null&&!this.towns.get(position).getImageUrls().get(0).isEmpty()) {
+                String imagePath = this.towns.get(position).getImageUrls().get(0);
                 Picasso.with(image.getContext()).load(imagePath).into(image);
             }
             else{

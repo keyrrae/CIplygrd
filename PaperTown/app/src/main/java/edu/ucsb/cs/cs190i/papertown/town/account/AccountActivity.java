@@ -39,9 +39,9 @@ public class AccountActivity extends AppCompatActivity {
 
     boolean ifLikedExpanded = false;
     boolean ifDraftExpanded = false;
-    public List<Town> towns_liked_collapsed;
+    public List<Town> towns_liked_2;
     public List<Town> towns_liked;
-    public List<Town> towns_draft_collapsed;
+    public List<Town> towns_draft_2;
     public List<Town> towns_draft;
     private Realm mRealm;
 
@@ -67,30 +67,30 @@ public class AccountActivity extends AppCompatActivity {
 
         initData();  //get towns for liked and drafts
 
-        towns_draft_collapsed = new ArrayList<>();
-        towns_liked_collapsed = new ArrayList<>();
+        towns_draft_2 = new ArrayList<>();
+        towns_liked_2 = new ArrayList<>();
 
         if(towns_draft.size()>3) {
-            towns_draft_collapsed.add(towns_draft.get(0));
-            towns_draft_collapsed.add(towns_draft.get(1));
-            towns_draft_collapsed.add(towns_draft.get(2));
+            towns_draft_2.add(towns_draft.get(0));
+            towns_draft_2.add(towns_draft.get(1));
+            towns_draft_2.add(towns_draft.get(2));
         }else{
-            towns_draft_collapsed = towns_draft;
+            towns_draft_2 = towns_draft;
             findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
         }
 
         if(towns_liked.size()>3) {
-            towns_liked_collapsed.add(towns_liked.get(0));
-            towns_liked_collapsed.add(towns_liked.get(1));
-            towns_liked_collapsed.add(towns_liked.get(2));
+            towns_liked_2.add(towns_liked.get(0));
+            towns_liked_2.add(towns_liked.get(1));
+            towns_liked_2.add(towns_liked.get(2));
         }
         else{
-            towns_liked_collapsed = towns_liked;
+            towns_liked_2 = towns_liked;
             findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
         }
 
         final GridView gridview_liked = (GridView) findViewById(R.id.gridView_liked);
-        gridview_liked.setAdapter(new GridViewImageAdapter(this, towns_liked_collapsed));
+        gridview_liked.setAdapter(new GridViewImageAdapter(this, towns_liked_2));
 
         gridview_liked.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,7 +104,7 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         final GridView gridview_draft = (GridView) findViewById(R.id.gridView_draft);
-        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_collapsed));
+        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_2));
 
         gridview_draft.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -133,7 +133,7 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("Less");
                 } else {
-                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_collapsed));
+                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_2));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("More");
                 }
                 ifLikedExpanded = !ifLikedExpanded;
@@ -150,7 +150,7 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("Less");
                 } else {
-                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_collapsed));
+                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_2));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
                 ifDraftExpanded = !ifDraftExpanded;
