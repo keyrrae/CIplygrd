@@ -30,6 +30,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -53,6 +56,8 @@ import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -70,6 +75,7 @@ public class SelectImageActivity extends AppCompatActivity {
             "Google"
     };
     private Town passedInTown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,27 +87,41 @@ public class SelectImageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.i("dataToD", "setNavigationOnClickListener");
-                Intent returnIntent = new Intent();
-
-                ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
-                Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
-
-                //process Uri array data
-                ArrayList<String> uriStringArrayList = new ArrayList<>();
-                for (int i = 0; i < uriList.size(); i++) {
-                    uriStringArrayList.add(uriList.get(i).toString());
-                }
-                passedInTown.setImageUrls(uriStringArrayList);
-                returnIntent.putExtra("result",passedInTown);
-                setResult(Activity.RESULT_FIRST_USER, returnIntent);
                 finish();
 
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.save_and_exit:
+
+                        Log.i("dataToD", "setNavigationOnClickListener");
+                        Intent returnIntent = new Intent();
+
+                        ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
+                        Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
+
+                        //process Uri array data
+                        ArrayList<String> uriStringArrayList = new ArrayList<>();
+                        for (int i = 0; i < uriList.size(); i++) {
+                            uriStringArrayList.add(uriList.get(i).toString());
+                        }
+                        passedInTown.setImageUrls(uriStringArrayList);
+                        returnIntent.putExtra("result", passedInTown);
+                        setResult(Activity.RESULT_FIRST_USER, returnIntent);
+                        finish();
+
+                }
+
+                return true;
             }
         });
 
@@ -118,25 +138,25 @@ public class SelectImageActivity extends AppCompatActivity {
             if (passedInTown != null) {
                 List<String> dataPassIn = passedInTown.getImageUrls();
                 if (dataPassIn != null) {
-                Log.i("ed", "dataPassIn = " + dataPassIn);
-                Log.i("ed", "dataPassIn2 = " + dataPassIn);
-                for (int i = 0; i < dataPassIn.size(); i++) {
-                    //imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
+                    Log.i("ed", "dataPassIn = " + dataPassIn);
+                    Log.i("ed", "dataPassIn2 = " + dataPassIn);
+                    for (int i = 0; i < dataPassIn.size(); i++) {
+                        //imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
 
 
-                    //compress the image from the uri
-                    Uri uri = Uri.parse(dataPassIn.get(i));
-                    String[] split = uri.toString().split(":");
-                    if(!split[0].equals("file")) {
-                        File f = new File(dataPassIn.get(i));
-                        //Log.i("original_image", "f.getName(); = " + f.getName());
-                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                        uri = (Uri.fromFile(f));
+                        //compress the image from the uri
+                        Uri uri = Uri.parse(dataPassIn.get(i));
+                        String[] split = uri.toString().split(":");
+                        if (!split[0].equals("file")) {
+                            File f = new File(dataPassIn.get(i));
+                            //Log.i("original_image", "f.getName(); = " + f.getName());
+                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                            uri = (Uri.fromFile(f));
+                        }
+
+                        imageUris = addUri(imageUris, uri);
+
                     }
-
-                    imageUris = addUri(imageUris, uri);
-
-                }
                 }
             } else {
 
@@ -178,6 +198,14 @@ public class SelectImageActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_to_next, menu);
+
+        return true;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == NEW_PHOTO_REQUEST) {
@@ -186,10 +214,10 @@ public class SelectImageActivity extends AppCompatActivity {
 //                Uri selectedImageURI = data.getData();
 //                Log.i("onActivityResult", "result = " + selectedImageURI.toString());
 //                Uri uri = selectedImageURI;
-                
+
                 // TODO Crash when update more images.
                 List<Uri> selected = Matisse.obtainResult(data);
-                for(int i=0; i<selected.size(); i++){
+                for (int i = 0; i < selected.size(); i++) {
                     File f = new File(selected.get(i).toString());
                     f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
                     Uri uri = (Uri.fromFile(f));
@@ -221,39 +249,39 @@ public class SelectImageActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-                        if (passedInTown != null) {
-                            List<String> dataPassIn = passedInTown.getImageUrls();
-                            for (int i = 0; i < dataPassIn.size(); i++) {
-                                imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
-                            }
-                        } else {
-                            String s = getIntent().getStringExtra(EXTRA_MESSAGE);
-
-                            //compress the image from the uri
-                            Uri uri = Uri.parse(s);
-                            File f = new File(uri.toString());
-                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-                            uri = (Uri.fromFile(f));
-                            imageUris = addUri(imageUris, uri);
+                    if (passedInTown != null) {
+                        List<String> dataPassIn = passedInTown.getImageUrls();
+                        for (int i = 0; i < dataPassIn.size(); i++) {
+                            imageUris = addUri(imageUris, Uri.parse(dataPassIn.get(i)));
                         }
+                    } else {
+                        String s = getIntent().getStringExtra(EXTRA_MESSAGE);
 
-                        SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-                        grid = (GridView) findViewById(R.id.grid);
-                        grid.setAdapter(adapter);
-                        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        //compress the image from the uri
+                        Uri uri = Uri.parse(s);
+                        File f = new File(uri.toString());
+                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+                        uri = (Uri.fromFile(f));
+                        imageUris = addUri(imageUris, uri);
+                    }
 
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                Log.i("addOnItemTouchListener", "onItemClick position =" + position);
-                                if (position == imageUris.length) {
+                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                    grid = (GridView) findViewById(R.id.grid);
+                    grid.setAdapter(adapter);
+                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                                    Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-                                    Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
-                                }
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+                            Log.i("addOnItemTouchListener", "onItemClick position =" + position);
+                            if (position == imageUris.length) {
+
+                                Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
+                                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                             }
-                        });
+                        }
+                    });
                 } else {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
                 }
@@ -374,8 +402,8 @@ public class SelectImageActivity extends AppCompatActivity {
     public String getRealPathFromURI2(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);

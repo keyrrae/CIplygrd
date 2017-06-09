@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
@@ -18,24 +17,21 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
+        android:background="@android:color/transparent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_done"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/PrimaryPink"
+            android:elevation="0dp" />
     </android.support.design.widget.AppBarLayout>
-
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="3sp"
+        android:layout_height="@dimen/xs"
         android:background="@color/LighterGray"
         android:progressDrawable="@drawable/customprogressbar" />
 
@@ -48,7 +44,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <FrameLayout
@@ -58,28 +54,27 @@
                 <ImageView
                     android:id="@+id/imageView_newTown"
                     android:layout_width="match_parent"
-                    android:scaleType="centerCrop"
-                    android:layout_height="200sp" />
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/title_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text="Add Photos"
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="@dimen/s"/>
+                    android:layout_margin="@dimen/m"
+                    android:text="Add Photos"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray" />
 
                 <ImageView
                     android:id="@+id/checkbox_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="@dimen/s"
-                    app:srcCompat="@drawable/ic_check_box_outline_blank_white_24dp" />
+                    android:layout_margin="@dimen/m"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
 
             </FrameLayout>
 
@@ -87,155 +82,189 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/s"
-                android:layout_marginLeft="@dimen/s">
-                    <TextView
-                        android:id="@+id/title_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Add Title"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/description_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Give a name to the item"
-                        android:textSize="12sp"
-                        android:layout_below="@id/title_title"
-                        android:textColor="@color/colorPrimaryDark"/>
-                    <ImageView
-                        android:id="@+id/checkbox1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
-                        android:layout_alignParentRight="true" />
+                android:layout_margin="@dimen/m">
+
+                <TextView
+                    android:id="@+id/title_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Title"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray" />
+
+                <TextView
+                    android:id="@+id/description_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_title"
+                    android:text="Give a name to the item"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/LightGray" />
+
+                <ImageView
+                    android:id="@+id/checkbox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/s"
-                android:layout_marginLeft="@dimen/s">
-                    <TextView
-                        android:id="@+id/title_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Set Address"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/description_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Where did you find the item"
-                        android:textSize="12sp"
-                        android:layout_below="@id/title_address"
-                        android:textColor="@color/colorPrimaryDark"/>
-                    <ImageView
-                        android:id="@+id/checkbox2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
-                        android:layout_alignParentRight="true"/>
+                android:layout_margin="@dimen/m">
+
+                <TextView
+                    android:id="@+id/title_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set Address"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray" />
+
+                <TextView
+                    android:id="@+id/description_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_address"
+                    android:text="Where did you find the item"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/LightGray" />
+
+                <ImageView
+                    android:id="@+id/checkbox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/s"
-                android:layout_marginLeft="@dimen/s">
-                    <TextView
-                        android:id="@+id/title_cate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Select Category"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/description_cate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="What is the type of the item"
-                        android:textSize="12sp"
-                        android:layout_below="@id/title_cate"
-                        android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
-                        android:id="@+id/checkbox3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
-                        android:layout_alignParentRight="true"/>
+                android:layout_margin="@dimen/m">
+
+                <TextView
+                    android:id="@+id/title_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Category"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray" />
+
+                <TextView
+                    android:id="@+id/description_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_cate"
+                    android:text="What is the type of the item"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/LightGray" />
+
+                <ImageView
+                    android:id="@+id/checkbox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/s"
-                android:layout_marginLeft="@dimen/s">
-                    <TextView
-                        android:id="@+id/title_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Add Description"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/description_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Be precise, concise and professional"
-                        android:textSize="12sp"
-                        android:layout_below="@id/title_description"
-                        android:textColor="@color/colorPrimaryDark"/>
-                    <ImageView
-                        android:id="@+id/checkbox4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
-                        android:layout_alignParentRight="true"/>
+                android:layout_margin="@dimen/m">
+
+                <TextView
+                    android:id="@+id/title_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Description"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray" />
+
+                <TextView
+                    android:id="@+id/description_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_description"
+                    android:text="Be precise, concise and professional"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/LightGray" />
+
+                <ImageView
+                    android:id="@+id/checkbox4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/m"
+                android:layout_marginStart="@dimen/m"
+                android:background="@color/LightestGray" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/s"
-                android:layout_marginLeft="@dimen/s">
-                    <TextView
-                        android:id="@+id/title_information"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Your Information"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/description_information"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Required to keep track of the item"
-                        android:textSize="12sp"
-                        android:layout_below="@id/title_information"
-                        android:textColor="@color/colorPrimaryDark"/>
-                    <ImageView
-                        android:id="@+id/checkbox5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp"
-                        android:layout_alignParentRight="true"/>
+                android:layout_margin="@dimen/m">
+
+                <TextView
+                    android:id="@+id/title_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your Name"
+                    android:textAppearance="@style/MainTextBold_detail"
+                    android:textColor="@color/LighterGray"/>
+
+                <TextView
+                    android:id="@+id/description_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_information"
+                    android:text="Required to keep track of the item"
+                    android:textAppearance="@style/footerText_list"
+                    android:textColor="@color/LightGray" />
+
+                <ImageView
+                    android:id="@+id/checkbox5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_check_box_outline_blank_black_24dp"
+                    android:backgroundTint="@color/LighterGray" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -246,9 +275,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="@color/LighterGray"
-        android:gravity="center"
         android:text="6 steps to finish"
+        android:textAllCaps="true"
+        android:textAppearance="@style/MainTextBold_detail"
         android:textColor="@android:color/white" />
 
 </LinearLayout>
