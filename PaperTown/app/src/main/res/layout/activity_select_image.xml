@@ -9,8 +9,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,11 +19,10 @@
             android:id="@+id/toolbar_newTown_selectimg"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White" />
+            android:background="@color/Almost_White"/>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -51,13 +48,14 @@
             />
 
         <Button
-            android:id="@+id/button_step_left"
+            android:id="@+id/button_image_to_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Next"
             android:textAllCaps="true"
             android:textAppearance="@style/MainTextBold_detail"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/PrimaryPink"/>
 
     </LinearLayout>
 

@@ -8,31 +8,18 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/LighterGray"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewInformationActivity">
-
-
-
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_new_info"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/Almost_White" />
     </android.support.design.widget.AppBarLayout>
 
 
@@ -40,34 +27,64 @@
         android:id="@+id/textView_new_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Your Information"
-        android:textStyle="bold"
-        android:textSize="@dimen/mT"/>
+        android:layout_margin="@dimen/m"
+        android:text="Your Name"
+        android:textAppearance="@style/MainTextBold_detail"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/m"
-        android:layout_marginRight="@dimen/m"
-        android:layout_marginTop="40dp"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/editText_new_fn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m"
+            android:text="First Name"
+            android:textAppearance="@style/MainTextRegular_detail" />
 
         <EditText
             android:id="@+id/editText_new_firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/editText_new_fn"
+            android:layout_marginStart="@dimen/m"
+            android:layout_marginEnd="@dimen/m"
+            android:hint="First Name"
+            android:textAppearance="@style/MainTextRegular_detail"
+            />
+
+        <TextView
+            android:id="@+id/editText_new_ln"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="First Name"
-            android:background="@color/Almost_White"/>
+            android:layout_below="@id/editText_new_fn"
+            android:layout_margin="@dimen/m"
+            android:text="Last Name"
+            android:textAppearance="@style/MainTextRegular_detail" />
 
         <EditText
             android:id="@+id/editText_new_lastName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/editText_new_firstName"
-            android:layout_marginLeft="50dp"
+            android:layout_below="@id/editText_new_fn"
+            android:layout_toEndOf="@id/editText_new_ln"
+            android:layout_marginStart="@dimen/m"
+            android:layout_marginEnd="@dimen/m"
             android:hint="Last Name"
-            android:background="@color/Almost_White"/>
+            android:textAppearance="@style/MainTextRegular_detail"/>
+
+        <Button
+            android:id="@+id/button_new_name_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/PrimaryPink"
+            android:text="Next"
+            android:textAllCaps="true"
+            android:textAppearance="@style/MainTextBold_detail"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
 </LinearLayout>

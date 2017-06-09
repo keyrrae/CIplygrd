@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2017 - present, Zhenyu Yang
   ~  All rights reserved.
   ~
@@ -8,51 +7,71 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.newtown.NewAddressActivity">
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_new_address"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/Almost_White"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/Almost_White" />
     </android.support.design.widget.AppBarLayout>
 
     <TextView
         android:id="@+id/textView_new_address"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="@dimen/m"
-        android:text="Where did you find \n the secret item"
-        android:textStyle="bold"
-        android:textSize="@dimen/mT"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/m"
+        android:text="Where did you find the secret item"
+        android:textAppearance="@style/MainTextBold_detail" />
 
     <EditText
         android:id="@+id/editText_new_address"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/m"
+        android:layout_marginStart="@dimen/m"
+        android:layout_marginTop="@dimen/m" />
 
-    <fragment
-        android:id="@+id/map_new_address"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_weight="1"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/m"
+        android:layout_marginEnd="@dimen/m"
+        android:layout_marginStart="@dimen/m"
+        android:text="Press the current location button to get your coordinates"
+        android:textAppearance="@style/footerText_list"
+        android:textColor="@color/LighterGray" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <fragment
+            android:id="@+id/map_new_address"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/m" />
+
+        <Button
+            android:id="@+id/button_new_address_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/PrimaryPink"
+            android:text="Next"
+            android:textAllCaps="true"
+            android:textAppearance="@style/MainTextBold_detail"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
+
 
 </LinearLayout>
