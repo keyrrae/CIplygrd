@@ -8,13 +8,21 @@
 
 package edu.ucsb.cs.cs190i.papertown.models;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +31,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
+import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by xuanwang on 6/2/17.
@@ -244,31 +255,74 @@ public class TownManager {
 
 
     public void addTownImageUrisById(String id, List<String> imageUris) {
-        getTownById(id).addImageUris(imageUris);
+        final List<String> imageUrisFirebase = new ArrayList<>();
+        final String townId = id;
+        //upload images to server
+        FirebaseStorage storage;
+        storage = FirebaseStorage.getInstance();
+        if (storage != null) {
+            StorageReference storageRef = storage.getReference();
+
+            for (String uriString : imageUris) {
+                Uri uri = Uri.parse(uriString);
+                StorageReference riversRef = storageRef.child("images/" + uri.getLastPathSegment());
+                UploadTask uploadTask = riversRef.putFile(uri);
+
+                // Register observers to listen for when the download is done or if it fails
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        @SuppressWarnings("VisibleForTests")
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        Log.d("IMAGES", "downloadUrl = "+downloadUrl.toString());
+                        //imageUrisFirebase.add(downloadUrl.toString());
+
+                        getTownById(townId).insertSingleImageUri(downloadUrl.toString());
 
 
-        DatabaseReference descriptionRef = FirebaseDatabase.getInstance().getReference().child("towns").child(id).child("imageUrls");
-        descriptionRef.setValue(getTownById(id).getImageUrls(),
-                new DatabaseReference.CompletionListener() {
-                    public void onComplete(DatabaseError err, DatabaseReference ref){
-                        if (err == null) {
-                            Log.d("IMAGES", "Setting images succeeded");
-                        }
+                        //getTownById(id).addImageUris(imageUris);
+                        //getTownById(townId).insertImageUris(imageUrisFirebase);
+
+
+                        DatabaseReference descriptionRef = FirebaseDatabase.getInstance().getReference().child("towns").child(townId).child("imageUrls");
+                        descriptionRef.setValue(getTownById(townId).getImageUrls(),
+                                new DatabaseReference.CompletionListener() {
+                                    public void onComplete(DatabaseError err, DatabaseReference ref){
+                                        if (err == null) {
+                                            Log.d("IMAGES", "Setting images succeeded");
+                                        }
+                                    }
+                                });
+
+                        //update town
+                        DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(getTownById(townId).getId());
+                        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                addTown(dataSnapshot.getValue(Town.class));  //update town
+                                informSingleTownLChanged();
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
                     }
                 });
+            }
+        }
 
-        //update town
-        DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("towns").child(getTownById(id).getId());
-        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                addTown(dataSnapshot.getValue(Town.class));  //update town
-                informSingleTownLChanged();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        //
+
+
+
+
+
     }
 
 

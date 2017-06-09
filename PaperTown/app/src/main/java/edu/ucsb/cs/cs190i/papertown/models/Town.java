@@ -174,7 +174,11 @@ public class Town implements Serializable {
         this.imageUrls.add(imageUri);
     }
 
-    public void addImageUris(List<String> imageUrisIn){
+    public void insertSingleImageUri(String imageUriIn){
+        this.imageUrls.add(imageUriIn);
+    }
+
+    public void insertImageUris(List<String> imageUrisIn){
         this.imageUrls.addAll(imageUrisIn);
     }
 
