@@ -16,40 +16,53 @@
     android:orientation="vertical">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_newTown_selectimg"
             android:layout_width="match_parent"
-            app:theme="@style/ToolBarStyle"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/Almost_White" />
     </android.support.design.widget.AppBarLayout>
 
+    <LinearLayout
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50sp"
-        android:layout_marginBottom="50sp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:text="Selected Photos" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <GridView
-        android:numColumns="auto_fit"
-        android:layout_gravity="center"
-        android:columnWidth="90sp"
-        android:stretchMode="columnWidth"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/grid"
-        />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m"
+            android:text="Selected Photos"
+            android:textAppearance="@style/MainTextBold_detail"/>
+
+        <GridView
+            android:id="@+id/grid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/m"
+            android:numColumns="auto_fit"
+            android:layout_gravity="center"
+            android:columnWidth="90dp"
+            android:stretchMode="columnWidth"
+            />
+
+        <Button
+            android:id="@+id/button_step_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:textAllCaps="true"
+            android:textAppearance="@style/MainTextBold_detail"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+
 
 
 
