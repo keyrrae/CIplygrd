@@ -405,6 +405,12 @@ public class NewTownActivity extends AppCompatActivity implements
                     null,
                     (ImageView) findViewById(R.id.checkbox_0),
                     outputTown.getUserAlias());
+        }else{
+            counter--;
+            setUnChecked((TextView) findViewById(R.id.title_image),
+                    null,
+                    (ImageView) findViewById(R.id.checkbox_0),
+                    outputTown.getUserAlias());
         }
 
         //update itemLeft
@@ -445,6 +451,15 @@ public class NewTownActivity extends AppCompatActivity implements
     void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
         i1.setImageResource(R.drawable.ic_check_box_black_24dp);
         t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
+        if (t2 != null&&!(description_in.isEmpty())) {
+            t2.setText(description_in);
+        }
+    }
+
+    void setUnChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
+        i1.setImageResource(R.drawable.ic_check_box_outline_blank_white_24dp);
+        i1.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.LighterGray));
+        t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.LighterGray));
         if (t2 != null&&!(description_in.isEmpty())) {
             t2.setText(description_in);
         }

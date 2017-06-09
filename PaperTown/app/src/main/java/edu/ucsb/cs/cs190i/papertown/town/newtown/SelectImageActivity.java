@@ -92,8 +92,11 @@ public class SelectImageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                passedInTown.setImageUrls(new ArrayList<String>());
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", passedInTown);
+                setResult(Activity.RESULT_FIRST_USER, returnIntent);
                 finish();
-
             }
         });
 
@@ -103,10 +106,8 @@ public class SelectImageActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
-                        
-
                         Log.i("dataToD", "setNavigationOnClickListener");
-                        Intent returnIntent = new Intent();
+
 
                         ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
                         Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
@@ -117,10 +118,11 @@ public class SelectImageActivity extends AppCompatActivity {
                             uriStringArrayList.add(uriList.get(i).toString());
                         }
                         passedInTown.setImageUrls(uriStringArrayList);
+                        Intent returnIntent = new Intent();
                         returnIntent.putExtra("result", passedInTown);
                         setResult(Activity.RESULT_FIRST_USER, returnIntent);
                         finish();
-
+                        break;
                 }
 
                 return true;
@@ -138,34 +140,61 @@ public class SelectImageActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
         } else {
             if (passedInTown != null) {
-                List<String> dataPassIn = passedInTown.getImageUrls();
+                final List<String> dataPassIn = passedInTown.getImageUrls();
                 if (dataPassIn != null) {
-                Log.i("ed", "dataPassIn = " + dataPassIn);
-                Log.i("ed", "dataPassIn2 = " + dataPassIn);
+                    Log.i("ed", "dataPassIn = " + dataPassIn);
+                    Log.i("ed", "dataPassIn2 = " + dataPassIn);
 
 
                     //compress the image from the uri
-                    ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                    final ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
                     progress.setTitle("UPLOADING");
-                    progress.setMessage("Compressing Images");
+                    progress.setMessage("Compressing4 Images");
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
-                for (int i = 0; i < dataPassIn.size(); i++) {
-                    Uri uri = Uri.parse(dataPassIn.get(i));
-                    String[] split = uri.toString().split(":");
-                    if(!split[0].equals("file")) {
+
+
+                    Thread thread = new Thread() {
+                        @Override
+                        public void run() {
+
+                                for (int i = 0; i < dataPassIn.size(); i++) {
+                                    Uri uri = Uri.parse(dataPassIn.get(i));
+                                    String[] split = uri.toString().split(":");
+                                    Log.i("split", "split[0]. = " + split[0]);
+                                    if (!split[0].equals("file")) {
+                                        if(!progress.isShowing()) {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    progress.show();
+                                                }
+                                            });
+
+                                        }
 //                        File f = new File(dataPassIn.get(i));
 //                        //Log.i("original_image", "f.getName(); = " + f.getName());
 //                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 //                        uri = (Uri.fromFile(f));
-                        ImageCompressor imageCompressor = new ImageCompressor();
-                        uri = imageCompressor.compress(dataPassIn.get(i),getApplicationContext());
-                    }
+                                        ImageCompressor imageCompressor = new ImageCompressor();
+                                        uri = imageCompressor.compress(dataPassIn.get(i), getApplicationContext());
+                                    }
+                                    imageUris = addUri(imageUris, uri);
+                                }
+                                progress.dismiss();
 
-                    imageUris = addUri(imageUris, uri);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                                    grid.setAdapter(adapter);
+                                }
+                            });
 
-                }
-                    progress.dismiss();
+                        }
+
+                    };
+                    thread.start();
+
                 }
             } else {
 
@@ -181,14 +210,16 @@ public class SelectImageActivity extends AppCompatActivity {
 //                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 //                uri = (Uri.fromFile(f));
                 ImageCompressor imageCompressor = new ImageCompressor();
-                uri = imageCompressor.compress(s,getApplicationContext());
+                uri = imageCompressor.compress(s, getApplicationContext());
                 imageUris = addUri(imageUris, uri);
 
 
             }
-            SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
             grid = (GridView) findViewById(R.id.grid);
-            grid.setAdapter(adapter);
+            if(imageUris!=null) {
+                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                grid.setAdapter(adapter);
+            }
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -230,15 +261,15 @@ public class SelectImageActivity extends AppCompatActivity {
                 //compress the image from the uri
                 ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
                 progress.setTitle("UPLOADING");
-                progress.setMessage("Compressing Images");
+                progress.setMessage("Compressing2 Images");
                 progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
                 progress.show();
-                for(int i=0; i<selected.size(); i++){
+                for (int i = 0; i < selected.size(); i++) {
 //                    File f = new File(selected.get(i).toString());
 //                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 //                    Uri uri = (Uri.fromFile(f));
                     ImageCompressor imageCompressor = new ImageCompressor();
-                    Uri uri = imageCompressor.compress(selected.get(i).toString(),getApplicationContext());
+                    Uri uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
                     imageUris = addUri(imageUris, uri);
                 }
                 progress.dismiss();
@@ -268,41 +299,41 @@ public class SelectImageActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-                        if (passedInTown != null) {
-                            List<String> dataPassIn = passedInTown.getImageUrls();
+                    if (passedInTown != null) {
+                        List<String> dataPassIn = passedInTown.getImageUrls();
 
 
+                        //compress the image from the uri
+                        ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                        progress.setTitle("UPLOADING");
+                        progress.setMessage("Compressing3 Images");
+                        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                        progress.show();
+
+                        for (int i = 0; i < dataPassIn.size(); i++) {
                             //compress the image from the uri
-                            ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-                            progress.setTitle("UPLOADING");
-                            progress.setMessage("Compressing Images");
-                            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                            progress.show();
-
-                            for (int i = 0; i < dataPassIn.size(); i++) {
-                                //compress the image from the uri
 //                                Uri uri = Uri.parse(dataPassIn.get(i));
 //                                File f = new File(uri.toString());
 //                                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 //                                uri = (Uri.fromFile(f));
-                                ImageCompressor imageCompressor = new ImageCompressor();
-                                Uri uri = imageCompressor.compress(dataPassIn.get(i),getApplicationContext());
+                            ImageCompressor imageCompressor = new ImageCompressor();
+                            Uri uri = imageCompressor.compress(dataPassIn.get(i), getApplicationContext());
 
-                                imageUris = addUri(imageUris, uri);
-                            }
-                            progress.dismiss();
-                        } else {
-                            String s = getIntent().getStringExtra(EXTRA_MESSAGE);
+                            imageUris = addUri(imageUris, uri);
+                        }
+                        progress.dismiss();
+                    } else {
+                        String s = getIntent().getStringExtra(EXTRA_MESSAGE);
 
-                            //compress the image from the uri
+                        //compress the image from the uri
 //                            Uri uri = Uri.parse(s);
 //                            File f = new File(uri.toString());
 //                            f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
 //                            uri = (Uri.fromFile(f));
-                            ImageCompressor imageCompressor = new ImageCompressor();
-                            Uri uri = imageCompressor.compress(s,getApplicationContext());
-                            imageUris = addUri(imageUris, uri);
-                        }
+                        ImageCompressor imageCompressor = new ImageCompressor();
+                        Uri uri = imageCompressor.compress(s, getApplicationContext());
+                        imageUris = addUri(imageUris, uri);
+                    }
 
                     SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
                     grid = (GridView) findViewById(R.id.grid);
