@@ -103,6 +103,7 @@ public class SelectImageActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
+                        
 
                         Log.i("dataToD", "setNavigationOnClickListener");
                         Intent returnIntent = new Intent();
