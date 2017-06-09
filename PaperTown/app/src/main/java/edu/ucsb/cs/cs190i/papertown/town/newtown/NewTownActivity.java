@@ -406,7 +406,6 @@ public class NewTownActivity extends AppCompatActivity implements
                     (ImageView) findViewById(R.id.checkbox_0),
                     outputTown.getUserAlias());
         }else{
-            counter--;
             setUnChecked((TextView) findViewById(R.id.title_image),
                     null,
                     (ImageView) findViewById(R.id.checkbox_0),
