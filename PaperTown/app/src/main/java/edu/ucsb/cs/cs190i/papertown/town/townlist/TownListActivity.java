@@ -23,6 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,27 +52,65 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 public class TownListActivity extends AppCompatActivity {
-  public List<Town> towns;
+  public List<Town> allTowns = new ArrayList<>();
   private GridView imageGrid;
   private ArrayList<Bitmap> bitmapList;
+  private RecyclerView mRecyclerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_town_list);
 
-    towns = (List<Town>)getIntent().getSerializableExtra("townArrayList");
 
-    RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
+
+    //============   get all towns   ==========
+
+
+    DatabaseReference townsDatabase;
+    townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+    townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        allTowns.clear();
+        for(DataSnapshot ds: dataSnapshot.getChildren()){
+          Town t = ds.getValue(Town.class);
+          allTowns.add(t);
+          printTown(t);
+        }
+
+            if(allTowns!=null&&allTowns.size()>0) {
+      ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
+      mRecyclerView.setAdapter(mAdapter);
+    }
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+
+    //=================   end of get all towns    =============
+
+
+
+
+
+    //towns = (List<Town>)getIntent().getSerializableExtra("townArrayList");
+
+    mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
     //mRecyclerView.setHasFixedSize(true);
 
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
     mRecyclerView.setLayoutManager(linearLayoutManager);
 
-    initData();
+    //initData();
 
-    ListTownAdapter mAdapter = new ListTownAdapter(towns);
-    mRecyclerView.setAdapter(mAdapter);
+//    if(allTowns!=null&&allTowns.size()>0) {
+//      ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
+//      mRecyclerView.setAdapter(mAdapter);
+//    }
 
     mRecyclerView.addOnItemTouchListener(
             new RecyclerItemClickListener(getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -72,7 +118,7 @@ public class TownListActivity extends AppCompatActivity {
                 Log.i("RecyclerItemClr", "onItemClick");
 
                 Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-                intent.putExtra("town", towns.get(position));
+                intent.putExtra("town", allTowns.get(position));
                 startActivity(intent);
               }
 
@@ -118,6 +164,13 @@ public class TownListActivity extends AppCompatActivity {
     });
   }
 
+
+  void printTown(Town town) {
+    Gson  gson = new GsonBuilder().setPrettyPrinting().create();
+    String result = gson.toJson(town);
+    Log.d("TAG", result);
+  }
+
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
@@ -129,8 +182,8 @@ public class TownListActivity extends AppCompatActivity {
 
 
     //if not town list is passed in, create default list of towns
-    if (towns.size() == 0) {
-      towns = new ArrayList<>();
+    if (allTowns.size() == 0) {
+      allTowns = new ArrayList<>();
 
       List<String> imgs1 = new ArrayList<>();
       imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
@@ -178,15 +231,15 @@ public class TownListActivity extends AppCompatActivity {
               .setSketch("")
               .build();
 
-      towns.add(t1);
-      towns.add(t2);
-      towns.add(t3);
-      towns.add(t1);
-      towns.add(t2);
-      towns.add(t3);
-      towns.add(t1);
-      towns.add(t2);
-      towns.add(t3);
+      allTowns.add(t1);
+      allTowns.add(t2);
+      allTowns.add(t3);
+      allTowns.add(t1);
+      allTowns.add(t2);
+      allTowns.add(t3);
+      allTowns.add(t1);
+      allTowns.add(t2);
+      allTowns.add(t3);
     }
   }
 }

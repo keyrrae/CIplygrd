@@ -58,7 +58,8 @@ public class Town implements Serializable {
         this.id = id;
     }
 
-    public Town(){}
+    public Town() {
+    }
 
     public String getGeoHash() {
         return geoHash;
@@ -81,7 +82,7 @@ public class Town implements Serializable {
             List<String> imageUrls,
             String sketch,
             String ual
-    ){
+    ) {
         this.id = id;
         this.geoHash = geoHash;
         this.title = title;
@@ -120,8 +121,8 @@ public class Town implements Serializable {
         this.description = description;
     }
 
-    public void addDescription(String description){
-        if(this.description==null){
+    public void addDescription(String description) {
+        if (this.description == null) {
             this.description = new ArrayList<>();
         }
         this.description.add(description);
@@ -141,6 +142,7 @@ public class Town implements Serializable {
 
     public void setLat(float lat) {
         this.lat = lat;
+        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public double getLng() {
@@ -149,6 +151,7 @@ public class Town implements Serializable {
 
     public void setLng(float lng) {
         this.lng = lng;
+        this.geoHash = GeoHash.genGeoHash(lat, lng);
     }
 
     public String getUserId() {
@@ -167,6 +170,14 @@ public class Town implements Serializable {
         this.imageUrls = imageUrls;
     }
 
+    public  void addImageUri(String imageUri){
+        this.imageUrls.add(imageUri);
+    }
+
+    public void addImageUris(List<String> imageUrisIn){
+        this.imageUrls.addAll(imageUrisIn);
+    }
+
     public String getSketch() {
         return sketch;
     }
@@ -177,6 +188,26 @@ public class Town implements Serializable {
 
     public String getUserAlias() {
         return userAlias;
+    }
+
+    public String getAuthor() {
+        String[] names = userAlias.split(",");
+//        if(names.length==1){
+//            return names[0];
+//        }
+//        else
+
+        if (userAlias.isEmpty()) {
+            return "Anonymous";
+        } else if (names.length == 1) {
+            return names[0];
+        } else if (names.length == 2) {
+            return names[0] + " " + names[1];
+        } else {
+            return "Anonymous";
+        }
+
+
     }
 
     public void setUserAlias(String userAlias) {
@@ -196,7 +227,7 @@ public class Town implements Serializable {
     }
 
     public void decreaseLikes() {
-        if(this.numOfLikes > 0){
+        if (this.numOfLikes > 0) {
             this.numOfLikes--;
         }
     }
@@ -208,7 +239,7 @@ public class Town implements Serializable {
     public String getImageUriString() {
         String temp = "";
 
-        if(imageUrls!=null&&imageUrls.size()>0) {
+        if (imageUrls != null && imageUrls.size() > 0) {
             for (int i = 0; i < this.imageUrls.size() - 1; i++) {
                 temp += this.imageUrls.get(i) + ",";
             }
@@ -220,18 +251,18 @@ public class Town implements Serializable {
     public String getDescriptionListString() {
         String temp = "";
 
-        if(description!=null&&description.size()>0) {
-            for (int i = 0; i < this.description.size() - 1; i++) {
-                temp += this.description.get(i) + "!@#";
+        if (description != null && description.size() > 0) {
+            temp += this.description.get(0);
+            for (int i = 1; i < this.description.size(); i++) {
+                temp += "\n\nUpdate:  " + this.description.get(i);
             }
-            temp += this.description.get(this.description.size() - 1);
         }
         return temp;
     }
 
-    public String toJson(){
+    public String toJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return  gson.toJson(this);
+        return gson.toJson(this);
     }
 
 }

@@ -65,7 +65,7 @@ public class NewTownActivity extends AppCompatActivity implements
     private String title = "";
     private String address = "";
     private String category = "";
-    private String description = "";
+    private List<String> descriptionList;
     private String information = "";
     private float lat = 0;
     private float lng = 0;
@@ -119,7 +119,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     .setTitle(title)
                     .setAddress(address)
                     .setCategory(category)
-                    //.setDescription(description)
+                    .setDescription(descriptionList)
                     .setUserAlias(information)
                     .setLat(lat)
                     .setLng(lng)
