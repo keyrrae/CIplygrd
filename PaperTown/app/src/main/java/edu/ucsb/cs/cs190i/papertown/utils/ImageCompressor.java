@@ -8,6 +8,8 @@
 
 package edu.ucsb.cs.cs190i.papertown.utils;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,17 +19,127 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.zhihu.matisse.Matisse;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+
+import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.SelectImageActivity;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.SelelctImageGrid;
 
 /**
  * Created by Zhenyu on 2017-06-08.
  */
 
 public class ImageCompressor {
+    private CompressFinishedListener compressFinishedListener = null;
 
+    public interface CompressFinishedListener {
+        void onCompressFinished(List<String> imgUris);
+    }
+    public void setOnCompressFinishedListener(CompressFinishedListener listener) {
+        this.compressFinishedListener = listener;
+    }
+    public void doThething(List<String> selected, Activity activity){
+        final List<String> inputUris = selected;
+        final Activity finalActivity = activity;
+        final List<String> outputUris = new ArrayList<>();
+
+        final ProgressDialog progress = new ProgressDialog(finalActivity);
+        progress.setTitle("UPLOADING");
+        progress.setMessage("Compressing5 Images");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+
+                for (int i = 0; i < inputUris.size(); i++) {
+                    Uri uri = Uri.parse(inputUris.get(i));
+                    String[] split = uri.toString().split(":");
+                    Log.i("split", "split[0]. = " + split[0]);
+                    if (!split[0].equals("file")) {
+
+
+                        if(!progress.isShowing()) {
+                            finalActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progress.show();
+                                }
+                            });
+                        }
+                        uri = compress(inputUris.get(i).toString(), finalActivity.getApplicationContext());
+                        outputUris.add(uri.toString());
+                    }
+                    else {
+                        outputUris.add(uri.toString());
+                    }
+                }
+                progress.dismiss();
+                if(compressFinishedListener!=null){
+                    compressFinishedListener.onCompressFinished(outputUris);
+                }
+
+            }
+
+        };
+        thread.start();
+    }
+
+    public void doThething2(List<Uri> selected, Activity activity){
+        final List<Uri> inputUris = selected;
+        final List<String> output  = new ArrayList<>();
+
+        for(int i = 0;i<selected.size();i++){
+            output.add(selected.get(i).toString());
+        }
+        doThething(output, activity);
+////        final ProgressDialog progress = new ProgressDialog(context);
+////        progress.setTitle("UPLOADING");
+////        progress.setMessage("Compressing5 Images");
+////        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+//        Thread thread = new Thread() {
+//            @Override
+//            public void run() {
+//
+//                for (int i = 0; i < inputUris.size(); i++) {
+//                    Uri uri = inputUris.get(i);
+//                    String[] split = uri.toString().split(":");
+//                    Log.i("split", "split[0]. = " + split[0]);
+//                    if (!split[0].equals("file")) {
+//
+//
+////                        if(!progress.isShowing()) {
+////                            runOnUiThread(new Runnable() {
+////                                @Override
+////                                public void run() {
+////                                    progress.show();
+////                                }
+////                            });
+////                        }
+//                        uri = compress(inputUris.get(i).toString(), finalContext);
+//                        outputUris.add(uri.toString());
+//                    }else {
+//                        outputUris.add(uri.toString());
+//                    }
+//
+//                }
+////                progress.dismiss();
+//                if(compressFinishedListener!=null){
+//                    compressFinishedListener.onCompressFinished(outputUris);
+//                }
+//
+//            }
+//
+//        };
+//        thread.start();
+    }
 
     public Uri compress(String s, Context context){
         //compress the image from the uri

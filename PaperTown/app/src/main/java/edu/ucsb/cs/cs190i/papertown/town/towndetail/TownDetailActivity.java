@@ -466,21 +466,30 @@ public class TownDetailActivity extends AppCompatActivity {
                 List<String> uris = new ArrayList<>();
 
                 //file compression
-                for(int i=0; i<mSelected.size(); i++){
-//                    File f = new File(mSelected.get(i).toString());
-//                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), mSelected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-//                    Uri uri = (Uri.fromFile(f));
-                    ImageCompressor imageCompressor = new ImageCompressor();
-                    Uri uri = imageCompressor.compress(mSelected.get(i).toString(),getApplicationContext());
-                    uris.add(uri.toString());
-                }
+//                for(int i=0; i<mSelected.size(); i++){
+////                    File f = new File(mSelected.get(i).toString());
+////                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), mSelected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+////                    Uri uri = (Uri.fromFile(f));
+//                    ImageCompressor imageCompressor = new ImageCompressor();
+//                    Uri uri = imageCompressor.compress(mSelected.get(i).toString(),getApplicationContext());
+//                    uris.add(uri.toString());
+//                }
+                ImageCompressor imageCompressor = new ImageCompressor();
+                imageCompressor.setOnCompressFinishedListener(new ImageCompressor.CompressFinishedListener() {
+                    @Override
+                    public void onCompressFinished(List<String> imgUris) {
+                        TownManager.getInstance().addTownImageUrisById(passedInTown.getId(),imgUris);
+                    }
+                });
+                imageCompressor.doThething2(mSelected,this);
 
 //                for(int i=0; i<mSelected.size(); i++){
 //                    uriList.add(mSelected.get(i));
 //                }
 //                this.imageGrid.setAdapter(new ImageAdapter(this, uriList));
 //                Log.i("Matisse", "result = "+ mSelected);
-                TownManager.getInstance().addTownImageUrisById(passedInTown.getId(),uris);
+
+//                TownManager.getInstance().addTownImageUrisById(passedInTown.getId(),uris);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "RESULT_CANCELED");
