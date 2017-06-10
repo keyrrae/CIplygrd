@@ -162,6 +162,12 @@ public class TownDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        mode = getIntent().getStringExtra("mode");
+        if (mode == null) {
+            mode = "detail";
+        }
+
+
 
         TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
             @Override
@@ -226,23 +232,27 @@ public class TownDetailActivity extends AppCompatActivity {
 
         //Update Story button
         TextView update = (TextView) findViewById(R.id.detail_update_text);
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
-                updateDesIntent.putExtra("townDescription", passedInTown.getDescription().get(0));
-                startActivityForResult(updateDesIntent, NEW_UPDATE_REQUEST);
-            }
-        });
-        update_view = (TextView) findViewById(R.id.detail_town_update);
-        update_text = update_view.getText().toString();
-        if (update_text.equals("")) {
-            update_view.setVisibility(View.INVISIBLE);
-        }
-
-
         // Update Gallery button
         TextView upload = (TextView) findViewById(R.id.detail_add_image_text);
+
+        if(mode.equals("detail")) {
+            update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent updateDesIntent = new Intent(TownDetailActivity.this, UpdateDescriptionActivity.class);
+                    updateDesIntent.putExtra("townDescription", passedInTown.getDescription().get(0));
+                    startActivityForResult(updateDesIntent, NEW_UPDATE_REQUEST);
+                }
+            });
+            update_view = (TextView) findViewById(R.id.detail_town_update);
+            update_text = update_view.getText().toString();
+            if (update_text.equals("")) {
+                update_view.setVisibility(View.INVISIBLE);
+            }
+
+
+
+
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,6 +260,17 @@ public class TownDetailActivity extends AppCompatActivity {
 
             }
         });
+        }
+        else{
+            update.setVisibility(TextView.INVISIBLE);
+            upload.setVisibility(TextView.INVISIBLE);
+
+            findViewById(R.id.detail_update_button).setVisibility(View.INVISIBLE);
+            findViewById(R.id.detail_add_image_button).setVisibility(View.INVISIBLE);
+
+            findViewById(R.id.detail_related).setVisibility(View.INVISIBLE);
+            findViewById(R.id.detail_related_line).setVisibility(View.INVISIBLE);
+        }
 
 
         detail_town_visit_count = (TextView)findViewById(R.id.detail_town_visit_count);
@@ -257,10 +278,8 @@ public class TownDetailActivity extends AppCompatActivity {
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
         this.uriList = new ArrayList<Uri>();
 
-        mode = getIntent().getStringExtra("mode");
-        if (mode == null) {
-            mode = "detail";
-        }
+
+
         passedInTown = (Town) getIntent().getSerializableExtra("town");
 
         passedInTown.setUserId(UserSingleton.getInstance().getUid());
@@ -411,34 +430,40 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
         // Add related Towns
-        mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        final List<Town> towns = TownManager.getInstance().getAllTowns();
-        // remove the current town from list
-        for(int i=0; i<towns.size();i++){
-            if(towns.get(i).getId().equals(passedInTown.getId())){
-                towns.remove(towns.get(i));
-                break;
+        if(mode.equals("detail")) {
+            mRecyclerView = (RecyclerView) findViewById(R.id.detail_card);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerView.setLayoutManager(linearLayoutManager);
+            final List<Town> towns = TownManager.getInstance().getAllTowns();
+            // remove the current town from list
+            for (int i = 0; i < towns.size(); i++) {
+                if (towns.get(i).getId().equals(passedInTown.getId())) {
+                    towns.remove(towns.get(i));
+                    break;
+                }
             }
-        }
-        GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-                        intent.putExtra("town", towns.get(position));
-                        startActivity(intent);
-                        finish(); // back to main screen
-                    }
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                    }
+            GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                            intent.putExtra("town", towns.get(position));
+                            startActivity(intent);
+                            finish(); // back to main screen
+                        }
 
-                })
-        );
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+                        }
+
+                    })
+            );
+        }
+        else {
+            findViewById(R.id.detail_card).setVisibility(View.INVISIBLE);
+        }
 
     }
 

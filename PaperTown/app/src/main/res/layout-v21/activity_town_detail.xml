@@ -293,6 +293,7 @@
                 android:numColumns="4" />
 
             <View
+                android:id="@+id/detail_related_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginEnd="@dimen/m"
