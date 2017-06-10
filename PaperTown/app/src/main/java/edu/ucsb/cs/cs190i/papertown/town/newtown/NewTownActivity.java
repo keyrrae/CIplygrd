@@ -14,6 +14,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -449,7 +450,9 @@ public class NewTownActivity extends AppCompatActivity implements
 
     void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
         i1.setImageResource(R.drawable.ic_check_box_black_24dp);
+        i1.clearColorFilter();
         t1.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
+
         if (t2 != null&&!(description_in.isEmpty())) {
             t2.setText(description_in);
         }
