@@ -9,26 +9,14 @@
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import edu.ucsb.cs.cs190i.papertown.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -36,31 +24,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-
-import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
-import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
-import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -70,7 +43,6 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 @RuntimePermissions
 public class SelectImageActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 112;
-    final int PICK_PHOTO_REQUEST = 5;
     List<Uri> imageUris;
     final int NEW_PHOTO_REQUEST = 5;
     GridView grid;
@@ -108,24 +80,18 @@ public class SelectImageActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
                         Log.i("dataToD", "setNavigationOnClickListener");
-
                         //process Uri array data
                         ArrayList<String> uriStringArrayList = new ArrayList<>();
                         for (int i = 0; i < imageUris.size(); i++) {
                             uriStringArrayList.add(imageUris.get(i).toString());
                         }
                         passedInTown.setImageUrls(uriStringArrayList);
-                        //Intent returnIntent = new Intent();
-                        //returnIntent.putExtra("result", passedInTown);
-                        //setResult(Activity.RESULT_FIRST_USER, returnIntent);
                         finish();
                         break;
                 }
-
                 return true;
             }
         });
@@ -137,7 +103,6 @@ public class SelectImageActivity extends AppCompatActivity {
                 for(int i = 0 ; i<imgUris.size();i++){
                     imageUris.add(Uri.parse(imgUris.get(i)));
                 }
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -145,16 +110,10 @@ public class SelectImageActivity extends AppCompatActivity {
                         grid.setAdapter(adapter);
                     }
                 });
-
             }
         });
 
-
-
-
-        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         passedInTown = TownManager.getInstance().getNewTown();
-
 
         for(int i = 0 ; i<passedInTown.getImageUrls().size();i++){
             String[] tempSplit = passedInTown.getImageUrls().get(i).split(":");
@@ -163,8 +122,6 @@ public class SelectImageActivity extends AppCompatActivity {
                 break;
             }
         }
-
-
 
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -178,85 +135,16 @@ public class SelectImageActivity extends AppCompatActivity {
             if (passedInTown != null) {
                 final List<String> dataPassIn = passedInTown.getImageUrls();
                 if (dataPassIn != null) {
-                    Log.i("ed", "dataPassIn = " + dataPassIn);
-                    Log.i("ed", "dataPassIn2 = " + dataPassIn);
-
-
                     //compress the image from the uri
                     imageCompressor.doThething(dataPassIn,this);
-//                    final ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-//                    progress.setTitle("UPLOADING");
-//                    progress.setMessage("Compressing4 Images");
-//                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//
-//
-//                    Thread thread = new Thread() {
-//                        @Override
-//                        public void run() {
-//
-//                                for (int i = 0; i < dataPassIn.size(); i++) {
-//                                    Uri uri = Uri.parse(dataPassIn.get(i));
-//                                    String[] split = uri.toString().split(":");
-//                                    Log.i("split", "split[0]. = " + split[0]);
-//                                    if (!split[0].equals("file")) {
-//                                        if(!progress.isShowing()) {
-//                                            runOnUiThread(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    progress.show();
-//                                                }
-//                                            });
-//
-//                                        }
-////                        File f = new File(dataPassIn.get(i));
-////                        //Log.i("original_image", "f.getName(); = " + f.getName());
-////                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-////                        uri = (Uri.fromFile(f));
-//                                        ImageCompressor imageCompressor = new ImageCompressor();
-//                                        uri = imageCompressor.compress(dataPassIn.get(i), getApplicationContext());
-//                                    }
-//                                    imageUris = addUri(imageUris, uri);
-//                                }
-//                                progress.dismiss();
-//
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-//                                    grid.setAdapter(adapter);
-//                                }
-//                            });
-//
-//                        }
-//
-//                    };
-//                    thread.start();
-
                 }
             } else {
-
                 Toast.makeText(this, "Wired case!!!!!", Toast.LENGTH_SHORT).show();
                 String s = getIntent().getStringExtra(EXTRA_MESSAGE);
-                Log.i("onActivityResult", "getStringExtra = " + s);
-
-
                 //compress the image from the uri
-                Uri uri = Uri.parse(s);
-//                File f = new File(uri.toString());
-//                // Log.i("original_image","f.getName(); = "+f.getName());
-//                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-//                uri = (Uri.fromFile(f));
                 ImageCompressor imageCompressor = new ImageCompressor();
-                uri = imageCompressor.compress(s, getApplicationContext());
-               // imageUris = addUri(imageUris, uri);
-
-
+                Uri uri = imageCompressor.compress(s, getApplicationContext());
             }
-//            grid = (GridView) findViewById(R.id.grid);
-//            if(imageUris!=null) {
-//                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, (Uri[]) imageUris.toArray());
-//                grid.setAdapter(adapter);
-//            }
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -264,12 +152,7 @@ public class SelectImageActivity extends AppCompatActivity {
                     Log.i("addOnItemTouchListener", "onItemClick position =" + position);
                     if (position == imageUris.size()) {
                         SelectImageActivityPermissionsDispatcher.dispatchImagePickingWithCheck(SelectImageActivity.this);
-
-//                        Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-//                        Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                        startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
                     }
-
                 }
             });
         }
@@ -279,29 +162,23 @@ public class SelectImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("ed","onClick");
-
                 //process Uri array data
                 ArrayList<String> uriStringArrayList = new ArrayList<>();
                 for (int i = 0; i < imageUris.size(); i++) {
                     uriStringArrayList.add(imageUris.get(i).toString());
                 }
                 passedInTown.setImageUrls(uriStringArrayList);
-
-
                 Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_to_next, menu);
-
         return true;
     }
 
@@ -311,279 +188,35 @@ public class SelectImageActivity extends AppCompatActivity {
         if (requestCode == NEW_PHOTO_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-//                Uri selectedImageURI = data.getData();
-//                Log.i("onActivityResult", "result = " + selectedImageURI.toString());
-//                Uri uri = selectedImageURI;
-
-                // TODO Crash when update more images.
                 final List<Uri> selected = Matisse.obtainResult(data);
-                //compress the image from the uri
-//                ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-//                progress.setTitle("UPLOADING");
-//                progress.setMessage("Compressing2 Images");
-//                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//                progress.show();
-//                for (int i = 0; i < selected.size(); i++) {
-////                    File f = new File(selected.get(i).toString());
-////                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-////                    Uri uri = (Uri.fromFile(f));
-//                    ImageCompressor imageCompressor = new ImageCompressor();
-//                    Uri uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
-//                    imageUris = addUri(imageUris, uri);
-//                }
-//                progress.dismiss();
-//
-//                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-//                Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
-//                grid = (GridView) findViewById(R.id.grid);
-//                grid.setAdapter(adapter);
-
                 imageCompressor.doThething2(selected,this);
-//
-//                final ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-//                progress.setTitle("UPLOADING");
-//                progress.setMessage("Compressing5 Images");
-//                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//
-//
-//                Thread thread = new Thread() {
-//                    @Override
-//                    public void run() {
-//
-//                        for (int i = 0; i < selected.size(); i++) {
-//                            Uri uri = selected.get(i);
-//                            String[] split = uri.toString().split(":");
-//                            Log.i("split", "split[0]. = " + split[0]);
-//                            if (!split[0].equals("file")) {
-//                                if(!progress.isShowing()) {
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            progress.show();
-//                                        }
-//                                    });
-//
-//                                }
-////                        File f = new File(dataPassIn.get(i));
-////                        //Log.i("original_image", "f.getName(); = " + f.getName());
-////                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-////                        uri = (Uri.fromFile(f));
-////                                ImageCompressor imageCompressor = new ImageCompressor();
-//                                uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
-//                            }
-//                            //imageUris = addUri(imageUris, uri);
-//                        }
-//                        progress.dismiss();
-//
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris.toArray(new Uri[imageUris.size()]));
-//                                grid.setAdapter(adapter);
-//                            }
-//                        });
-//
-//                    }
-//
-//                };
-//                thread.start();
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
             }
         }
-
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         SelectImageActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
 
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
                     if (passedInTown != null) {
                         List<String> dataPassIn = passedInTown.getImageUrls();
-
-
                         //compress the image from the uri
                         imageCompressor.doThething(dataPassIn,this);
-//                        ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-//                        progress.setTitle("UPLOADING");
-//                        progress.setMessage("Compressing3 Images");
-//                        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//                        progress.show();
-//
-//                        for (int i = 0; i < dataPassIn.size(); i++) {
-//                            //compress the image from the uri
-////                                Uri uri = Uri.parse(dataPassIn.get(i));
-////                                File f = new File(uri.toString());
-////                                f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-////                                uri = (Uri.fromFile(f));
-//                            ImageCompressor imageCompressor = new ImageCompressor();
-//                            Uri uri = imageCompressor.compress(dataPassIn.get(i), getApplicationContext());
-//
-//                            //imageUris = addUri(imageUris, uri);
-//                        }
-//                        progress.dismiss();
                     }
-
-//                    SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris.toArray(new Uri[imageUris.size()]));
-//                    grid = (GridView) findViewById(R.id.grid);
-//                    grid.setAdapter(adapter);
-//                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view,
-//                                                int position, long id) {
-//                            Log.i("addOnItemTouchListener", "onItemClick position =" + position);
-//                            if (position == imageUris.size()) {
-//
-//                                Log.i("my", "permission.READ_EXTERNAL_STORAGE3");
-//                                Intent pickPhoto = new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                                startActivityForResult(pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), PICK_PHOTO_REQUEST);//one can be replaced with any action code
-//                            }
-//                        }
-//                    });
                 } else {
                     Log.i("my", "permission.READ_EXTERNAL_STORAGE denied");
                 }
             }
         }
     }
-
-    Uri[] addUri(Uri[] urilist, Uri in) {
-        if (urilist != null) {
-            Uri[] output = new Uri[urilist.length + 1];
-
-            for (int i = 0; i < urilist.length; i++) {
-                output[i] = urilist[i];
-            }
-            output[urilist.length] = in;
-            return output;
-        } else {
-            Uri[] output = {in};
-            return output;
-        }
-    }
-
-//    public String resizeAndCompressImageBeforeSend(Context context, Uri inputUri, String fileName) {
-//        String filePath = getRealPathFromURI2(context, inputUri);
-//        //String filePath = inputUri.toString();
-//        final int MAX_IMAGE_SIZE = 600 * 800; // max final file size in kilobytes   700 * 1024;
-//
-//        // First decode with inJustDecodeBounds=true to check dimensions of image
-//        final BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(filePath, options);
-//
-//        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
-//        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
-//        options.inSampleSize = calculateInSampleSize(options, 800, 800);
-//
-//        // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
-//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//
-//        Bitmap bmpPic = BitmapFactory.decodeFile(filePath, options);
-//
-//
-//        int compressQuality = 100; // quality decreasing by 5 every loop.
-//        int streamLength;
-//        do {
-//            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
-//            Log.d("compressBitmap", "Quality: " + compressQuality);
-//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
-//            byte[] bmpPicByteArray = bmpStream.toByteArray();
-//            streamLength = bmpPicByteArray.length;
-//            compressQuality -= 5;
-//            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
-//        } while (streamLength >= MAX_IMAGE_SIZE);
-//
-//        try {
-//            //save the resized and compressed file to disk cache
-//            Log.d("compressBitmap", "cacheDir: " + context.getCacheDir());
-//            FileOutputStream bmpFile = new FileOutputStream(context.getCacheDir() + fileName);
-//            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpFile);
-//            bmpFile.flush();
-//            bmpFile.close();
-//        } catch (Exception e) {
-//            Log.e("compressBitmap", "Error on saving file");
-//        }
-//        //return the path of resized and compressed file
-//        return context.getCacheDir() + fileName;
-//    }
-//
-//
-//    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        String debugTag = "MemoryInformation";
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        Log.d(debugTag, "image height: " + height + "---image width: " + width);
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//        Log.d(debugTag, "inSampleSize: " + inSampleSize);
-//        return inSampleSize;
-//    }
-//
-//    public String getRealPathFromURI(Context context, Uri uri) {
-//        String filePath = "";
-//        String wholeID = DocumentsContract.getDocumentId(uri);
-//
-//        // Split at colon, use second item in the array
-//        String id = wholeID.split(":")[1];
-//
-//        String[] column = {MediaStore.Images.Media.DATA};
-//
-//        // where id is equal to
-//        String sel = MediaStore.Images.Media._ID + "=?";
-//
-//
-//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                column, sel, new String[]{id}, null);
-//
-//        int columnIndex = cursor.getColumnIndex(column[0]);
-//
-//        if (cursor.moveToFirst()) {
-//            filePath = cursor.getString(columnIndex);
-//        }
-//        cursor.close();
-//        return filePath;
-//    }
-//
-//    public String getRealPathFromURI2(Context context, Uri contentUri) {
-//        Cursor cursor = null;
-//        try {
-//            String[] proj = { MediaStore.Images.Media.DATA };
-//            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            cursor.moveToFirst();
-//            return cursor.getString(column_index);
-//        } finally {
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//        }
-//    }
-
 
     @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void showDeniedForCamera() {
@@ -605,5 +238,4 @@ public class SelectImageActivity extends AppCompatActivity {
                 .imageEngine(new PicassoEngine())
                 .forResult(NEW_PHOTO_REQUEST);
     }
-
 }

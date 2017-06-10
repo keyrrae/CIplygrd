@@ -32,13 +32,6 @@ import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 
 public class NewTitleActivity extends AppCompatActivity {
     private Town passedInTown;
-    final int NEW_TITLE_REQUEST = 0;
-    final int NEW_ADDRESS_REQUEST = 1;
-    final int NEW_CATEGORY_REQUEST = 2;
-    final int NEW_DESCRIPTION_REQUEST = 3;
-    final int NEW_INFORMATION_REQUEST = 4;
-    final int NEW_PHOTO_REQUEST = 5;
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,20 +42,18 @@ public class NewTitleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_title);
 
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
-        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         passedInTown = TownManager.getInstance().getNewTown();
 
 
         String dataPassIn = passedInTown.getTitle();
-        Log.i("ed","dataPassIn = "+dataPassIn);
-        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
-            Log.i("ed","dataPassIn2 = "+dataPassIn);
-            ((EditText)findViewById(R.id.editText_newtitle)).setText(dataPassIn);
+        Log.i("ed", "dataPassIn = " + dataPassIn);
+        if (!dataPassIn.isEmpty() && dataPassIn != null) {
+            Log.i("ed", "dataPassIn2 = " + dataPassIn);
+            ((EditText) findViewById(R.id.editText_newtitle)).setText(dataPassIn);
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_title);
         setSupportActionBar(toolbar);
@@ -77,37 +68,24 @@ public class NewTitleActivity extends AppCompatActivity {
             }
         });
 
-
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
-//                        Intent returnIntent = new Intent();
-//                        passedInTown.setTitle(ed.getText().toString());
-//                        returnIntent.putExtra("result",passedInTown);
-//                        Log.i("ed","text = "+ed.getText().toString());
-//                        setResult(Activity.RESULT_OK,returnIntent);
-//                        finish();
-
                         passedInTown.setTitle(ed.getText().toString());
-//                        Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
-//                        //intent.putExtra("townPassIn", outputTown);
-//                        startActivity(intent);
                         finish();
-
                         break;
                 }
                 return true;
             }
         });
 
-
         findViewById(R.id.button_new_title_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ed","onClick");
+                Log.i("ed", "onClick");
                 passedInTown.setTitle(ed.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
                 startActivity(intent);
@@ -115,28 +93,4 @@ public class NewTitleActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // Check which request we're responding to
-//        Log.i("onActivityResult", "requestCode = " + requestCode);
-//        Log.i("onActivityResult", "resultCode = " + resultCode);
-//        if (requestCode == NEW_TITLE_REQUEST) {
-//            // Make sure the request was successful
-//            if (resultCode == RESULT_OK) {
-//                passedInTown = (Town) data.getSerializableExtra("result");
-//                Intent returnIntent = new Intent();
-//                returnIntent.putExtra("result",passedInTown);
-//                setResult(Activity.RESULT_OK,returnIntent);
-//                finish();
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
-//                //Write your code if there's no result
-//            }
-//        }
-//    }
-
-
-
-    }
+}

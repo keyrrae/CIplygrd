@@ -117,13 +117,6 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
         findViewById(R.id.textView_liked_more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +147,6 @@ public class AccountActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
                 ifDraftExpanded = !ifDraftExpanded;
-
             }
         });
     }
@@ -217,9 +209,7 @@ public class AccountActivity extends AppCompatActivity {
         towns_liked.add(t3);
         towns_liked.add(t1);
 
-
-
-//        //read draft towns from realm
+        //read draft towns from realm
         mRealm = Realm.getInstance(getApplicationContext());
         RealmResults<TownRealm> TownRealm =mRealm.allObjects(TownRealm.class);
         ArrayList<TownRealm> list = new ArrayList(mRealm.where(TownRealm.class).findAll());
@@ -228,29 +218,5 @@ public class AccountActivity extends AppCompatActivity {
             Town t = gson.fromJson(list.get(i).getTownJson(),Town.class);
             towns_draft.add(t);
         }
-
-
-
-//        //read draft towns from DB
-//        TownDatabaseHelper dbHelper;
-//        // ==========  town database  ============
-//
-//        TownDatabaseHelper.Initialize(this);
-//        dbHelper = TownDatabaseHelper.GetInstance();
-//
-//        towns_draft = dbHelper.getALLTownsFromDB();
-//        Log.i("onClick", "townRead = "+towns_draft);
-//        // ========== end of town database  ============
-
-
-
-
-//        towns_draft.add(t2);
-//        towns_draft.add(t3);
-//        towns_draft.add(t1);
-//        towns_draft.add(t2);
-//        towns_draft.add(t3);
-//        towns_draft.add(t1);
-//        towns_draft.add(t2);
     }
 }

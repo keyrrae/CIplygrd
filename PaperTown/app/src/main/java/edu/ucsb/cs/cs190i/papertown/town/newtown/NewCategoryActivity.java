@@ -30,13 +30,11 @@ import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 public class NewCategoryActivity extends AppCompatActivity {
     private Town passedInTown;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
 
-        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         passedInTown = TownManager.getInstance().getNewTown();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_category);
@@ -59,8 +57,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 passedInTown.setCategory("place");
-                //finish();
-
                 Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
                 startActivity(intent);
                 finish();
@@ -72,8 +68,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 passedInTown.setCategory("creature");
-                //finish();
-
                 Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
                 startActivity(intent);
                 finish();
@@ -85,8 +79,6 @@ public class NewCategoryActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 passedInTown.setCategory("event");
-                //finish();
-
                 Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
                 startActivity(intent);
                 finish();

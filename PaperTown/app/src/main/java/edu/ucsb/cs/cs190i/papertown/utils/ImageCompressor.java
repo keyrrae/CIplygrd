@@ -100,45 +100,6 @@ public class ImageCompressor {
             output.add(selected.get(i).toString());
         }
         doThething(output, activity);
-////        final ProgressDialog progress = new ProgressDialog(context);
-////        progress.setTitle("UPLOADING");
-////        progress.setMessage("Compressing5 Images");
-////        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//        Thread thread = new Thread() {
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < inputUris.size(); i++) {
-//                    Uri uri = inputUris.get(i);
-//                    String[] split = uri.toString().split(":");
-//                    Log.i("split", "split[0]. = " + split[0]);
-//                    if (!split[0].equals("file")) {
-//
-//
-////                        if(!progress.isShowing()) {
-////                            runOnUiThread(new Runnable() {
-////                                @Override
-////                                public void run() {
-////                                    progress.show();
-////                                }
-////                            });
-////                        }
-//                        uri = compress(inputUris.get(i).toString(), finalContext);
-//                        outputUris.add(uri.toString());
-//                    }else {
-//                        outputUris.add(uri.toString());
-//                    }
-//
-//                }
-////                progress.dismiss();
-//                if(compressFinishedListener!=null){
-//                    compressFinishedListener.onCompressFinished(outputUris);
-//                }
-//
-//            }
-//
-//        };
-//        thread.start();
     }
 
     public Uri compress(String s, Context context){

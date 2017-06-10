@@ -161,14 +161,10 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                     float lng = Float.parseFloat(separated[1]);
                     passedInTown.setLat(lat);
                     passedInTown.setLng(lng);
-                    //returnIntent.putExtra("result",passedInTown);
-                    //setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
                 else{
                     passedInTown.setAddress("");
-                    //returnIntent.putExtra("result",passedInTown);
-                    //setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
                 Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
@@ -198,7 +194,6 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                 Log.i("manu", "Error - checkSelfPermission!!");
             }
             //end of checkSelfPermission
-
 
             //register myLocationButton event
             map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){

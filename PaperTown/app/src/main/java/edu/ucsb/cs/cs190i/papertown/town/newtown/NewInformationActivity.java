@@ -10,8 +10,6 @@
 
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import edu.ucsb.cs.cs190i.papertown.R;
@@ -42,9 +39,7 @@ public class NewInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_information);
 
-        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
         passedInTown = TownManager.getInstance().getNewTown();
-
 
         String dataPassIn = passedInTown.getUserAlias();
         String[] dataPassInList = dataPassIn.split(",");
@@ -58,7 +53,6 @@ public class NewInformationActivity extends AppCompatActivity {
                 }
             }
         }
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_info);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -92,8 +86,6 @@ public class NewInformationActivity extends AppCompatActivity {
             }
         });
 
-
-
         findViewById(R.id.button_new_name_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,9 +96,5 @@ public class NewInformationActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
     }
 }
