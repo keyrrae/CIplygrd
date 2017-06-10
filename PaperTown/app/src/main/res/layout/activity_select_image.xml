@@ -48,7 +48,7 @@
             />
 
         <Button
-            android:id="@+id/button_image_to_title"
+            android:id="@+id/button_image_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Next"

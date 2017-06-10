@@ -58,7 +58,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     private Location location;
     private LocationManager locationManager;
     private Town passedInTown;
-    private  EditText ev;
+    private EditText ev;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,6 +143,40 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
 
             Log.i("manu", "Error - Map Fragment was null!!");
         }
+
+
+
+        findViewById(R.id.button_new_address_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ed","onClick");
+                final EditText ev = ((EditText) findViewById(R.id.editText_new_address));
+                if(location!=null&&!(ev.getText().toString().isEmpty())) {
+                    String address = ev.getText().toString();
+                    passedInTown.setAddress(address);
+
+                    //processing address to lat lng
+                    String[] separated = address.split(",");
+                    float lat = Float.parseFloat(separated[0]);
+                    float lng = Float.parseFloat(separated[1]);
+                    passedInTown.setLat(lat);
+                    passedInTown.setLng(lng);
+                    //returnIntent.putExtra("result",passedInTown);
+                    //setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else{
+                    passedInTown.setAddress("");
+                    //returnIntent.putExtra("result",passedInTown);
+                    //setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 

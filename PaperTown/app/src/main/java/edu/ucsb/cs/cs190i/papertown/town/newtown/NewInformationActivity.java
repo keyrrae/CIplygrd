@@ -92,5 +92,21 @@ public class NewInformationActivity extends AppCompatActivity {
             }
         });
 
+
+
+        findViewById(R.id.button_new_name_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ed","onClick");
+                EditText ev1 = (EditText) findViewById(R.id.editText_new_firstName);
+                EditText ev2 = (EditText) findViewById(R.id.editText_new_lastName);
+                passedInTown.setUserAlias(ev1.getText().toString()+","+ev2.getText().toString());
+                finish();
+            }
+        });
+
+
+
+
     }
 }

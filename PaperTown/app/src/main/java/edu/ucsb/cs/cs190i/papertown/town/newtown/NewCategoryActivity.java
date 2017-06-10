@@ -58,11 +58,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                //Intent returnIntent = new Intent();
-                //returnIntent.putExtra("result","place");
                 passedInTown.setCategory("place");
-                //returnIntent.putExtra("result",passedInTown);
-                //setResult(Activity.RESULT_OK,returnIntent);
+                //finish();
+
+                Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -71,11 +71,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                //Intent returnIntent = new Intent();
-                //returnIntent.putExtra("result","creature");
                 passedInTown.setCategory("creature");
-                //returnIntent.putExtra("result",passedInTown);
-                //setResult(Activity.RESULT_OK,returnIntent);
+                //finish();
+
+                Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -84,11 +84,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                //Intent returnIntent = new Intent();
-                //returnIntent.putExtra("result","event");
                 passedInTown.setCategory("event");
-                //returnIntent.putExtra("result",passedInTown);
-                //setResult(Activity.RESULT_OK,returnIntent);
+                //finish();
+
+                Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

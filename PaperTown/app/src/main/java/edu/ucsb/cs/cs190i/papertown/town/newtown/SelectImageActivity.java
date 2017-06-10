@@ -273,6 +273,28 @@ public class SelectImageActivity extends AppCompatActivity {
                 }
             });
         }
+
+
+        findViewById(R.id.button_image_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ed","onClick");
+
+                //process Uri array data
+                ArrayList<String> uriStringArrayList = new ArrayList<>();
+                for (int i = 0; i < imageUris.size(); i++) {
+                    uriStringArrayList.add(imageUris.get(i).toString());
+                }
+                passedInTown.setImageUrls(uriStringArrayList);
+
+
+                Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 
     @Override

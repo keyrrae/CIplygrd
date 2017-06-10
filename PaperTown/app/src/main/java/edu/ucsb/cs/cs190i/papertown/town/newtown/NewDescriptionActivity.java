@@ -98,5 +98,29 @@ public class NewDescriptionActivity extends AppCompatActivity {
             }
         });
 
+
+        findViewById(R.id.button_new_description_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ed","onClick");
+
+
+                EditText ev = (EditText) findViewById(R.id.editText_new_description);
+                if (passedInTown.getDescription() == null) {
+                    passedInTown.setDescription(new ArrayList<String>());
+                }
+                if(passedInTown.getDescription().size()==0){
+                    passedInTown.getDescription().add(ev.getText().toString());
+                }else{
+                    passedInTown.getDescription().set(0,ev.getText().toString());
+                }
+
+
+                Intent intent = new Intent(getApplicationContext(), NewInformationActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }
