@@ -26,6 +26,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +58,14 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     private LocationManager locationManager;
     private Town passedInTown;
     private  EditText ev;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_to_next, menu);
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,36 +86,44 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
+                finish();
+            }
+        });
 
-                if(location!=null&&!(ev.getText().toString().isEmpty())) {
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
 
-                    //returnIntent.putExtra("result", ev.getText().toString());
+                switch (item.getItemId()) {
+                    case R.id.save_and_exit:
+                        Intent returnIntent = new Intent();
+                        if(location!=null&&!(ev.getText().toString().isEmpty())) {
+                            String address = ev.getText().toString();
+                            passedInTown.setAddress(address);
 
-                    String address = ev.getText().toString();
-                    passedInTown.setAddress(address);
-
-                    //processing address to lat lng
-                    String[] separated = address.split(",");
-                    float lat = Float.parseFloat(separated[0]);
-                    float lng = Float.parseFloat(separated[1]);
-                    passedInTown.setLat(lat);
-                    passedInTown.setLng(lng);
-
-                    returnIntent.putExtra("result",passedInTown);
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
+                            //processing address to lat lng
+                            String[] separated = address.split(",");
+                            float lat = Float.parseFloat(separated[0]);
+                            float lng = Float.parseFloat(separated[1]);
+                            passedInTown.setLat(lat);
+                            passedInTown.setLng(lng);
+                            returnIntent.putExtra("result",passedInTown);
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            finish();
+                        }
+                        else{
+                            passedInTown.setAddress("");
+                            returnIntent.putExtra("result",passedInTown);
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            finish();
+                        }
+                        break;
                 }
-                else{
-                    passedInTown.setAddress("");
-                    returnIntent.putExtra("result",passedInTown);
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
-                }
+                return true;
             }
         });
 

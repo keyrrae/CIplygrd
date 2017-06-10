@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/PrimaryPink"
-            android:text="Next"
+            android:text="Complete"
             android:textAllCaps="true"
             android:textAppearance="@style/MainTextBold_detail"
             android:textColor="@android:color/white" />

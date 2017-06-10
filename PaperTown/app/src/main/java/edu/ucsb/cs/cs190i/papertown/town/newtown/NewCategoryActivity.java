@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,8 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewCategoryActivity extends AppCompatActivity {
     private Town passedInTown;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,14 +42,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                //returnIntent.putExtra("result","event");
-                //passedInTown.setCategory("event");
-                //returnIntent.putExtra("result",passedInTown);
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }

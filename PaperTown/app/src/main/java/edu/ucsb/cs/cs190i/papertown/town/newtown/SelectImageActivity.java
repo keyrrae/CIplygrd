@@ -113,10 +113,6 @@ public class SelectImageActivity extends AppCompatActivity {
                     case R.id.save_and_exit:
                         Log.i("dataToD", "setNavigationOnClickListener");
 
-
-//                        ArrayList<Uri> uriList = new ArrayList<Uri>(Arrays.asList(imageUris)); //new ArrayList is only needed if you absolutely need an ArrayList
-//                        Log.i("mSwitcher", "imageUris[0] = " + imageUris[0].toString());
-
                         //process Uri array data
                         ArrayList<String> uriStringArrayList = new ArrayList<>();
                         for (int i = 0; i < imageUris.size(); i++) {

@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +28,14 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 
 public class NewInformationActivity extends AppCompatActivity {
     private Town passedInTown;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_to_next, menu);
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +47,11 @@ public class NewInformationActivity extends AppCompatActivity {
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
             Log.i("ed","dataPassIn2 = "+dataPassIn);
-            ((EditText)findViewById(R.id.editText_new_firstName)).setText(dataPassInList[0]);
-            if(dataPassInList.length>1) {
-                ((EditText) findViewById(R.id.editText_new_lastName)).setText(dataPassInList[1]);
+            if(dataPassInList!=null&&dataPassInList.length>0) {
+                ((EditText) findViewById(R.id.editText_new_firstName)).setText(dataPassInList[0]);
+                if (dataPassInList.length > 1) {
+                    ((EditText) findViewById(R.id.editText_new_lastName)).setText(dataPassInList[1]);
+                }
             }
         }
 
@@ -47,18 +60,31 @@ public class NewInformationActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                EditText ev1 = (EditText) findViewById(R.id.editText_new_firstName);
-                EditText ev2 = (EditText) findViewById(R.id.editText_new_lastName);
-                //returnIntent.putExtra("result", ev1.getText().toString()+","+ev2.getText().toString());
-                passedInTown.setUserAlias(ev1.getText().toString()+","+ev2.getText().toString());
-                returnIntent.putExtra("result",passedInTown);
-                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.save_and_exit:
+                        Intent returnIntent = new Intent();
+                        EditText ev1 = (EditText) findViewById(R.id.editText_new_firstName);
+                        EditText ev2 = (EditText) findViewById(R.id.editText_new_lastName);
+                        //returnIntent.putExtra("result", ev1.getText().toString()+","+ev2.getText().toString());
+                        passedInTown.setUserAlias(ev1.getText().toString()+","+ev2.getText().toString());
+                        returnIntent.putExtra("result",passedInTown);
+                        setResult(Activity.RESULT_OK, returnIntent);
+                        finish();
+                        break;
+                }
+                return true;
             }
         });
 

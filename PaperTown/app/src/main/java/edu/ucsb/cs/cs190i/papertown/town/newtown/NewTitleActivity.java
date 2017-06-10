@@ -17,10 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
@@ -33,6 +37,15 @@ public class NewTitleActivity extends AppCompatActivity {
     final int NEW_DESCRIPTION_REQUEST = 3;
     final int NEW_INFORMATION_REQUEST = 4;
     final int NEW_PHOTO_REQUEST = 5;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_to_next, menu);
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
@@ -52,20 +65,32 @@ public class NewTitleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_check_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-
-                passedInTown.setTitle(ed.getText().toString());
-                returnIntent.putExtra("result",passedInTown);
-                Log.i("ed","text = "+ed.getText().toString());
-                setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
         });
 
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.save_and_exit:
+                        Intent returnIntent = new Intent();
+                        passedInTown.setTitle(ed.getText().toString());
+                        returnIntent.putExtra("result",passedInTown);
+                        Log.i("ed","text = "+ed.getText().toString());
+                        setResult(Activity.RESULT_OK,returnIntent);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
 
 
         ((Button)findViewById(R.id.button_new_title_next)).setOnClickListener(new View.OnClickListener() {
