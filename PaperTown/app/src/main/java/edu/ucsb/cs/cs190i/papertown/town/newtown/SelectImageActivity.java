@@ -257,27 +257,76 @@ public class SelectImageActivity extends AppCompatActivity {
 //                Uri uri = selectedImageURI;
 
                 // TODO Crash when update more images.
-                List<Uri> selected = Matisse.obtainResult(data);
+                final List<Uri> selected = Matisse.obtainResult(data);
                 //compress the image from the uri
-                ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
-                progress.setTitle("UPLOADING");
-                progress.setMessage("Compressing2 Images");
-                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                progress.show();
-                for (int i = 0; i < selected.size(); i++) {
-//                    File f = new File(selected.get(i).toString());
-//                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
-//                    Uri uri = (Uri.fromFile(f));
-                    ImageCompressor imageCompressor = new ImageCompressor();
-                    Uri uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
-                    imageUris = addUri(imageUris, uri);
-                }
-                progress.dismiss();
+//                ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+//                progress.setTitle("UPLOADING");
+//                progress.setMessage("Compressing2 Images");
+//                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+//                progress.show();
+//                for (int i = 0; i < selected.size(); i++) {
+////                    File f = new File(selected.get(i).toString());
+////                    f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), selected.get(i), "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+////                    Uri uri = (Uri.fromFile(f));
+//                    ImageCompressor imageCompressor = new ImageCompressor();
+//                    Uri uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
+//                    imageUris = addUri(imageUris, uri);
+//                }
+//                progress.dismiss();
+//
+//                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+//                Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
+//                grid = (GridView) findViewById(R.id.grid);
+//                grid.setAdapter(adapter);
 
-                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
-                Log.i("onActivityResult", "imageUris.length = " + imageUris.length);
-                grid = (GridView) findViewById(R.id.grid);
-                grid.setAdapter(adapter);
+                final ProgressDialog progress = new ProgressDialog(SelectImageActivity.this);
+                progress.setTitle("UPLOADING");
+                progress.setMessage("Compressing5 Images");
+                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+
+
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+
+                        for (int i = 0; i < selected.size(); i++) {
+                            Uri uri = selected.get(i);
+                            String[] split = uri.toString().split(":");
+                            Log.i("split", "split[0]. = " + split[0]);
+                            if (!split[0].equals("file")) {
+                                if(!progress.isShowing()) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progress.show();
+                                        }
+                                    });
+
+                                }
+//                        File f = new File(dataPassIn.get(i));
+//                        //Log.i("original_image", "f.getName(); = " + f.getName());
+//                        f = new File(resizeAndCompressImageBeforeSend(getApplicationContext(), uri, "/" + f.getName() + UUID.randomUUID().toString() + System.currentTimeMillis() + ".jpg"));
+//                        uri = (Uri.fromFile(f));
+                                ImageCompressor imageCompressor = new ImageCompressor();
+                                uri = imageCompressor.compress(selected.get(i).toString(), getApplicationContext());
+                            }
+                            imageUris = addUri(imageUris, uri);
+                        }
+                        progress.dismiss();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris);
+                                grid.setAdapter(adapter);
+                            }
+                        });
+
+                    }
+
+                };
+                thread.start();
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
