@@ -119,7 +119,8 @@ public class NewTownActivity extends AppCompatActivity implements
         passedInTown = (Town) getIntent().getSerializableExtra("town");
         //passedInTown = TownManager.getInstance().getNewTown();
         if (passedInTown != null) {
-            outputTown = passedInTown;
+            TownManager.getInstance().setNewTown(passedInTown);
+            outputTown = TownManager.getInstance().getNewTown();
         } else {
 //            outputTown = new TownBuilder()
 //                    .setTitle(title)
