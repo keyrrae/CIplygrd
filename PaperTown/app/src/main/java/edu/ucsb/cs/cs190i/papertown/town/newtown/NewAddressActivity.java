@@ -51,6 +51,7 @@ import java.util.Arrays;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 
 public class NewAddressActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks {
@@ -71,7 +72,8 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_address);
 
-        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = TownManager.getInstance().getNewTown();
         String dataPassIn = passedInTown.getAddress();
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
@@ -100,7 +102,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
-                        Intent returnIntent = new Intent();
+                        //Intent returnIntent = new Intent();
                         if(location!=null&&!(ev.getText().toString().isEmpty())) {
                             String address = ev.getText().toString();
                             passedInTown.setAddress(address);
@@ -111,14 +113,14 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                             float lng = Float.parseFloat(separated[1]);
                             passedInTown.setLat(lat);
                             passedInTown.setLng(lng);
-                            returnIntent.putExtra("result",passedInTown);
-                            setResult(Activity.RESULT_OK, returnIntent);
+                            //returnIntent.putExtra("result",passedInTown);
+                            //setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
                         else{
                             passedInTown.setAddress("");
-                            returnIntent.putExtra("result",passedInTown);
-                            setResult(Activity.RESULT_OK, returnIntent);
+                            //returnIntent.putExtra("result",passedInTown);
+                            //setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
                         break;

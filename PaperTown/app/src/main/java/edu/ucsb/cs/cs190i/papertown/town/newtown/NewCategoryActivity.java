@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 
 public class NewCategoryActivity extends AppCompatActivity {
     private Town passedInTown;
@@ -35,7 +36,8 @@ public class NewCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
 
-        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = TownManager.getInstance().getNewTown();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_new_category);
         setSupportActionBar(toolbar);
@@ -56,11 +58,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
+                //Intent returnIntent = new Intent();
                 //returnIntent.putExtra("result","place");
                 passedInTown.setCategory("place");
-                returnIntent.putExtra("result",passedInTown);
-                setResult(Activity.RESULT_OK,returnIntent);
+                //returnIntent.putExtra("result",passedInTown);
+                //setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
         });
@@ -69,11 +71,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
+                //Intent returnIntent = new Intent();
                 //returnIntent.putExtra("result","creature");
                 passedInTown.setCategory("creature");
-                returnIntent.putExtra("result",passedInTown);
-                setResult(Activity.RESULT_OK,returnIntent);
+                //returnIntent.putExtra("result",passedInTown);
+                //setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
         });
@@ -82,11 +84,11 @@ public class NewCategoryActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
+                //Intent returnIntent = new Intent();
                 //returnIntent.putExtra("result","event");
                 passedInTown.setCategory("event");
-                returnIntent.putExtra("result",passedInTown);
-                setResult(Activity.RESULT_OK,returnIntent);
+                //returnIntent.putExtra("result",passedInTown);
+                //setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
         });

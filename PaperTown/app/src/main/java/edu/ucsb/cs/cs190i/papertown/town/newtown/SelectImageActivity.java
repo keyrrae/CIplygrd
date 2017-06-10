@@ -119,9 +119,9 @@ public class SelectImageActivity extends AppCompatActivity {
                             uriStringArrayList.add(imageUris.get(i).toString());
                         }
                         passedInTown.setImageUrls(uriStringArrayList);
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("result", passedInTown);
-                        setResult(Activity.RESULT_FIRST_USER, returnIntent);
+                        //Intent returnIntent = new Intent();
+                        //returnIntent.putExtra("result", passedInTown);
+                        //setResult(Activity.RESULT_FIRST_USER, returnIntent);
                         finish();
                         break;
                 }
@@ -152,7 +152,9 @@ public class SelectImageActivity extends AppCompatActivity {
 
 
 
-        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = TownManager.getInstance().getNewTown();
+
 
         for(int i = 0 ; i<passedInTown.getImageUrls().size();i++){
             String[] tempSplit = passedInTown.getImageUrls().get(i).split(":");

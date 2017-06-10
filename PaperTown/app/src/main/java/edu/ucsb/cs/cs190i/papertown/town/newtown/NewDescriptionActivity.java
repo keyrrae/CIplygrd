@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 
 public class NewDescriptionActivity extends AppCompatActivity {
     private Town passedInTown;
@@ -42,7 +43,8 @@ public class NewDescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_description);
 
-        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = TownManager.getInstance().getNewTown();
 
             if (passedInTown.getDescription()!=null&&passedInTown.getDescription().size()>0&&!passedInTown.getDescription().get(0).isEmpty() && passedInTown.getDescription().get(0) != null) {
                 String dataPassIn = passedInTown.getDescription().get(0);
@@ -73,7 +75,7 @@ public class NewDescriptionActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
-                        Intent returnIntent = new Intent();
+                        //Intent returnIntent = new Intent();
                         EditText ev = (EditText) findViewById(R.id.editText_new_description);
                         //returnIntent.putExtra("result", ev.getText().toString());
                        //passedInTown.addDescription(ev.getText().toString());
@@ -87,8 +89,8 @@ public class NewDescriptionActivity extends AppCompatActivity {
                             passedInTown.getDescription().set(0,ev.getText().toString());
                         }
 
-                        returnIntent.putExtra("result",passedInTown);
-                        setResult(Activity.RESULT_OK, returnIntent);
+                        //returnIntent.putExtra("result",passedInTown);
+                        //setResult(Activity.RESULT_OK, returnIntent);
                         finish();
                         break;
                 }

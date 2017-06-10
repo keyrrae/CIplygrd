@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 
 public class NewTitleActivity extends AppCompatActivity {
     private Town passedInTown;
@@ -53,7 +54,10 @@ public class NewTitleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_title);
 
         final EditText ed = (EditText) findViewById(R.id.editText_newtitle);
-        passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        //passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+        passedInTown = TownManager.getInstance().getNewTown();
+
+
         String dataPassIn = passedInTown.getTitle();
         Log.i("ed","dataPassIn = "+dataPassIn);
         if(!dataPassIn.isEmpty()&&dataPassIn!=null){
@@ -80,12 +84,19 @@ public class NewTitleActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.save_and_exit:
-                        Intent returnIntent = new Intent();
+//                        Intent returnIntent = new Intent();
+//                        passedInTown.setTitle(ed.getText().toString());
+//                        returnIntent.putExtra("result",passedInTown);
+//                        Log.i("ed","text = "+ed.getText().toString());
+//                        setResult(Activity.RESULT_OK,returnIntent);
+//                        finish();
+
                         passedInTown.setTitle(ed.getText().toString());
-                        returnIntent.putExtra("result",passedInTown);
-                        Log.i("ed","text = "+ed.getText().toString());
-                        setResult(Activity.RESULT_OK,returnIntent);
+//                        Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
+//                        //intent.putExtra("townPassIn", outputTown);
+//                        startActivity(intent);
                         finish();
+
                         break;
                 }
                 return true;

@@ -43,6 +43,7 @@ import butterknife.OnClick;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import io.realm.Realm;
@@ -80,6 +81,7 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("NewTownActivity", "onCreate");
         setContentView(R.layout.activity_new_town);
         ButterKnife.bind(this);
         mRealm = Realm.getInstance(getApplicationContext());
@@ -105,40 +107,45 @@ public class NewTownActivity extends AppCompatActivity implements
                     NewTownActivityPermissionsDispatcher.dispatchImagePickingWithCheck(NewTownActivity.this);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), SelectImageActivity.class);
-                    intent.putExtra("townPassIn", outputTown);
-                    startActivityForResult(intent, NEW_PHOTO_REQUEST);
+                    //intent.putExtra("townPassIn", outputTown);
+                    //startActivityForResult(intent, NEW_PHOTO_REQUEST);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 }
             }
         });
 
         //get extra, see  if the passed in town is null or not to decide if need to initialize a new town
         passedInTown = (Town) getIntent().getSerializableExtra("town");
+        //passedInTown = TownManager.getInstance().getNewTown();
         if (passedInTown != null) {
             outputTown = passedInTown;
         } else {
-            outputTown = new TownBuilder()
-                    .setTitle(title)
-                    .setAddress(address)
-                    .setCategory(category)
-                    .setDescription(descriptionList)
-                    .setUserAlias(information)
-                    .setLat(lat)
-                    .setLng(lng)
-                    .setImages(uriStringArrayList)
-                    .build();
-            //imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
+//            outputTown = new TownBuilder()
+//                    .setTitle(title)
+//                    .setAddress(address)
+//                    .setCategory(category)
+//                    .setDescription(descriptionList)
+//                    .setUserAlias(information)
+//                    .setLat(lat)
+//                    .setLng(lng)
+//                    .setImages(uriStringArrayList)
+//                    .build();
+//            //imageView_newTown.setImageDrawable(getResources().getDrawable(R.drawable.wave));
+            outputTown = TownManager.getInstance().iniNewTown();
         }
 
-        //update view
-        checkAndUpdateAllInformation();
+//        //update view
+//        checkAndUpdateAllInformation();
 
         TextView title_title = (TextView) findViewById(R.id.title_title);
         title_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewTitleActivity.class);
-                intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_TITLE_REQUEST);
+                //intent.putExtra("townPassIn", outputTown);
+                startActivity(intent);
+                //startActivityForResult(intent, NEW_TITLE_REQUEST);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
             }
@@ -149,10 +156,12 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewAddressActivity.class);
-                intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_ADDRESS_REQUEST);
+//                intent.putExtra("townPassIn", outputTown);
+//                startActivityForResult(intent, NEW_ADDRESS_REQUEST);
+//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+//                //finish();// kill current activity
+                startActivity(intent);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-                //finish();// kill current activity
             }
         });
 
@@ -161,10 +170,12 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewCategoryActivity.class);
-                intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_CATEGORY_REQUEST);
-                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+//                intent.putExtra("townPassIn", outputTown);
+//                startActivityForResult(intent, NEW_CATEGORY_REQUEST);
+//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
             }
         });
 
@@ -173,10 +184,12 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewDescriptionActivity.class);
-                intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);
-                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+//                intent.putExtra("townPassIn", outputTown);
+//                startActivityForResult(intent, NEW_DESCRIPTION_REQUEST);
+//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
             }
         });
 
@@ -186,9 +199,11 @@ public class NewTownActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewInformationActivity.class);
                 intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_INFORMATION_REQUEST);
-                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+//                startActivityForResult(intent, NEW_INFORMATION_REQUEST);
+//                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 //finish();// kill current activity
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
             }
         });
 
@@ -235,54 +250,54 @@ public class NewTownActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Log.i("onActivityResult", "requestCode = " + requestCode);
         //Log.i("onActivityResult", "resultCode = " + resultCode);
-        if (requestCode == NEW_TITLE_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
-            }
-        }
-
-        if (requestCode == NEW_ADDRESS_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
-            }
-        }
-
-        if (requestCode == NEW_CATEGORY_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
-            }
-        }
-
-        if (requestCode == NEW_DESCRIPTION_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
-            }
-        }
-        if (requestCode == NEW_INFORMATION_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
-            }
-        }
+//        if (requestCode == NEW_TITLE_REQUEST) {
+////            if (resultCode == RESULT_OK) {
+////                outputTown = (Town) data.getSerializableExtra("result");
+////                Log.i("onActivityResult", "result = " + outputTown.toString());
+////            }
+////            if (resultCode == Activity.RESULT_CANCELED) {
+////                Log.i("onActivityResult", "NEW_TITLE_REQUEST RESULT_CANCELED");
+////            }
+//        }
+//
+//        if (requestCode == NEW_ADDRESS_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                outputTown = (Town) data.getSerializableExtra("result");
+//                Log.i("onActivityResult", "result = " + outputTown.toString());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_ADDRESS_REQUEST RESULT_CANCELED");
+//            }
+//        }
+//
+//        if (requestCode == NEW_CATEGORY_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                outputTown = (Town) data.getSerializableExtra("result");
+//                Log.i("onActivityResult", "result = " + outputTown.toString());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_CATEGORY_REQUEST RESULT_CANCELED");
+//            }
+//        }
+//
+//        if (requestCode == NEW_DESCRIPTION_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                outputTown = (Town) data.getSerializableExtra("result");
+//                Log.i("onActivityResult", "result = " + outputTown.toString());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_DESCRIPTION_REQUEST RESULT_CANCELED");
+//            }
+//        }
+//        if (requestCode == NEW_INFORMATION_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                outputTown = (Town) data.getSerializableExtra("result");
+//                Log.i("onActivityResult", "result = " + outputTown.toString());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_INFORMATION_REQUEST RESULT_CANCELED");
+//            }
+//        }
 
         if (requestCode == NEW_PHOTO_REQUEST) {
             Log.i("onActivityResult", "NEW_PHOTO_REQUEST");
@@ -294,16 +309,22 @@ public class NewTownActivity extends AppCompatActivity implements
                     tempList.add(selected.get(i).toString());
                 }
                 outputTown.setImageUrls(tempList);
-                intent.putExtra("townPassIn", outputTown);
-                startActivityForResult(intent, NEW_PHOTO_REQUEST);
+
+
+
+
+//                intent.putExtra("townPassIn", outputTown);
+//                startActivityForResult(intent, NEW_PHOTO_REQUEST);
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
             }
-            if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
-                outputTown = (Town) data.getSerializableExtra("result");
-                Log.i("onActivityResult", "result = " + outputTown.toString());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
-            }
+//            if (resultCode == RESULT_FIRST_USER) {  //final confirmed return
+//                outputTown = (Town) data.getSerializableExtra("result");
+//                Log.i("onActivityResult", "result = " + outputTown.toString());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                Log.i("onActivityResult", "NEW_PHOTO_REQUEST RESULT_CANCELED");
+//            }
         }
 
         //update view
@@ -381,7 +402,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     outputTown.getCategory());
         }
 
-        if (outputTown.getDescription() != null && outputTown.getDescription().get(0)!=null&& !outputTown.getDescription().get(0).isEmpty()) {
+        if (outputTown.getDescription() != null && outputTown.getDescription().size()>0 &&outputTown.getDescription().get(0)!=null&& !outputTown.getDescription().get(0).isEmpty()) {
             Log.i("checkAllInformation", "description!=null");
             counter++;
             setChecked((TextView) findViewById(R.id.title_description),
@@ -483,21 +504,28 @@ public class NewTownActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("NewTownActivity", "onResume");
+        //update view
+        checkAndUpdateAllInformation();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.i("NewTownActivity", "onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.i("NewTownActivity", "onStop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i("NewTownActivity", "onDestroy");
+        TownManager.getInstance().clearTowns();
     }
 
 

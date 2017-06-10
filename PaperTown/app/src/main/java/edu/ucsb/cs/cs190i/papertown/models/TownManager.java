@@ -328,7 +328,7 @@ public class TownManager {
         return  newTown;
     }
 
-    public void iniNewTown(){
+    public Town iniNewTown(){
         newTown = new TownBuilder()
                 .setTitle("")
                 .setAddress("")
@@ -339,6 +339,13 @@ public class TownManager {
                 .setLng(0)
                 .setImages(new ArrayList<String>())
                 .build();
+
+        return newTown;
+    }
+
+
+    public void clearNewTown(){
+        newTown = null;
     }
 
 
