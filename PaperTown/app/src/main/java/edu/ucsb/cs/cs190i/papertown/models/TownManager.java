@@ -46,6 +46,8 @@ public class TownManager {
     private TownDataChangedListener townDataChangedListener = null;
     private SingleTownChangedListener singleTownChangedListener = null;
 
+    private Town newTown;
+
 
     private static TownManager instance = null;
 
@@ -59,7 +61,6 @@ public class TownManager {
     public interface SingleTownChangedListener {
         void onSingleTownChanged();
     }
-
 
     public void setOnTownDataChangedListener(TownDataChangedListener listener) {
         this.townDataChangedListener = listener;
@@ -316,13 +317,28 @@ public class TownManager {
                 });
             }
         }
-
-        //
-
+    }
 
 
+    public void setNewTown(Town newTown){
+        this.newTown = newTown;
+    }
 
+    public Town getNewTown(){
+        return  newTown;
+    }
 
+    public void iniNewTown(){
+        newTown = new TownBuilder()
+                .setTitle("")
+                .setAddress("")
+                .setCategory("")
+                .setDescription(new ArrayList<String>())
+                .setUserAlias("")
+                .setLat(0)
+                .setLng(0)
+                .setImages(new ArrayList<String>())
+                .build();
     }
 
 
