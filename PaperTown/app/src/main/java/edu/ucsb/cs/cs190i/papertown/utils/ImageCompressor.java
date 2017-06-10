@@ -52,8 +52,8 @@ public class ImageCompressor {
         final List<String> outputUris = new ArrayList<>();
 
         final ProgressDialog progress = new ProgressDialog(finalActivity);
-        progress.setTitle("UPLOADING");
-        progress.setMessage("Compressing5 Images");
+        progress.setTitle("Compressing");
+        progress.setMessage("Dealing with images");
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         Thread thread = new Thread() {
             @Override

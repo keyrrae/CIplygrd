@@ -76,6 +76,7 @@ public class SelectImageActivity extends AppCompatActivity {
     GridView grid;
     ImageCompressor imageCompressor;
     private Town passedInTown;
+    private boolean isNewSession = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,9 @@ public class SelectImageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passedInTown.setImageUrls(new ArrayList<String>());
+                if(isNewSession) {
+                    passedInTown.setImageUrls(new ArrayList<String>());
+                }
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", passedInTown);
                 setResult(Activity.RESULT_FIRST_USER, returnIntent);
@@ -149,7 +152,22 @@ public class SelectImageActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
         passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
+
+        for(int i = 0 ; i<passedInTown.getImageUrls().size();i++){
+            String[] tempSplit = passedInTown.getImageUrls().get(i).split(":");
+            if(tempSplit!=null&&tempSplit.length>0&&tempSplit[0].contains("content")){
+                isNewSession = true;
+                break;
+            }
+        }
+
+
+
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(
