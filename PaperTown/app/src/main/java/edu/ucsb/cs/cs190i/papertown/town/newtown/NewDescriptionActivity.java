@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 
@@ -74,7 +76,17 @@ public class NewDescriptionActivity extends AppCompatActivity {
                         Intent returnIntent = new Intent();
                         EditText ev = (EditText) findViewById(R.id.editText_new_description);
                         //returnIntent.putExtra("result", ev.getText().toString());
-                        passedInTown.addDescription(ev.getText().toString());
+                       //passedInTown.addDescription(ev.getText().toString());
+                        if (passedInTown.getDescription() == null) {
+                            passedInTown.setDescription(new ArrayList<String>());
+                        }
+                        //this.description.add(description);
+                        if(passedInTown.getDescription().size()==0){
+                            passedInTown.getDescription().add(ev.getText().toString());
+                        }else{
+                            passedInTown.getDescription().set(0,ev.getText().toString());
+                        }
+
                         returnIntent.putExtra("result",passedInTown);
                         setResult(Activity.RESULT_OK, returnIntent);
                         finish();

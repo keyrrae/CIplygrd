@@ -445,7 +445,7 @@ public class NewTownActivity extends AppCompatActivity implements
         //change the color of the progress bar
         ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
         pb.setProgress(0);  //only show background
-        pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
+        pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
     }
 
     void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {
