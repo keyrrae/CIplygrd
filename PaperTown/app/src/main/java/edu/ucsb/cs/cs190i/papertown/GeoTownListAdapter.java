@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 
 /**
  * Created by EYE on 07/05/2017.
@@ -39,6 +41,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
     private TextView countTextView;
     private CardView cardView;
     private Context context;
+    private ImageButton imageButton;
 
     public class GeoTownListViewHolder extends RecyclerView.ViewHolder{
         public GeoTownListViewHolder(View itemView) {
@@ -48,6 +51,7 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
             categoryTextView = (TextView) itemView.findViewById(R.id.geo_town_category);
             countTextView = (TextView) itemView.findViewById(R.id.geo_town_count);
             cardView = (CardView) itemView.findViewById(R.id.geo_card);
+            imageButton = (ImageButton) itemView.findViewById(R.id.geo_town_visit_button);
         }
     }
 
@@ -82,6 +86,16 @@ public class GeoTownListAdapter extends RecyclerView.Adapter<GeoTownListAdapter.
         titleTextView.setText(towns.get(position).getTitle());
         categoryTextView.setText(towns.get(position).getCategory());
         countTextView.setText(""+towns.get(position).getNumOfLikes()+" likes");
+
+
+        List<String> likes = UserSingleton.getInstance().getLikes();
+        for(int i = 0 ; i<likes.size();i++){
+            if(likes.get(i).equals(towns.get(position).getId())){
+                //
+                imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
+                break;
+            }
+        }
     }
 
     @Override
