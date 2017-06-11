@@ -32,6 +32,7 @@
         android:id="@+id/scrollView_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_margin="@dimen/m">
 
         <LinearLayout
@@ -202,4 +203,14 @@
                 android:verticalSpacing="10dp" />
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Long Press to delete a post / draft item."
+        android:layout_margin="@dimen/m"
+        android:textAppearance="@style/footerText_list"
+        android:textColor="@color/LighterGray"
+
+        />
 </LinearLayout>

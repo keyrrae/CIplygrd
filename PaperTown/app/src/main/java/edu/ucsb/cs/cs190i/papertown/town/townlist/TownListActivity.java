@@ -96,20 +96,10 @@ public class TownListActivity extends AppCompatActivity {
         //=================   end of get all towns    =============
 
 
-        //towns = (List<Town>)getIntent().getSerializableExtra("townArrayList");
+    mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+    mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
-        //mRecyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        //initData();
-
-//    if(allTowns!=null&&allTowns.size()>0) {
-//      ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
-//      mRecyclerView.setAdapter(mAdapter);
-//    }
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -177,32 +167,27 @@ public class TownListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list, menu);
 
-        final SearchView searchView = (SearchView) findViewById(R.id.search);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                Log.i("onQueryTextSubmit", "query = " + query);
-//        if( ! searchView.isIconified()) {
-//          searchView.setIconified(true);
-//        }
+    final SearchView searchView = (SearchView) findViewById(R.id.search);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        Log.i("onQueryTextSubmit", "query = "+query);
+        return false;
+      }
 
 
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                List<Town> searchResults = new ArrayList<Town>();
-                for (int i = 0; i < allTowns.size(); i++) {
-                    if (allTowns.get(i).getTitle().toLowerCase().contains(s.toLowerCase())) {
-                        //Log.i("onQueryTextChange", "found = "+allTowns.get(i).getTitle());
-                        searchResults.add(allTowns.get(i));
-                    }
-                }
-                ListTownAdapter mAdapter = new ListTownAdapter(searchResults);
-                mRecyclerView.setAdapter(mAdapter);
+      @Override
+      public boolean onQueryTextChange(String s) {
+        // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+        List<Town> searchResults = new ArrayList<Town>();
+        for(int i = 0 ; i<allTowns.size();i++){
+          if(allTowns.get(i).getTitle().toLowerCase().contains(s.toLowerCase())){
+            //Log.i("onQueryTextChange", "found = "+allTowns.get(i).getTitle());
+            searchResults.add(allTowns.get(i));
+          }
+        }
+        ListTownAdapter mAdapter = new ListTownAdapter(searchResults);
+        mRecyclerView.setAdapter(mAdapter);
 
                 return false;
             }
@@ -212,68 +197,4 @@ public class TownListActivity extends AppCompatActivity {
         return true;
     }
 
-    private void initData() {
-
-
-        //if not town list is passed in, create default list of towns
-        if (allTowns.size() == 0) {
-            allTowns = new ArrayList<>();
-
-            List<String> imgs1 = new ArrayList<>();
-            imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
-
-            List<String> imgs2 = new ArrayList<>();
-            imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
-
-            List<String> imgs3 = new ArrayList<>();
-            imgs3.add("http://68.media.tumblr.com/132947bb8b5319f81f8a77d3c83b3fbf/tumblr_o1z5pav4xH1s49orpo1_1280.jpg");
-
-
-            Town t1 = new TownBuilder()
-                    .setTitle("Mother Susanna Monument")
-                    .setCategory("Place")
-                    //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                    .setAddress("6510 El Colegio Rd Apt 1223")
-                    .setLat(35.594559f)
-                    .setLng(-117.899149f)
-                    .setUserId("theUniqueEye")
-                    .setImages(imgs1)
-                    .setSketch("")
-                    .build();
-
-            Town t2 = new TownBuilder()
-                    .setTitle("Father Crowley Monument")
-                    .setCategory("Place")
-                    //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                    .setAddress("6510 El Colegio Rd Apt 1223")
-                    .setLat(35.594559f)
-                    .setLng(-117.899149f)
-                    .setUserId("theUniqueEye")
-                    .setImages(imgs2)
-                    .setSketch("")
-                    .build();
-
-            Town t3 = new TownBuilder()
-                    .setTitle("Wonder Land")
-                    .setCategory("Creature")
-                    //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                    .setAddress("Rabbit Hole 1901C")
-                    .setLat(35.594559f)
-                    .setLng(-117.899149f)
-                    .setUserId("Sams to Go")
-                    .setImages(imgs3)
-                    .setSketch("")
-                    .build();
-
-            allTowns.add(t1);
-            allTowns.add(t2);
-            allTowns.add(t3);
-            allTowns.add(t1);
-            allTowns.add(t2);
-            allTowns.add(t3);
-            allTowns.add(t1);
-            allTowns.add(t2);
-            allTowns.add(t3);
-        }
-    }
 }

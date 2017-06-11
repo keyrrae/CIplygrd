@@ -298,12 +298,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                 });
                             }
 
-
-
-
-
-
-
                             break;
                         }
                         break;
@@ -339,8 +333,6 @@ public class TownDetailActivity extends AppCompatActivity {
             }
 
 
-
-
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,7 +351,6 @@ public class TownDetailActivity extends AppCompatActivity {
             findViewById(R.id.detail_related).setVisibility(View.INVISIBLE);
             findViewById(R.id.detail_related_line).setVisibility(View.INVISIBLE);
         }
-
 
         detail_town_visit_count = (TextView)findViewById(R.id.detail_town_visit_count);
 
@@ -671,9 +662,7 @@ public class TownDetailActivity extends AppCompatActivity {
 
         //load address and physical address
         if (passedInTown.getLatLng() != null) {
-            TextView detail_town_description = (TextView) findViewById(R.id.detail_address);
-            detail_town_description.setText(passedInTown.getLatLng());
-            // townBuilder.setAddress(address);
+            TextView detail_town_coordinates = (TextView) findViewById(R.id.detail_address);
 
             //processing address to latlng
             String[] separated = passedInTown.getLatLng().split(",");
@@ -682,6 +671,9 @@ public class TownDetailActivity extends AppCompatActivity {
                 lng = Float.parseFloat(separated[1]);
                 //   townBuilder.setLatLng(lat, lng);
             }
+
+            detail_town_coordinates.setText("latitude "+ String.format("%.7f", lat)+" / longitude "+String.format("%.7f", lng));
+            //detail_town_coordinates.setText(passedInTown.getLatLng());
 
             TextView detail_physical_address = (TextView) findViewById(R.id.detail_physical_address);
             Geocoder geocoder;
