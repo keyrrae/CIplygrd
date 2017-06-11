@@ -646,6 +646,7 @@ public class TownDetailActivity extends AppCompatActivity {
             button_test_detail.setVisibility(Button.INVISIBLE);
         }
         //process uriStringArrayList, put data into uriList
+        uriList.clear();
         if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
             for (int i = 0; i < uriStringArrayList.size(); i++) {
                 uriList.add(Uri.parse(uriStringArrayList.get(i)));
