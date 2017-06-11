@@ -9,6 +9,7 @@
 package edu.ucsb.cs.cs190i.papertown.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.R;
@@ -37,11 +39,25 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
     private List<Town> feedItemList;
     private Context mContext;
 
+    private List<Boolean> selectionColorBar = new ArrayList<>();
+
     private CardView cardView;
 
     public TownRecyclerViewAdapter(Context context, List<Town> feedItemList) {
         this.feedItemList = feedItemList;
         this.mContext = context;
+
+        for(int i = 0 ; i < feedItemList.size();i++){
+            selectionColorBar.add(false);
+        }
+    }
+
+    public void setSelectionColorBar(int index){
+        for(int i = 0 ; i < selectionColorBar.size();i++){
+            selectionColorBar.set(i,false);
+        }
+        //selectionColorBar.set(index,true);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -69,14 +85,19 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
         Log.i("TAG","customViewHolder.cardView = "+cardView.getLayoutParams().width);
         cardView.getLayoutParams().width = (int)(width*0.6f);
 
-
+        if(selectionColorBar.get(i)) {
+            customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.BLUE);
+        }
+        else{
+            customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
+        }
 
         //Render image using Picasso library
-
         Picasso.with(mContext).load(feedItem.getImageUrls().get(0))
                 .error(R.drawable.defaultimage)
                 .placeholder(R.drawable.defaultimage)
                 .into(customViewHolder.imageView);
+        //customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
         //Picasso.with(imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(imageView);
 
         //Setting text view title
@@ -108,13 +129,14 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
         private TextView textView;
         private TextView categoryTextView;
         private TextView countTextView;
-
+        private ImageView geo_town_pick_bar;
         private Context context;
         private ImageButton imageButton;
 
         public CustomViewHolder(View view) {
             super(view);
             this.imageView = (ImageView) view.findViewById(R.id.geo_town_image);
+            this.geo_town_pick_bar = (ImageView) view.findViewById(R.id.geo_town_pick_bar);
             this.textView = (TextView) view.findViewById(R.id.geo_town_title);
             this.categoryTextView = (TextView) view.findViewById(R.id.geo_town_category);
             this.countTextView = (TextView) view.findViewById(R.id.geo_town_count);
