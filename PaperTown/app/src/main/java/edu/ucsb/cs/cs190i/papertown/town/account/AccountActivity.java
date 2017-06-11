@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -135,6 +136,25 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+        gridview_draft.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                Log.i("onClick", "onItemLongClick");
+
+                //delete draft
+                Realm.getInstance(getApplicationContext()).executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        RealmResults<TownRealm> result = realm.where(TownRealm.class).equalTo("townId",towns_draft.get(position).getId()).findAll();
+                        result.clear();
+                    }
+                });
+                towns_draft.remove(position);
+                gridview_draft.setAdapter(new GridViewImageAdapter(getApplication(), towns_draft));
+                return true;
+            }
+        });
+
         final GridView gridview_post = (GridView) findViewById(R.id.gridView_posts);
 
 
@@ -202,9 +222,6 @@ public class AccountActivity extends AppCompatActivity {
                 ifMyPostsExpanded = !ifMyPostsExpanded;
             }
         });
-
-
-
 
 
         // get username
