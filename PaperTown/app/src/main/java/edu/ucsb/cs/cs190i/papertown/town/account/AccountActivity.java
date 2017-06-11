@@ -247,6 +247,8 @@ public class AccountActivity extends AppCompatActivity {
                 Log.d("TAG", dataSnapshot.getValue().toString());
                 if(dataSnapshot.getValue().toString()!=null&&!dataSnapshot.getValue().toString().isEmpty()) {
                     ((TextView) findViewById(R.id.textView_username)).setText(dataSnapshot.getValue().toString());
+                    String temp = ""+dataSnapshot.getValue().toString().charAt(0);
+                    ((TextView) findViewById(R.id.textView_username_initial)).setText(temp);
                 }
             }
 
