@@ -64,6 +64,7 @@ public class NewTownActivity extends AppCompatActivity implements
     private ImageView imageView_newTown;
 
     final int NEW_PHOTO_REQUEST = 5;
+    final int DISPLAY_PREVIEW_REQUEST = 4;
 
     private int itemLeft = 6;
     private Town outputTown;
@@ -190,7 +191,8 @@ public class NewTownActivity extends AppCompatActivity implements
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
-                    startActivity(intent);
+//                    startActivity(intent);
+                    startActivityForResult(intent, DISPLAY_PREVIEW_REQUEST);
                 }
             }
         });
@@ -227,6 +229,17 @@ public class NewTownActivity extends AppCompatActivity implements
                 outputTown.setImageUrls(tempList);
                 startActivity(intent);
                 overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+            }
+        }
+
+        if (requestCode == DISPLAY_PREVIEW_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                finish();
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
             }
         }
 

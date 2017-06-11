@@ -59,6 +59,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
     private LocationManager locationManager;
     private Town passedInTown;
     private EditText ev;
+    private boolean isMyLocationSet = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,7 +152,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 Log.i("ed","onClick");
                 final EditText ev = ((EditText) findViewById(R.id.editText_new_address));
-                if(location!=null&&!(ev.getText().toString().isEmpty())) {
+                if(isMyLocationSet&&location!=null&&!(ev.getText().toString().isEmpty())) {
                     String address = ev.getText().toString();
                     passedInTown.setAddress(address);
 
@@ -206,6 +207,7 @@ public class NewAddressActivity extends AppCompatActivity implements OnMapReadyC
                         double longitude = location.getLongitude();
                         EditText ev = ((EditText) findViewById(R.id.editText_new_address));
                         ev.setText(latitude + "," + longitude);
+                        isMyLocationSet = true;
                     }
                     catch(Exception e){
                         Toast.makeText(
