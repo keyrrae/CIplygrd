@@ -30,6 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -45,6 +50,7 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import io.realm.Realm;
 import permissions.dispatcher.NeedsPermission;
@@ -71,6 +77,16 @@ public class NewTownActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_town);
         ButterKnife.bind(this);
         mRealm = Realm.getInstance(getApplicationContext());
+
+
+
+        //========test
+
+
+
+
+        //=========== end of test
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_done);
         setSupportActionBar(toolbar);

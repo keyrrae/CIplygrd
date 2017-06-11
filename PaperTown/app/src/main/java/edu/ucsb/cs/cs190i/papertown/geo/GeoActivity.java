@@ -90,8 +90,10 @@ import edu.ucsb.cs.cs190i.papertown.application.PaperTownApplication;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity;
+import edu.ucsb.cs.cs190i.papertown.town.account.GridViewImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
@@ -226,6 +228,31 @@ public class GeoActivity extends AppCompatActivity implements
 
         //initData();
         //mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+
+
+        DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
+        likeData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                final List<String> likedTownId = new ArrayList<String>();
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Log.d("userLikes", ds.getValue().toString());
+                    likedTownId.add(ds.getValue().toString());
+                }
+
+
+                if(likedTownId!=null&&likedTownId.size()>0) {
+                    UserSingleton.getInstance().setLikes(likedTownId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         TownManager.getInstance()

@@ -132,6 +132,8 @@ public class TownDetailActivity extends AppCompatActivity {
     private RecyclerView  mRecyclerView;
     private Button button_test_detail;
 
+    private  Menu menu;
+
     private TownMapIcon tmi;
 
     private float lat = 34.415320f;
@@ -142,6 +144,7 @@ public class TownDetailActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference townRef;
     private Town passedInTown;
+    private boolean alreadyLiked = false;
 
     private Integer[] mImageIds = {
             R.drawable.door, R.drawable.light, R.drawable.corner,
@@ -152,6 +155,10 @@ public class TownDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
+        this.menu = menu;
+        if(alreadyLiked) {
+            menu.findItem(R.id.detail_favor).setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+        }
         return true;
     }
 
@@ -162,11 +169,25 @@ public class TownDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        passedInTown = (Town) getIntent().getSerializableExtra("town");
+
         mode = getIntent().getStringExtra("mode");
         if (mode == null) {
             mode = "detail";
         }
 
+
+        List<String> likes = UserSingleton.getInstance().getLikes();
+        for (String like: likes) {
+            if (like.equals(passedInTown.getId())) {
+                alreadyLiked = true;
+                break;
+            }
+        }
+
+//        if(!alreadyLiked){
+//            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+//        }
 
 
         TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
@@ -198,22 +219,89 @@ public class TownDetailActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.detail_favor:
 
-                        if (item.getTitle().equals("dislike")) {
-                            Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
-                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-                            item.setTitle("like");
+//                        if (item.getTitle().equals("dislike")) {
+//                            Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
+//                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+//                            item.setTitle("like");
+//
+////                            //change number of likes of the town
+////                            TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
+////
+////                            //change likes data of the user
+////                            if (!alreadyLiked) {
+////                                List<String> likes = UserSingleton.getInstance().getLikes();
+////                                likes.add(passedInTown.getId());
+////                                DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
+////
+////                                likeData.setValue(likes, new DatabaseReference.CompletionListener() {
+////                                    public void onComplete(DatabaseError err, DatabaseReference ref){
+////                                        if (err == null) {
+////                                            Log.d("SET_LIKES", "Setting likes succeeded");
+////                                        }
+////                                    }
+////                                });
+////                            }
+//
+//                            break;
+//                        }
+                        if (item.getTitle().equals("like")) {
+                           // Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
+                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+//                            item.setTitle("dislike");
 
+
+
+
+                            if (!alreadyLiked) {
+                            //change number of likes of the town
                             TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
 
-                            break;
-                        }
-                        if (item.getTitle().equals("like")) {
-                            Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
-                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-                            item.setTitle("dislike");
+                            //change likes data of the user
+                                List<String> likes = UserSingleton.getInstance().getLikes();
+                                likes.add(passedInTown.getId());
+                                DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
+
+                                likeData.setValue(likes, new DatabaseReference.CompletionListener() {
+                                    public void onComplete(DatabaseError err, DatabaseReference ref){
+                                        if (err == null) {
+                                            Log.d("SET_LIKES", "Setting likes succeeded");
+                                            alreadyLiked = true;
+                                            menu.findItem(R.id.detail_favor).setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                                        }
+                                    }
+                                });
+                            }
+                            else{
+                                //change number of likes of the town
+                                TownManager.getInstance().decreaseTownLikesById(passedInTown.getId());
+
+                                //change likes data of the user
+                                List<String> likes = UserSingleton.getInstance().getLikes();
+                                for(int i = 0 ; i < likes.size();i++){
+                                    if(likes.get(i).equals(passedInTown.getId())){
+                                        likes.remove(i);
+                                    }
+                                }
+
+                                UserSingleton.getInstance().setLikes(likes);
+                                //likes.add(passedInTown.getId());
+                                DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
+
+                                likeData.setValue(likes, new DatabaseReference.CompletionListener() {
+                                    public void onComplete(DatabaseError err, DatabaseReference ref){
+                                        if (err == null) {
+                                            Log.d("SET_LIKES", "Setting likes succeeded");
+                                            alreadyLiked = false;
+                                            menu.findItem(R.id.detail_favor).setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                                        }
+                                    }
+                                });
+                            }
 
 
-                            TownManager.getInstance().decreaseTownLikesById(passedInTown.getId());
+
+
+
 
 
                             break;
@@ -280,7 +368,7 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
 
-        passedInTown = (Town) getIntent().getSerializableExtra("town");
+
 
         passedInTown.setUserId(UserSingleton.getInstance().getUid());
 
@@ -464,6 +552,11 @@ public class TownDetailActivity extends AppCompatActivity {
         else {
             findViewById(R.id.detail_card).setVisibility(View.INVISIBLE);
         }
+
+
+
+
+
 
     }
 

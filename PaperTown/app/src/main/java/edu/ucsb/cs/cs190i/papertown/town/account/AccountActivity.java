@@ -18,16 +18,24 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
@@ -44,6 +52,7 @@ public class AccountActivity extends AppCompatActivity {
     public List<Town> towns_draft_2;
     public List<Town> towns_draft;
     private Realm mRealm;
+    private int postsCount = 0;
 
 
     @Override
@@ -66,6 +75,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         initData();  //get towns for liked and drafts
+
 
         towns_draft_2 = new ArrayList<>();
         towns_liked_2 = new ArrayList<>();
@@ -149,6 +159,128 @@ public class AccountActivity extends AppCompatActivity {
                 ifDraftExpanded = !ifDraftExpanded;
             }
         });
+
+
+
+
+
+        // get username
+        String userId = UserSingleton.getInstance().getUid();
+        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name");
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TAG", dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue().toString()!=null&&!dataSnapshot.getValue().toString().isEmpty()) {
+                    ((TextView) findViewById(R.id.textView_username)).setText(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //get user post numbers
+
+        DatabaseReference townsDatabase;
+        townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+        Query q = townsDatabase.orderByChild("userId").equalTo(UserSingleton.getInstance().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Town t = ds.getValue(Town.class);
+                    //Log.d("TAG", "t = "+t.toString());
+                    postsCount++;
+                   // printTown(t);
+                }
+
+                if(postsCount<=1){
+                    ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" post");
+                }
+                else{
+                    ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" posts");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //get user likes
+        DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("likes");
+
+        likeData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                final List<String> likedTownId = new ArrayList<String>();
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Log.d("userLikes", ds.getValue().toString());
+                    likedTownId.add(ds.getValue().toString());
+                }
+
+
+                if(likedTownId!=null&&likedTownId.size()>0) {
+
+                    UserSingleton.getInstance().setLikes(likedTownId);
+                    //============   get all towns   ==========
+
+                    DatabaseReference townsDatabase;
+                    townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+                    townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Town> allTowns = new ArrayList<Town>();
+                            allTowns.clear();
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Town t = ds.getValue(Town.class);
+                                allTowns.add(t);
+                                //printTown(t);
+                            }
+
+                            if (allTowns != null && allTowns.size() > 0) {
+                                //ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
+                                for(int i = 0; i<likedTownId.size();i++){
+                                    for(int j = 0; j<allTowns.size();j++){
+                                        if(allTowns.get(j).getId().equals(likedTownId.get(i))){
+                                            towns_liked.add(allTowns.get(j));
+                                        }
+                                    }
+
+                                }
+                            }
+                            gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    //=================   end of get all towns    =============
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -200,14 +332,14 @@ public class AccountActivity extends AppCompatActivity {
                 .setImages(imgs3)
                 .setSketch("")
                 .build();
-
-        towns_liked.add(t1);
-        towns_liked.add(t1);
-        towns_liked.add(t3);
-        towns_liked.add(t2);
-        towns_liked.add(t2);
-        towns_liked.add(t3);
-        towns_liked.add(t1);
+//
+//        towns_liked.add(t1);
+//        towns_liked.add(t1);
+//        towns_liked.add(t3);
+//        towns_liked.add(t2);
+//        towns_liked.add(t2);
+//        towns_liked.add(t3);
+//        towns_liked.add(t1);
 
         //read draft towns from realm
         mRealm = Realm.getInstance(getApplicationContext());

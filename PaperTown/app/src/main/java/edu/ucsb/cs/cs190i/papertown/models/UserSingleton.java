@@ -10,13 +10,25 @@ package edu.ucsb.cs.cs190i.papertown.models;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Zhenyu on 2017-05-19.
  */
 
 public class UserSingleton  {
-
     String name;
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    List<String> likes = new ArrayList<>();
 
     public String getName() {
         return name;
