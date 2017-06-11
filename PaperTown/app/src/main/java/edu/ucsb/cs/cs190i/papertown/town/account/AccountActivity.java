@@ -47,10 +47,13 @@ public class AccountActivity extends AppCompatActivity {
 
     boolean ifLikedExpanded = false;
     boolean ifDraftExpanded = false;
-    public List<Town> towns_liked_2;
+    boolean ifMyPostsExpanded = false;
+    public List<Town> towns_liked_collapsed;
     public List<Town> towns_liked;
-    public List<Town> towns_draft_2;
+    public List<Town> towns_draft_collased;
     public List<Town> towns_draft;
+    public List<Town> towns_my_posts;
+
     private Realm mRealm;
     private int postsCount = 0;
 
@@ -74,33 +77,38 @@ public class AccountActivity extends AppCompatActivity {
         });
 
 
+
+
+
+        towns_draft_collased = new ArrayList<>();
+        towns_liked_collapsed = new ArrayList<>();
+        towns_my_posts = new ArrayList<>();
+
         initData();  //get towns for liked and drafts
 
-
-        towns_draft_2 = new ArrayList<>();
-        towns_liked_2 = new ArrayList<>();
-
         if(towns_draft.size()>3) {
-            towns_draft_2.add(towns_draft.get(0));
-            towns_draft_2.add(towns_draft.get(1));
-            towns_draft_2.add(towns_draft.get(2));
+            towns_draft_collased.add(towns_draft.get(0));
+            towns_draft_collased.add(towns_draft.get(1));
+            towns_draft_collased.add(towns_draft.get(2));
         }else{
-            towns_draft_2 = towns_draft;
+            towns_draft_collased = towns_draft;
             findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
         }
 
-        if(towns_liked.size()>3) {
-            towns_liked_2.add(towns_liked.get(0));
-            towns_liked_2.add(towns_liked.get(1));
-            towns_liked_2.add(towns_liked.get(2));
-        }
-        else{
-            towns_liked_2 = towns_liked;
-            findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
-        }
+
+
+//        if(towns_liked.size()>3) {
+//            towns_liked_2.add(towns_liked.get(0));
+//            towns_liked_2.add(towns_liked.get(1));
+//            towns_liked_2.add(towns_liked.get(2));
+//        }
+//        else{
+//            towns_liked_2 = towns_liked;
+//            findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
+//        }
 
         final GridView gridview_liked = (GridView) findViewById(R.id.gridView_liked);
-        gridview_liked.setAdapter(new GridViewImageAdapter(this, towns_liked_2));
+        gridview_liked.setAdapter(new GridViewImageAdapter(this, towns_liked_collapsed));
 
         gridview_liked.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -114,7 +122,7 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         final GridView gridview_draft = (GridView) findViewById(R.id.gridView_draft);
-        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_2));
+        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_collased));
 
         gridview_draft.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -123,6 +131,20 @@ public class AccountActivity extends AppCompatActivity {
                 //Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                 Intent intent = new Intent(getApplicationContext(), NewTownActivity.class);
                 intent.putExtra("town", towns_draft.get(position));
+                startActivity(intent);
+            }
+        });
+
+        final GridView gridview_post = (GridView) findViewById(R.id.gridView_posts);
+
+
+        gridview_post.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                intent.putExtra("town", towns_my_posts.get(position));
                 startActivity(intent);
             }
         });
@@ -136,7 +158,7 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("Less");
                 } else {
-                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_2));
+                    gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_collapsed));
                     ((TextView) findViewById(R.id.textView_liked_more)).setText("More");
                 }
                 ifLikedExpanded = !ifLikedExpanded;
@@ -153,10 +175,31 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("Less");
                 } else {
-                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_2));
+                    gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_collased));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
                 ifDraftExpanded = !ifDraftExpanded;
+            }
+        });
+
+        findViewById(R.id.textView_my_post_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("onClick", "textView_draft_more");
+
+
+                if (!ifMyPostsExpanded) {
+                    gridview_post.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_my_posts));
+                    ((TextView) findViewById(R.id.textView_my_post_more)).setText("Less");
+                } else {
+                    List<Town> towns_my_posts_collased= new ArrayList<Town>();
+                    for(int i = 0 ; i<3;i++){
+                        towns_my_posts_collased.add(towns_my_posts.get(i));
+                    }
+                    gridview_post.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_my_posts_collased));
+                    ((TextView) findViewById(R.id.textView_my_post_more)).setText("More");
+                }
+                ifMyPostsExpanded = !ifMyPostsExpanded;
             }
         });
 
@@ -196,6 +239,7 @@ public class AccountActivity extends AppCompatActivity {
                     Town t = ds.getValue(Town.class);
                     //Log.d("TAG", "t = "+t.toString());
                     postsCount++;
+                    towns_my_posts.add(t);
                    // printTown(t);
                 }
 
@@ -205,6 +249,24 @@ public class AccountActivity extends AppCompatActivity {
                 else{
                     ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" posts");
                 }
+
+
+                if(towns_my_posts.size()<=3) {
+                    findViewById(R.id.textView_my_post_more).setVisibility(View.INVISIBLE);
+                    gridview_post.setAdapter(new GridViewImageAdapter(getApplication(), towns_my_posts));
+                }
+                else{
+                    List<Town> towns_my_posts_collased= new ArrayList<Town>();
+                    for(int i = 0 ; i<3;i++){
+                        towns_my_posts_collased.add(towns_my_posts.get(i));
+                    }
+                    gridview_post.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_my_posts_collased));
+                    ((TextView) findViewById(R.id.textView_my_post_more)).setText("More");
+                }
+
+
+
+
 
             }
 
@@ -259,7 +321,20 @@ public class AccountActivity extends AppCompatActivity {
 
                                 }
                             }
-                            gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+
+                            if(towns_liked.size()>3) {
+                                towns_liked_collapsed.add(towns_liked.get(0));
+                                towns_liked_collapsed.add(towns_liked.get(1));
+                                towns_liked_collapsed.add(towns_liked.get(2));
+                                gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked_collapsed));
+                            }
+                            else{
+                                findViewById(R.id.textView_liked_more).setVisibility(View.INVISIBLE);
+                                gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+                            }
+
+
+
 
                         }
 
@@ -350,5 +425,7 @@ public class AccountActivity extends AppCompatActivity {
             Town t = gson.fromJson(list.get(i).getTownJson(),Town.class);
             towns_draft.add(t);
         }
+
+        //towns_my_posts = towns_draft;
     }
 }

@@ -426,6 +426,9 @@ public class TownDetailActivity extends AppCompatActivity {
                                                         }
                                                     });
 
+
+                                                    Intent resultIntent = new Intent();
+                                                    setResult(Activity.RESULT_OK, resultIntent);
                                                     finish();
                                                 }
                                             });
