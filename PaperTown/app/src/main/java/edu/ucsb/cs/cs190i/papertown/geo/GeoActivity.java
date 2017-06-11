@@ -297,8 +297,8 @@ public class GeoActivity extends AppCompatActivity implements
                     Log.i("onGlobalLayout", "PrimaryPink");
                     if (mRecyclerView.getChildCount() != 0) {
                         View v = mRecyclerView.getChildAt(0);
-                        ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-                        bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+                        //ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                        //bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
 
                         //pressedTownId = towns.get(0).getId();
                         updateMapMarkers();
