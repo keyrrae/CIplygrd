@@ -67,6 +67,8 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         Picasso.with(imageView.getContext()).load(this.uriList.get(position))
+                .error(R.drawable.defaultimage)
+                .placeholder(R.drawable.defaultimage)
                 .resize(gridSize, gridSize)
                 .centerCrop()
                 .into(imageView);
