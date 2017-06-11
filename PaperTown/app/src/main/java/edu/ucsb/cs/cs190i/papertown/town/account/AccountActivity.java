@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
@@ -74,6 +75,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         initData();  //get towns for liked and drafts
+
 
         towns_draft_2 = new ArrayList<>();
         towns_liked_2 = new ArrayList<>();
@@ -212,6 +214,73 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+
+
+        //get user likes
+        DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("likes");
+
+        likeData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                final List<String> likedTownId = new ArrayList<String>();
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Log.d("userLikes", ds.getValue().toString());
+                    likedTownId.add(ds.getValue().toString());
+                }
+
+
+                if(likedTownId!=null&&likedTownId.size()>0) {
+
+                    UserSingleton.getInstance().setLikes(likedTownId);
+                    //============   get all towns   ==========
+
+                    DatabaseReference townsDatabase;
+                    townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+                    townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Town> allTowns = new ArrayList<Town>();
+                            allTowns.clear();
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Town t = ds.getValue(Town.class);
+                                allTowns.add(t);
+                                //printTown(t);
+                            }
+
+                            if (allTowns != null && allTowns.size() > 0) {
+                                //ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
+                                for(int i = 0; i<likedTownId.size();i++){
+                                    for(int j = 0; j<allTowns.size();j++){
+                                        if(allTowns.get(j).getId().equals(likedTownId.get(i))){
+                                            towns_liked.add(allTowns.get(j));
+                                        }
+                                    }
+
+                                }
+                            }
+                            gridview_liked.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_liked));
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    //=================   end of get all towns    =============
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -263,14 +332,14 @@ public class AccountActivity extends AppCompatActivity {
                 .setImages(imgs3)
                 .setSketch("")
                 .build();
-
-        towns_liked.add(t1);
-        towns_liked.add(t1);
-        towns_liked.add(t3);
-        towns_liked.add(t2);
-        towns_liked.add(t2);
-        towns_liked.add(t3);
-        towns_liked.add(t1);
+//
+//        towns_liked.add(t1);
+//        towns_liked.add(t1);
+//        towns_liked.add(t3);
+//        towns_liked.add(t2);
+//        towns_liked.add(t2);
+//        towns_liked.add(t3);
+//        towns_liked.add(t1);
 
         //read draft towns from realm
         mRealm = Realm.getInstance(getApplicationContext());
