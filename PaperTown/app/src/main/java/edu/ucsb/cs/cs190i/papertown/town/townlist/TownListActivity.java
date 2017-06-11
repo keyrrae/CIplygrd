@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
@@ -53,46 +54,46 @@ import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
 import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 public class TownListActivity extends AppCompatActivity {
-  public List<Town> allTowns = new ArrayList<>();
-  private GridView imageGrid;
-  private ArrayList<Bitmap> bitmapList;
-  private RecyclerView mRecyclerView;
+    public List<Town> allTowns = new ArrayList<>();
+    private GridView imageGrid;
+    private ArrayList<Bitmap> bitmapList;
+    private RecyclerView mRecyclerView;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_town_list);
-
-
-
-    //============   get all towns   ==========
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_town_list);
 
 
-    DatabaseReference townsDatabase;
-    townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
-    townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-        allTowns.clear();
-        for(DataSnapshot ds: dataSnapshot.getChildren()){
-          Town t = ds.getValue(Town.class);
-          allTowns.add(t);
-          printTown(t);
-        }
+        //============   get all towns   ==========
 
-            if(allTowns!=null&&allTowns.size()>0) {
-      ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
-      mRecyclerView.setAdapter(mAdapter);
-    }
-      }
 
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
+        DatabaseReference townsDatabase;
+        townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+        townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allTowns.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Town t = ds.getValue(Town.class);
+                    allTowns.add(t);
+                    printTown(t);
+                }
 
-      }
-    });
+                if (allTowns != null && allTowns.size() > 0) {
+                    Collections.reverse(allTowns);
+                    ListTownAdapter mAdapter = new ListTownAdapter(allTowns);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            }
 
-    //=================   end of get all towns    =============
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //=================   end of get all towns    =============
 
 
     mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
@@ -100,69 +101,71 @@ public class TownListActivity extends AppCompatActivity {
     mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
-    mRecyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-              @Override public void onItemClick(View view, int position) {
-                Log.i("RecyclerItemClr", "onItemClick");
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.i("RecyclerItemClr", "onItemClick");
 
-                Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
-                intent.putExtra("town", allTowns.get(position));
-                startActivity(intent);
-              }
+                        Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
+                        intent.putExtra("town", allTowns.get(position));
+                        startActivity(intent);
+                    }
 
-              @Override public void onLongItemClick(View view, int position) {
-                Log.i("RecyclerItemClr", "onLongItemClick");
-              }
-            })
-    );
-
-
-    //
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setTitle("");
-    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-
-        switch (item.getItemId()) {
-          case R.id.add_town:
-            Intent newTownIntent = new Intent(TownListActivity.this, NewTownActivity.class);
-            startActivity(newTownIntent);
-            break;
-          case R.id.geo_view:
-            Intent geoTownIntent = new Intent(TownListActivity.this, GeoActivity.class);
-            startActivity(geoTownIntent);
-            break;
-          case R.id.action_settings:
-            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-            editor.remove(TOKEN);
-            editor.remove(TOKEN_TIME);
-            editor.remove(USERID);
-            editor.remove(EMAIL);
-            editor.remove(CRED);
-            editor.commit();
-            Intent splashIntent = new Intent(TownListActivity.this, SplashScreenActivity.class);
-            startActivity(splashIntent);
-            finish();
-            break;
-        }
-        return true;
-      }
-    });
-  }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Log.i("RecyclerItemClr", "onLongItemClick");
+                    }
+                })
+        );
 
 
-  void printTown(Town town) {
-    Gson  gson = new GsonBuilder().setPrettyPrinting().create();
-    String result = gson.toJson(town);
-    Log.d("TAG", result);
-  }
+        //
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.menu_list, menu);
+                switch (item.getItemId()) {
+                    case R.id.add_town:
+                        Intent newTownIntent = new Intent(TownListActivity.this, NewTownActivity.class);
+                        startActivity(newTownIntent);
+                        break;
+                    case R.id.geo_view:
+                        Intent geoTownIntent = new Intent(TownListActivity.this, GeoActivity.class);
+                        startActivity(geoTownIntent);
+                        break;
+                    case R.id.action_settings:
+                        SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+                        editor.remove(TOKEN);
+                        editor.remove(TOKEN_TIME);
+                        editor.remove(USERID);
+                        editor.remove(EMAIL);
+                        editor.remove(CRED);
+                        editor.commit();
+                        Intent splashIntent = new Intent(TownListActivity.this, SplashScreenActivity.class);
+                        startActivity(splashIntent);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+
+    void printTown(Town town) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(town);
+        Log.d("TAG", result);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list, menu);
 
     final SearchView searchView = (SearchView) findViewById(R.id.search);
     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -186,12 +189,12 @@ public class TownListActivity extends AppCompatActivity {
         ListTownAdapter mAdapter = new ListTownAdapter(searchResults);
         mRecyclerView.setAdapter(mAdapter);
 
-        return false;
-      }
-    });
+                return false;
+            }
+        });
 
 
-    return true;
-  }
+        return true;
+    }
 
 }
