@@ -338,6 +338,7 @@ public class TownManager {
                 .setLat(0)
                 .setLng(0)
                 .setImages(new ArrayList<String>())
+                .setUserId(UserSingleton.getInstance().getUid())
                 .build();
 
         return newTown;

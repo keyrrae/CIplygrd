@@ -38,6 +38,7 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         public TextView descriptionTextView;
         public TextView likeCountTextView;
         public TextView list_town_author;
+        public TextView date;
 
         public ListTownViewHolder(View itemView) {
             super(itemView);
@@ -47,6 +48,7 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
             descriptionTextView = (TextView) itemView.findViewById(R.id.list_town_description);
             likeCountTextView =  (TextView) itemView.findViewById(R.id.list_favor_count);
             list_town_author =  (TextView) itemView.findViewById(R.id.list_town_author);
+            date =  (TextView) itemView.findViewById(R.id.list_town_date);
 
         }
     }
@@ -72,6 +74,14 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
         }
         holder.likeCountTextView.setText(""+towns.get(position).getNumOfLikes());
         holder.list_town_author.setText(""+towns.get(position).getAuthor());
+
+        if(towns.get(position).getDate()!=null&&!towns.get(position).getDate().isEmpty()){
+            holder.date.setText(""+towns.get(position).getDate());
+        }
+        else{
+            holder.date.setText("Unknown upload date.");
+        }
+
 
 
     }

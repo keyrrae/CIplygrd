@@ -9,26 +9,14 @@
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -41,9 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -55,19 +41,15 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -77,29 +59,22 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import butterknife.ButterKnife;
-import edu.ucsb.cs.cs190i.papertown.GeoTownListAdapter;
 import edu.ucsb.cs.cs190i.papertown.ImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.RecyclerItemClickListener;
 import edu.ucsb.cs.cs190i.papertown.TownMapIcon;
-import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
-import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
 import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
+import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;
 //test
@@ -357,7 +332,11 @@ public class TownDetailActivity extends AppCompatActivity {
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
         this.uriList = new ArrayList<Uri>();
 
-        passedInTown.setUserId(UserSingleton.getInstance().getUid());
+
+
+
+
+//        passedInTown.setUserId(UserSingleton.getInstance().getUid());
 
         FirebaseApp.initializeApp(this);
         storage = FirebaseStorage.getInstance();
@@ -520,7 +499,7 @@ public class TownDetailActivity extends AppCompatActivity {
                     break;
                 }
             }
-            GeoTownListAdapter mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
+            TownRecyclerViewAdapter mAdapter = new TownRecyclerViewAdapter(getApplicationContext(),towns);
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -633,6 +612,7 @@ public class TownDetailActivity extends AppCompatActivity {
             button_test_detail.setVisibility(Button.INVISIBLE);
         }
         //process uriStringArrayList, put data into uriList
+        uriList.clear();
         if (uriStringArrayList != null && uriStringArrayList.size() > 0) {
             for (int i = 0; i < uriStringArrayList.size(); i++) {
                 uriList.add(Uri.parse(uriStringArrayList.get(i)));
