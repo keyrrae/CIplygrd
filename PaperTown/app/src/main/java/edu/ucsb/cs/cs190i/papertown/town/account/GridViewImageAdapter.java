@@ -69,14 +69,14 @@ public class GridViewImageAdapter extends BaseAdapter {
             if(this.towns.get(position).getImageUrls()!=null&&this.towns.get(position).getImageUrls().size()>0&&this.towns.get(position).getImageUrls().get(0)!=null&&!this.towns.get(position).getImageUrls().get(0).isEmpty()) {
                 String imagePath = this.towns.get(position).getImageUrls().get(0);
                 Picasso.with(image.getContext()).load(imagePath)
-                        .error(R.drawable.defaultimage)
-                        .placeholder(R.drawable.defaultimage)
+                        .error(R.drawable.dummyimage)
+                        .placeholder(R.drawable.dummyimage)
                         .into(image);
             }
             else{
                 Picasso.with(image.getContext()).load(R.drawable.dummyimage)
-                        .error(R.drawable.defaultimage)
-                        .placeholder(R.drawable.defaultimage)
+                        .error(R.drawable.dummyimage)
+                        .placeholder(R.drawable.dummyimage)
                         .into(image);
             }
 

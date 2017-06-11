@@ -311,13 +311,13 @@ public class NewTownActivity extends AppCompatActivity implements
         {
             if (imagePaths != null && imagePaths.size() > 0 && imagePaths.get(0) != null && !imagePaths.get(0).isEmpty()) {
                 Picasso.with(getApplicationContext()).load(imagePaths.get(0))
-                        .error(R.drawable.defaultimage)
-                        .placeholder(R.drawable.defaultimage)
+                        .error(R.drawable.dummyimage)
+                        .placeholder(R.drawable.dummyimage)
                         .into(imageView_newTown);
             } else {
                 Picasso.with(getApplicationContext()).load(R.drawable.dummyimage)
-                        .error(R.drawable.defaultimage)
-                        .placeholder(R.drawable.defaultimage)
+                        .error(R.drawable.dummyimage)
+                        .placeholder(R.drawable.dummyimage)
                         .into(imageView_newTown);
             }
         }

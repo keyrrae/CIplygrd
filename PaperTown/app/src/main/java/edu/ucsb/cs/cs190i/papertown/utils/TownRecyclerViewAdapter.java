@@ -94,8 +94,8 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
 
         //Render image using Picasso library
         Picasso.with(mContext).load(feedItem.getImageUrls().get(0))
-                .error(R.drawable.defaultimage)
-                .placeholder(R.drawable.defaultimage)
+                .error(R.drawable.dummyimage)
+                .placeholder(R.drawable.dummyimage)
                 .into(customViewHolder.imageView);
         //customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
         //Picasso.with(imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(imageView);
