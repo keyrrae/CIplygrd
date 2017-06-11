@@ -103,7 +103,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".town.newtown.NewTitleActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".town.newtown.NewAddressActivity"
             android:configChanges="orientation|screenSize" />
@@ -112,10 +113,12 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".town.newtown.NewDescriptionActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".town.newtown.NewInformationActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".town.newtown.SelectImageActivity"
             android:configChanges="orientation|screenSize" />

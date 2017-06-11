@@ -21,6 +21,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -71,6 +74,13 @@ public class NewTownActivity extends AppCompatActivity implements
     private Realm mRealm;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_draft, menu);
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("NewTownActivity", "onCreate");
@@ -98,6 +108,20 @@ public class NewTownActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
+                Log.i("toJson", "result = " + outputTown.toJson());
+                //save town to realm
+                mRealm.beginTransaction();
+                TownRealm townRealm = mRealm.createObject(TownRealm.class);
+                townRealm.setTownId(outputTown.getId());
+                townRealm.setTownJson(outputTown.toJson());
+                mRealm.commitTransaction();
+                return true;
             }
         });
 
@@ -191,6 +215,7 @@ public class NewTownActivity extends AppCompatActivity implements
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
                     startActivity(intent);
+
                 }
             }
         });
@@ -199,15 +224,14 @@ public class NewTownActivity extends AppCompatActivity implements
         button_step_left.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
-                Log.i("toJson", "result = " + outputTown.toJson());
-                //save town to realm
-                mRealm.beginTransaction();
-                TownRealm townRealm = mRealm.createObject(TownRealm.class);
-                townRealm.setTownId(outputTown.getId());
-                townRealm.setTownJson(outputTown.toJson());
-                mRealm.commitTransaction();
+//                Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
+//                Log.i("toJson", "result = " + outputTown.toJson());
+//                //save town to realm
+//                mRealm.beginTransaction();
+//                TownRealm townRealm = mRealm.createObject(TownRealm.class);
+//                townRealm.setTownId(outputTown.getId());
+//                townRealm.setTownJson(outputTown.toJson());
+//                mRealm.commitTransaction();
                 return true;
             }
         });
