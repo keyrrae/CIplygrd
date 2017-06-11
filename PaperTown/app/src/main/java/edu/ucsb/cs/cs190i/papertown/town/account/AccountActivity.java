@@ -18,6 +18,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,6 +34,7 @@ import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
+import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
@@ -44,6 +51,7 @@ public class AccountActivity extends AppCompatActivity {
     public List<Town> towns_draft_2;
     public List<Town> towns_draft;
     private Realm mRealm;
+    private int postsCount = 0;
 
 
     @Override
@@ -149,6 +157,61 @@ public class AccountActivity extends AppCompatActivity {
                 ifDraftExpanded = !ifDraftExpanded;
             }
         });
+
+
+
+
+
+        // get username
+        String userId = UserSingleton.getInstance().getUid();
+        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name");
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TAG", dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue().toString()!=null&&!dataSnapshot.getValue().toString().isEmpty()) {
+                    ((TextView) findViewById(R.id.textView_username)).setText(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //get user post numbers
+
+        DatabaseReference townsDatabase;
+        townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
+        Query q = townsDatabase.orderByChild("userId").equalTo(UserSingleton.getInstance().getUid());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Town t = ds.getValue(Town.class);
+                    //Log.d("TAG", "t = "+t.toString());
+                    postsCount++;
+                   // printTown(t);
+                }
+
+                if(postsCount<=1){
+                    ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" post");
+                }
+                else{
+                    ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" posts");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
