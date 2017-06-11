@@ -71,7 +71,7 @@ public class GridViewImageAdapter extends BaseAdapter {
                 Picasso.with(image.getContext()).load(imagePath).into(image);
             }
             else{
-                Picasso.with(image.getContext()).load(R.drawable.defaultimage).into(image);
+                Picasso.with(image.getContext()).load(R.drawable.dummyimage).into(image);
             }
 
             TextView text = (TextView) item.findViewById(R.id.grid_item_title);
