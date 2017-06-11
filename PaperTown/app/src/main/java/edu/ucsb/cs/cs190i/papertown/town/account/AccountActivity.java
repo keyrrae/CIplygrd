@@ -51,7 +51,7 @@ public class AccountActivity extends AppCompatActivity {
     boolean ifMyPostsExpanded = false;
     public List<Town> towns_liked_collapsed;
     public List<Town> towns_liked;
-    public List<Town> towns_draft_collased;
+    //public List<Town> towns_draft_collased;
     public List<Town> towns_draft;
     public List<Town> towns_my_posts;
 
@@ -81,18 +81,13 @@ public class AccountActivity extends AppCompatActivity {
 
 
 
-        towns_draft_collased = new ArrayList<>();
+        //towns_draft_collased = new ArrayList<>();
         towns_liked_collapsed = new ArrayList<>();
         towns_my_posts = new ArrayList<>();
 
         initData();  //get towns for liked and drafts
 
-        if(towns_draft.size()>3) {
-            towns_draft_collased.add(towns_draft.get(0));
-            towns_draft_collased.add(towns_draft.get(1));
-            towns_draft_collased.add(towns_draft.get(2));
-        }else{
-            towns_draft_collased = towns_draft;
+        if(towns_draft.size()<=3) {
             findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
         }
 
@@ -123,7 +118,18 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         final GridView gridview_draft = (GridView) findViewById(R.id.gridView_draft);
-        gridview_draft.setAdapter(new GridViewImageAdapter(this, towns_draft_collased));
+
+        if(towns_draft!=null&&towns_draft.size()>3) {
+            List<Town> towns_draft_collased = new ArrayList<Town>();
+            for (int i = 0; i < 3; i++) {
+                towns_draft_collased.add(towns_draft.get(i));
+            }
+            gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_collased));
+        }
+        else{
+            gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
+        }
+
 
         gridview_draft.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -150,6 +156,9 @@ public class AccountActivity extends AppCompatActivity {
                     }
                 });
                 towns_draft.remove(position);
+                if(towns_draft!=null&&towns_draft.size()<=3){
+                    findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
+                }
                 gridview_draft.setAdapter(new GridViewImageAdapter(getApplication(), towns_draft));
                 return true;
             }
@@ -195,6 +204,11 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("Less");
                 } else {
+
+                    List<Town> towns_draft_collased = new ArrayList<Town>();
+                    for (int i = 0; i < 3; i++) {
+                        towns_draft_collased.add(towns_draft.get(i));
+                    }
                     gridview_draft.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_draft_collased));
                     ((TextView) findViewById(R.id.textView_draft_more)).setText("More");
                 }
