@@ -40,8 +40,11 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -187,6 +190,9 @@ public class NewTownActivity extends AppCompatActivity implements
                 } else {
                     Log.i("onClick", "Preview !");
                     //passing data to the detailActivity
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat mdformat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+                    outputTown.setDate(mdformat.format(cal.getTime()));
                     Log.i("onClick", "Preview, outputTown. getImageUriString() = " + outputTown.getImageUriString());
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                     intent.putExtra("town", outputTown);

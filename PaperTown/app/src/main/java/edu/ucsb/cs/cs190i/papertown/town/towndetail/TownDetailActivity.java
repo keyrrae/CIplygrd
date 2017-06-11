@@ -370,7 +370,7 @@ public class TownDetailActivity extends AppCompatActivity {
 
 
 
-        passedInTown.setUserId(UserSingleton.getInstance().getUid());
+//        passedInTown.setUserId(UserSingleton.getInstance().getUid());
 
         FirebaseApp.initializeApp(this);
         storage = FirebaseStorage.getInstance();
