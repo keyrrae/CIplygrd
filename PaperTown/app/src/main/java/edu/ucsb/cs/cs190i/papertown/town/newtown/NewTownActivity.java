@@ -376,10 +376,10 @@ public class NewTownActivity extends AppCompatActivity implements
         button_step_left.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.PrimaryPink));
         button_step_left.setText("PREVIEW !");
 
-        //change the color of the progress bar
-        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
-        pb.setProgress(0);  //only show background
-        pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+//        //change the color of the progress bar
+//        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+//        //pb.setProgress(10);  //only show background
+//        //pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
 
     }
 
