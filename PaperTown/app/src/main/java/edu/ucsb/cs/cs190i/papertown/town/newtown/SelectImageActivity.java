@@ -32,8 +32,12 @@ import com.zhihu.matisse.engine.impl.PicassoEngine;
 import java.util.ArrayList;
 import java.util.List;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
+import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
+import edu.ucsb.cs.cs190i.papertown.town.account.GridViewImageAdapter;
 import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -57,6 +61,18 @@ public class SelectImageActivity extends AppCompatActivity {
 
         imageUris = new ArrayList<>();
         grid = (GridView) findViewById(R.id.grid);
+
+        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                Log.i("onClick", "onItemLongClick");
+                if(position<imageUris.size())
+                imageUris.remove(position);
+                SelelctImageGrid adapter = new SelelctImageGrid(SelectImageActivity.this, imageUris.toArray(new Uri[imageUris.size()]));
+                grid.setAdapter(adapter);
+                return true;
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newTown_selectimg);
         setSupportActionBar(toolbar);
