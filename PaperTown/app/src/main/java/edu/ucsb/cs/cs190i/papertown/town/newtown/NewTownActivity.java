@@ -367,6 +367,7 @@ public class NewTownActivity extends AppCompatActivity implements
         ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
         pb.setProgress(0);  //only show background
         pb.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Medium_Green));
+
     }
 
     void setChecked(TextView t1, TextView t2, ImageView i1, String description_in) {

@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/grid_item_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/com_facebook_profile_picture_blank_square" />
@@ -25,8 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/grid_item_image"
+        android:layout_marginTop="@dimen/s"
         android:layout_centerHorizontal="false"
         android:text="untitled"
         android:textAppearance="@style/MainText_list"
-        android:textColor="@color/LightGray"/>
+        android:textColor="@color/LightGray"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 </RelativeLayout>

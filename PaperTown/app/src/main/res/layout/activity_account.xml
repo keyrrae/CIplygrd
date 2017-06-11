@@ -41,7 +41,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m">
 
                 <TextView
                     android:id="@+id/textView_username_initial"
@@ -76,7 +77,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/m"
+                android:layout_marginTop="@dimen/l"
                 android:background="@color/LightestGray"/>
 
             <LinearLayout
@@ -113,6 +114,49 @@
                 android:numColumns="3"
                 android:horizontalSpacing="@dimen/s"
                 android:verticalSpacing="@dimen/l" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/m"
+                android:background="@color/LightestGray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="My Posts"
+                    android:textAppearance="@style/MainTextBold_detail"/>
+
+                <TextView
+                    android:id="@+id/textView_my_post_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:text="More"
+                    android:textAppearance="@style/footerText_list"
+                    android:textAllCaps="true"
+                    android:textColor="@color/PrimaryPink"/>
+            </LinearLayout>
+
+            <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
+                android:id="@+id/gridView_posts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp" />
 
             <View
                 android:layout_width="match_parent"

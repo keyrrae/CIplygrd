@@ -13,30 +13,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/PrimaryPink"
+    android:background="@color/Almost_White"
     tools:context="edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity">
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Paper Town"
-            android:textAppearance="@style/SplashText"
-            android:id="@+id/shimmer_text"
-             />
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
 
 
     <Button
@@ -78,5 +56,31 @@
         android:layout_marginLeft="@dimen/s"
         app:layout_constraintLeft_toLeftOf="parent"
         android:backgroundTint="@color/Almost_White"/>
+
+    <!--<com.facebook.shimmer.ShimmerFrameLayout-->
+        <!--android:id="@+id/shimmer_view_container"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:layout_editor_absoluteY="137dp"-->
+        <!--tools:layout_editor_absoluteX="0dp">-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Paper Town"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textAppearance="@style/SplashText"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/shimmer_text"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!---->
+    <!--</com.facebook.shimmer.ShimmerFrameLayout>-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/m"
+        android:layout_marginLeft="@dimen/l"
+        android:layout_marginRight="@dimen/l"
+        android:layout_marginTop="@dimen/m"
+        android:scaleType="fitCenter"
+        android:src="@drawable/papertown2" />
 
 </android.support.constraint.ConstraintLayout>
