@@ -83,6 +83,7 @@ import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewAdapter;
+import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewColorBarAdapter;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -99,6 +100,7 @@ public class GeoActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private TownRecyclerViewAdapter mAdapter;
+    private TownRecyclerViewColorBarAdapter mAdapter4ColorBar;
     private TownMapIcon tmi;
     private int snappingPosition = 0;
     private String pressedTownId;
