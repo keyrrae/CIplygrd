@@ -60,18 +60,18 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/m" />
 
-        <Button
-            android:id="@+id/button_new_address_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/PrimaryPink"
-            android:text="Next"
-            android:textAllCaps="true"
-            android:textAppearance="@style/MainTextBold_detail"
-            android:textColor="@android:color/white" />
-
     </FrameLayout>
+
+    <Button
+        android:id="@+id/button_new_address_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/PrimaryPink"
+        android:text="Next"
+        android:textAllCaps="true"
+        android:textAppearance="@style/MainTextBold_detail"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>

@@ -45,7 +45,7 @@
                 android:layout_toEndOf="@id/list_town_category"
                 android:text="May 12 2017"
                 android:textAppearance="@style/footerText_list"
-                android:textColor="@color/LighterGray"/>
+                android:textColor="@color/LightGray"/>
 
             <TextView
                 android:id="@+id/list_town_author"
@@ -56,7 +56,7 @@
                 android:layout_toEndOf="@id/list_town_date"
                 android:text="Alan Cooper"
                 android:textAppearance="@style/footerText_list"
-                android:textColor="@color/LighterGray"
+                android:textColor="@color/LightGray"
 
                 />
 

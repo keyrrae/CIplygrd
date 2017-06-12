@@ -79,7 +79,7 @@ public class ListTownAdapter extends RecyclerView.Adapter<ListTownAdapter.ListTo
             holder.date.setText(""+towns.get(position).getDate());
         }
         else{
-            holder.date.setText("Unknown upload date.");
+            holder.date.setText("Unknown date.");
         }
 
 
