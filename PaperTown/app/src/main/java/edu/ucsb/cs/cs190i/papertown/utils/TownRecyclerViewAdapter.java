@@ -115,6 +115,9 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
                 customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
                 break;
             }
+            else{
+                customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_border_white_18dp);
+            }
         }
 
     }
