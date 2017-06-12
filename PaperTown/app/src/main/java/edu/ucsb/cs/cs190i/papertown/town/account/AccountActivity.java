@@ -244,12 +244,17 @@ public class AccountActivity extends AppCompatActivity {
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("TAG", dataSnapshot.getValue().toString());
-                if(dataSnapshot.getValue().toString()!=null&&!dataSnapshot.getValue().toString().isEmpty()) {
-                    ((TextView) findViewById(R.id.textView_username)).setText(dataSnapshot.getValue().toString());
-                    String temp = ""+dataSnapshot.getValue().toString().charAt(0);
-                    ((TextView) findViewById(R.id.textView_username_initial)).setText(temp);
-                }
+//                if(dataSnapshot.getValue()!=null) {
+                    Log.d("TAG", dataSnapshot.getValue().toString());
+                    if (dataSnapshot.getValue().toString() != null && !dataSnapshot.getValue().toString().isEmpty()) {
+                        ((TextView) findViewById(R.id.textView_username)).setText(dataSnapshot.getValue().toString());
+                        String temp = "" + dataSnapshot.getValue().toString().charAt(0);
+                        ((TextView) findViewById(R.id.textView_username_initial)).setText(temp);
+                    }
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Unable to fetch data from the sever, please check your network connection.", Toast.LENGTH_SHORT).show();
+//                }
             }
 
             @Override

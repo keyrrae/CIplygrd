@@ -91,6 +91,8 @@ public class SelelctImageGrid extends BaseAdapter {
                         Picasso.with(mContext).load(ImageUris[position])
                                 .resize(imageViewSize, imageViewSize)
                                 .centerCrop()
+                                .error(R.drawable.dummyimage)
+                                .placeholder(R.drawable.dummyimage)
                                 .into(imageView);
                     }
                 }

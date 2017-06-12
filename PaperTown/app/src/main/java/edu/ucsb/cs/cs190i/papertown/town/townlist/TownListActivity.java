@@ -136,6 +136,7 @@ public class TownListActivity extends AppCompatActivity {
                     case R.id.geo_view:
                         Intent geoTownIntent = new Intent(TownListActivity.this, GeoActivity.class);
                         startActivity(geoTownIntent);
+                        finish();
                         break;
                     case R.id.action_settings:
                         SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();

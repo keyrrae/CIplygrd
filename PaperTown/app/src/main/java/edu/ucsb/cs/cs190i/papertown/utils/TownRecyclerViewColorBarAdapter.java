@@ -35,7 +35,7 @@ import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
  * Created by Zhenyu on 2017-06-11.
  */
 
-public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerViewAdapter.CustomViewHolder> {
+public class TownRecyclerViewColorBarAdapter extends RecyclerView.Adapter<TownRecyclerViewColorBarAdapter.CustomViewHolder> {
     private List<Town> feedItemList;
     private Context mContext;
 
@@ -43,7 +43,7 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
 
     private CardView cardView;
 
-    public TownRecyclerViewAdapter(Context context, List<Town> feedItemList) {
+    public TownRecyclerViewColorBarAdapter(Context context, List<Town> feedItemList) {
         this.feedItemList = feedItemList;
         this.mContext = context;
 
@@ -61,17 +61,17 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
     }
 
     @Override
-    public TownRecyclerViewAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public TownRecyclerViewColorBarAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         //View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.geo_single_town, null);
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.geo_single_town,viewGroup,false);
-        TownRecyclerViewAdapter.CustomViewHolder viewHolder = new TownRecyclerViewAdapter.CustomViewHolder(view);
+        TownRecyclerViewColorBarAdapter.CustomViewHolder viewHolder = new TownRecyclerViewColorBarAdapter.CustomViewHolder(view);
 
         cardView = (CardView) view.findViewById(R.id.geo_card);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(TownRecyclerViewAdapter.CustomViewHolder customViewHolder, int i) {
+    public void onBindViewHolder(TownRecyclerViewColorBarAdapter.CustomViewHolder customViewHolder, int i) {
         Town feedItem = feedItemList.get(i);
 
 
@@ -92,21 +92,6 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
             customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        //Render image using Picasso library
-        Picasso.with(mContext).load(feedItem.getImageUrls().get(0))
-                .error(R.drawable.dummyimage)
-                .placeholder(R.drawable.dummyimage)
-                .into(customViewHolder.imageView);
-        //customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
-        //Picasso.with(imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(imageView);
-
-        //Setting text view title
-        customViewHolder.textView.setText(feedItem.getTitle());
-        customViewHolder.categoryTextView.setText(feedItem.getCategory());
-        customViewHolder.countTextView.setText(feedItem.getNumOfLikes()+" likes");
-
-
-
 
 
         List<String> likes = UserSingleton.getInstance().getLikes();
@@ -114,9 +99,6 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
             if(likes.get(j).equals(feedItem.getId())){
                 customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
                 break;
-            }
-            else{
-                customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_border_white_18dp);
             }
         }
 
@@ -140,10 +122,6 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
             super(view);
             this.imageView = (ImageView) view.findViewById(R.id.geo_town_image);
             this.geo_town_pick_bar = (ImageView) view.findViewById(R.id.geo_town_pick_bar);
-            this.textView = (TextView) view.findViewById(R.id.geo_town_title);
-            this.categoryTextView = (TextView) view.findViewById(R.id.geo_town_category);
-            this.countTextView = (TextView) view.findViewById(R.id.geo_town_count);
-            this.imageButton = (ImageButton) view.findViewById(R.id.geo_town_visit_button);
         }
     }
 }

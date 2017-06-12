@@ -35,6 +35,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -82,6 +83,7 @@ import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewAdapter;
+import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewColorBarAdapter;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -98,6 +100,7 @@ public class GeoActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private TownRecyclerViewAdapter mAdapter;
+    private TownRecyclerViewColorBarAdapter mAdapter4ColorBar;
     private TownMapIcon tmi;
     private int snappingPosition = 0;
     private String pressedTownId;
@@ -138,7 +141,6 @@ public class GeoActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
 
 
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         toolbar.setSubtitle("");
@@ -160,6 +162,7 @@ public class GeoActivity extends AppCompatActivity implements
                         Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
                         townListIntent.putExtra("townArrayList", new ArrayList<Town>(TownManager.getInstance().getAllTowns()));
                         startActivity(townListIntent);
+                        finish();
                         break;
                     case R.id.action_settings:
                         FirebaseAuth.getInstance().signOut();
@@ -214,13 +217,13 @@ public class GeoActivity extends AppCompatActivity implements
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 final List<String> likedTownId = new ArrayList<String>();
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.d("userLikes", ds.getValue().toString());
                     likedTownId.add(ds.getValue().toString());
                 }
 
 
-                if(likedTownId!=null&&likedTownId.size()>0) {
+                if (likedTownId != null && likedTownId.size() > 0) {
                     UserSingleton.getInstance().setLikes(likedTownId);
                 }
             }
@@ -232,7 +235,6 @@ public class GeoActivity extends AppCompatActivity implements
         });
 
 
-
         TownManager.getInstance()
                 .setOnTownDataChangedListener(
                         new TownManager.TownDataChangedListener() {
@@ -240,7 +242,7 @@ public class GeoActivity extends AppCompatActivity implements
                             public void onDataChanged(List<Town> townList, HashMap<String, Integer> idPositionHashMap) {
                                 //Toast.makeText(getApplicationContext(), "onDataChanged!!!, town size = "+townList.size(), Toast.LENGTH_SHORT).show();
                                 Log.i("TownManager", "town size1 = " + townList.size());
-                                if(townList.size()!=0) {
+                                if (townList.size() != 0) {
 
                                     if (townList.size() == 0) {
                                         Log.i("TownManager", "town size2 = " + townList.size());
@@ -263,7 +265,7 @@ public class GeoActivity extends AppCompatActivity implements
                                     mRecyclerView.setAdapter(mAdapter);
 
 
-                            }
+                                }
                             }
                         });
 
@@ -293,12 +295,12 @@ public class GeoActivity extends AppCompatActivity implements
             @Override
             public void onGlobalLayout() {
                 Log.i("onGlobalLayout", "onGlobalLayout");
-                if ( ifNothingSelected) {//if (currentMapZoomLeverl > zoomLevelThreshold && ifNothingSelected) {
+                if (ifNothingSelected) {//if (currentMapZoomLeverl > zoomLevelThreshold && ifNothingSelected) {
                     Log.i("onGlobalLayout", "PrimaryPink");
                     if (mRecyclerView.getChildCount() != 0) {
                         View v = mRecyclerView.getChildAt(0);
-                        ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-                        bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+                        //ImageView bar3 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+                        //bar3.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
 
                         //pressedTownId = towns.get(0).getId();
                         updateMapMarkers();
@@ -324,16 +326,27 @@ public class GeoActivity extends AppCompatActivity implements
 //                        ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
 //                        bar2.setBackgroundColor(Color.TRANSPARENT);
 //                    }
-                    clearAllColorBar(recyclerView);
+                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                        View v = recyclerView.getChildAt(i);
+                        Log.i("SCROLL","getChildAt.title = "+ ((TextView)v.findViewById(R.id.geo_town_title)).getText().toString());
+                    }
+                    //clearAllColorBar(recyclerView);
+                    mAdapter.setSelectionColorBar(1);
 
 
                 } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     View centerView = helper.findSnapView(linearLayoutManager);
-                    Log.i("centerView","centerView = "+centerView);
-                    if(centerView!=null) {
+                    Log.i("centerView", "centerView = " + centerView);
+                    if (centerView != null) {
+
+
+                        //rendering color bar
+                        ImageView bar = (ImageView) centerView.findViewById(R.id.geo_town_pick_bar);
+                        bar.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
+
                         snappingPosition = linearLayoutManager.getPosition(centerView);
 
-                        if(TownManager.getInstance().getAllTowns()!=null&&TownManager.getInstance().getAllTowns().size()>snappingPosition) {
+                        if (TownManager.getInstance().getAllTowns() != null && TownManager.getInstance().getAllTowns().size() > snappingPosition) {
 
                             pressedTownId = TownManager.getInstance().getAllTowns().get(snappingPosition).getId();
 
@@ -342,10 +355,6 @@ public class GeoActivity extends AppCompatActivity implements
 
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currLoc, 17);
                             map.animateCamera(cameraUpdate);
-
-                            // set track bar color
-                            ImageView bar = (ImageView) centerView.findViewById(R.id.geo_town_pick_bar);
-                            bar.setBackgroundColor(getResources().getColor(R.color.PrimaryPink));
                         }
                     }
                 }
@@ -359,7 +368,7 @@ public class GeoActivity extends AppCompatActivity implements
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                         List<Town> t = TownManager.getInstance().getAllTowns();
-                        if(TownManager.getInstance().getAllTowns()!=null&&TownManager.getInstance().getAllTowns().size()>position) {
+                        if (TownManager.getInstance().getAllTowns() != null && TownManager.getInstance().getAllTowns().size() > position) {
                             intent.putExtra("town", TownManager.getInstance().getAllTowns().get(position));
                             startActivity(intent);
                         }
@@ -376,10 +385,16 @@ public class GeoActivity extends AppCompatActivity implements
 
     private void clearAllColorBar(RecyclerView recyclerView) {
         //clear color bar when scrolling
+
+        int count = recyclerView.getChildCount();
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            View v = recyclerView.getChildAt(i);
-            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-            bar2.setBackgroundColor(Color.TRANSPARENT);
+            Log.i("clearAllColorBar", "i = " + i);
+//            View v = recyclerView.getChildAt(i);
+//            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+//            bar2.setBackgroundColor(Color.TRANSPARENT);
+////            View v = recyclerView.findViewHolderForLayoutPosition(i).itemView;
+////            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
+////            bar2.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -523,12 +538,12 @@ public class GeoActivity extends AppCompatActivity implements
                 @Override
                 public void onCameraIdle() {
 
-                                if ((currentMapZoomLeverl > zoomLevelThreshold)) {
-                                    if (ifCollasped) {
-                                        setRecyclerViewExpand(mRecyclerView);
-                                        ifCollasped = false;
-                                    }
-                                }
+                    if ((currentMapZoomLeverl > zoomLevelThreshold)) {
+                        if (ifCollasped) {
+                            setRecyclerViewExpand(mRecyclerView);
+                            ifCollasped = false;
+                        }
+                    }
 
                     LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
                     double neLat = bounds.northeast.latitude;

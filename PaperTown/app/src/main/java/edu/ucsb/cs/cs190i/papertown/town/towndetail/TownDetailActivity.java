@@ -713,6 +713,8 @@ public class TownDetailActivity extends AppCompatActivity {
                         Picasso.with(getApplicationContext()).load(passedInTown.getImageUrls().get(0))
                                 .resize(detail_town_image.getMeasuredWidth(), detail_town_image.getMeasuredHeight())
                                 .centerCrop()
+                                .error(R.drawable.dummyimage)
+                                .placeholder(R.drawable.dummyimage)
                                 .into(detail_town_image);
                     }
                 });
