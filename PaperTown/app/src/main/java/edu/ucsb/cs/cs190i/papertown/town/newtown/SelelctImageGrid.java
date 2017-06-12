@@ -99,8 +99,8 @@ public class SelelctImageGrid extends BaseAdapter {
             } else {
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
                 ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-                imageView.setBackgroundColor(Color.LTGRAY);
-                imageView.setImageResource(R.drawable.ic_add_white_18dp);
+                //imageView.setBackgroundColor(Color.LTGRAY);
+                imageView.setImageResource(R.drawable.add);
             }
         } else {
             grid = (View) convertView;

@@ -113,7 +113,9 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
         for(int j = 0 ; j<likes.size();j++){
             if(likes.get(j).equals(feedItem.getId())){
                 customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
-                break;
+            }
+            else{
+                customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_border_white_18dp);
             }
         }
 
