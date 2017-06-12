@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -54,7 +53,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,8 +74,7 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
-import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
-import edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity;
+import edu.ucsb.cs.cs190i.papertown.account.AccountActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
@@ -114,7 +111,6 @@ public class GeoActivity extends AppCompatActivity implements
 
     List<Town> towns = new ArrayList<>();
 
-
     private float currentMapZoomLeverl = 0;
     private boolean ifNothingSelected = true;
 
@@ -138,7 +134,6 @@ public class GeoActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_geo);
         ButterKnife.bind(this);
 
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         toolbar.setSubtitle("");
@@ -160,13 +155,6 @@ public class GeoActivity extends AppCompatActivity implements
                         Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
                         townListIntent.putExtra("townArrayList", new ArrayList<Town>(TownManager.getInstance().getAllTowns()));
                         startActivity(townListIntent);
-                        finish();
-                        break;
-                    case R.id.action_settings:
-                        FirebaseAuth.getInstance().signOut();
-                        Intent splashIntent = new Intent(GeoActivity.this, SplashScreenActivity.class);
-                        startActivity(splashIntent);
-                        finish();
                         break;
                 }
                 return true;
@@ -199,15 +187,10 @@ public class GeoActivity extends AppCompatActivity implements
             Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.geo_town_list);
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        initData();
-        //mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-
 
         DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
         likeData.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -219,7 +202,6 @@ public class GeoActivity extends AppCompatActivity implements
                     Log.d("userLikes", ds.getValue().toString());
                     likedTownId.add(ds.getValue().toString());
                 }
-
 
                 if (likedTownId != null && likedTownId.size() > 0) {
                     UserSingleton.getInstance().setLikes(likedTownId);
@@ -241,7 +223,6 @@ public class GeoActivity extends AppCompatActivity implements
                                 //Toast.makeText(getApplicationContext(), "onDataChanged!!!, town size = "+townList.size(), Toast.LENGTH_SHORT).show();
                                 Log.i("TownManager", "town size1 = " + townList.size());
                                 if (townList.size() != 0) {
-
                                     if (townList.size() == 0) {
                                         Log.i("TownManager", "town size2 = " + townList.size());
                                     }
@@ -253,16 +234,10 @@ public class GeoActivity extends AppCompatActivity implements
                                         }
                                     }
 
-
                                     updateMapMarkers();
-
-//                                    mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-//                                    mRecyclerView.setAdapter(mAdapter);
 
                                     mAdapter = new TownRecyclerViewAdapter(GeoActivity.this, townList);
                                     mRecyclerView.setAdapter(mAdapter);
-
-
                                 }
                             }
                         });
@@ -271,22 +246,6 @@ public class GeoActivity extends AppCompatActivity implements
         //add snapping effect
         final SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(mRecyclerView);
-
-        //mAdapter = new GeoTownListAdapter(towns, getApplicationContext());
-//        if (towns.size() > 0) {
-//            if (ifCollasped) {
-//                Log.i("onQueryTextChange", "expand");
-//                expand(mRecyclerView);
-//                ifCollasped = false;
-//            }
-//        } else {
-//            if (!ifCollasped) {
-//                Log.i("onQueryTextChange", "collapse");
-//                collapse(mRecyclerView);
-//                ifCollasped = true;
-//            }
-//        }
-        //mRecyclerView.setAdapter(mAdapter);
 
         //ini track bar color
         mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -318,12 +277,6 @@ public class GeoActivity extends AppCompatActivity implements
 
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL || newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
 
-                    //clear color bar when scrolling
-//                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
-//                        View v = recyclerView.getChildAt(i);
-//                        ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-//                        bar2.setBackgroundColor(Color.TRANSPARENT);
-//                    }
                     for (int i = 0; i < recyclerView.getChildCount(); i++) {
                         View v = recyclerView.getChildAt(i);
                         Log.i("SCROLL","getChildAt.title = "+ ((TextView)v.findViewById(R.id.geo_town_title)).getText().toString());
@@ -359,7 +312,6 @@ public class GeoActivity extends AppCompatActivity implements
             }
         });
 
-
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -378,7 +330,6 @@ public class GeoActivity extends AppCompatActivity implements
 
                 })
         );
-
     }
 
     private void clearAllColorBar(RecyclerView recyclerView) {
@@ -387,12 +338,6 @@ public class GeoActivity extends AppCompatActivity implements
         int count = recyclerView.getChildCount();
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             Log.i("clearAllColorBar", "i = " + i);
-//            View v = recyclerView.getChildAt(i);
-//            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-//            bar2.setBackgroundColor(Color.TRANSPARENT);
-////            View v = recyclerView.findViewHolderForLayoutPosition(i).itemView;
-////            ImageView bar2 = (ImageView) v.findViewById(R.id.geo_town_pick_bar);
-////            bar2.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -461,7 +406,6 @@ public class GeoActivity extends AppCompatActivity implements
         for (Marker marker : mMarkerArray) {
             marker.remove();
         }
-
 
         Town town;
         for (int i = 0; i < TownManager.getInstance().getAllTowns().size(); i++) {
@@ -554,44 +498,49 @@ public class GeoActivity extends AppCompatActivity implements
                         return;
                     }
 
-                    List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    double lat = map.getCameraPosition().target.latitude;
+                    double lng = map.getCameraPosition().target.longitude;
+                    String centerGeoHash = GeoHash.genGeoHash(lat, lng);
 
-                    if (database != null) {
+                    if(!centerGeoHash.equals(lastSnapId)) {
+                        List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                        for (String code : allGeoCodes) {
-                            Query query = database.getReference("towns").orderByChild("geoHash").equalTo(code);
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (database != null) {
 
-                                    currentMapZoomLeverl = map.getCameraPosition().zoom;
-                                    Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
+                            for (String code : allGeoCodes) {
+                                Query query = database.getReference("towns").orderByChild("geoHash").equalTo(code);
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        currentMapZoomLeverl = map.getCameraPosition().zoom;
+                                        Log.i("onDataChange", "currentMapZoomLeverl = " + currentMapZoomLeverl);
 
 
-                                    //TownManager.getInstance().clearTowns();
-                                    //towns.clear();
-                                    List<Town> towns = new ArrayList<>();
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        Town town = ds.getValue(Town.class);
-                                        //Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
-                                        towns.add(town);
-                                        //TownManager.getInstance().addTown(town);
+                                        //TownManager.getInstance().clearTowns();
+                                        //towns.clear();
+                                        List<Town> towns = new ArrayList<>();
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            Town town = ds.getValue(Town.class);
+                                            //Log.i("onTownsChange:", "towns.add(town), towns sien = " + townsOld.size() + ", town = " + town.getTitle());
+                                            towns.add(town);
+                                            //TownManager.getInstance().addTown(town);
+                                        }
+                                        TownManager.getInstance().addTownList(towns);
+
                                     }
-                                    TownManager.getInstance().addTownList(towns);
 
-                                }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
                 }
             });
-            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             GeoActivityPermissionsDispatcher.getMyLocationWithCheck(this);
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
@@ -814,150 +763,5 @@ public class GeoActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.menu_geo, menu);
 
         return true;
-    }
-
-    private void initData() {
-        towns = new ArrayList<>();
-
-        List<String> imgs1 = new ArrayList<>();
-        imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
-
-        List<String> imgs2 = new ArrayList<>();
-        imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
-
-        List<String> imgs3 = new ArrayList<>();
-        imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
-
-
-        Town t1 = new TownBuilder()
-                .setTitle("1Mother Susanna Monument")
-                .setCategory("place")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs1)
-                .setSketch("")
-                .build();
-
-        Town t2 = new TownBuilder()
-                .setTitle("2Father Crowley Monument")
-                .setCategory("place")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("6510 El Colegio Rd Apt 1223")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs2)
-                .setSketch("")
-                .build();
-
-        Town t3 = new TownBuilder()
-                .setTitle("3Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t4 = new TownBuilder()
-                .setTitle("4Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t5 = new TownBuilder()
-                .setTitle("5Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t6 = new TownBuilder()
-                .setTitle("6Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t7 = new TownBuilder()
-                .setTitle("7Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t8 = new TownBuilder()
-                .setTitle("8Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t9 = new TownBuilder()
-                .setTitle("9Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        Town t10 = new TownBuilder()
-                .setTitle("10Wonder Land")
-                .setCategory("creature")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("Rabbit Hole 1901C")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-
-        towns.add(t1);
-        towns.add(t2);
-        towns.add(t3);
-        towns.add(t4);
-        towns.add(t5);
-        towns.add(t6);
-        towns.add(t7);
-        towns.add(t8);
-        towns.add(t9);
-        towns.add(t10);
     }
 }

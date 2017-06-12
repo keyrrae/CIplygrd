@@ -94,11 +94,6 @@ public class TownDetailActivity extends AppCompatActivity {
 
     private String mode = "detail";
 
-    //private String title = "";
-    //private String address = "";
-    //private String category = "";
-    //private String description = "";
-    //private String information = "";
     private ArrayList<String> uriStringArrayList;
     private String update_text;
 
@@ -120,11 +115,6 @@ public class TownDetailActivity extends AppCompatActivity {
     private DatabaseReference townRef;
     private Town passedInTown;
     private boolean alreadyLiked = false;
-
-    private Integer[] mImageIds = {
-            R.drawable.door, R.drawable.light, R.drawable.corner,
-            R.drawable.mc, R.drawable.light, R.drawable.door,
-            R.drawable.light, R.drawable.corner};
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -469,7 +459,8 @@ public class TownDetailActivity extends AppCompatActivity {
 
                     //camera animation
                     if (map != null) {
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));  //add animation
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+                        map.getUiSettings().setAllGesturesEnabled(false);
                     }
                 }
             });

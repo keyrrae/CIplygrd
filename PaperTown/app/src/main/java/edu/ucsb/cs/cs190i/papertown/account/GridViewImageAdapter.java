@@ -6,16 +6,14 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-package edu.ucsb.cs.cs190i.papertown.town.account;
+package edu.ucsb.cs.cs190i.papertown.account;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

@@ -209,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                                 curUser.setUid(uid);
 
                                 Intent intent = new Intent(LoginActivity.this, GeoActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             }

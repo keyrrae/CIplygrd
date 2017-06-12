@@ -43,6 +43,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -193,24 +198,33 @@ public class SignupActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
 
                                 // Name, email address, and profile photo Url
-                                String name = user.getDisplayName();
                                 String email = user.getEmail();
+                                String[] nd = email.split("@");
                                 Uri photoUrl = user.getPhotoUrl();
 
                                 // The user's ID, unique to the Firebase project. Do NOT use this value to
                                 // authenticate with your backend server, if you have one. Use
                                 // FirebaseUser.getToken() instead.
                                 String uid = user.getUid();
-
-                                UserSingleton curUser = UserSingleton.getInstance();
+                                final UserSingleton curUser = UserSingleton.getInstance();
                                 curUser.setEmail(email);
-                                curUser.setName(name);
+                                curUser.setName(nd[0]);
                                 curUser.setPhotoUrl(photoUrl);
                                 curUser.setUid(uid);
 
-                                Intent intent = new Intent(SignupActivity.this, GeoActivity.class);
-                                startActivity(intent);
-                                finish();
+                                DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(curUser.getUid());
+                                userDatabase.setValue(curUser, new DatabaseReference.CompletionListener() {
+
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        if(databaseError == null) {
+                                            Intent intent = new Intent(SignupActivity.this, GeoActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
                             }
                         }
                     });

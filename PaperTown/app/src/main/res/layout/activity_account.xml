@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.ucsb.cs.cs190i.papertown.town.account.AccountActivity">
+    tools:context=".account.AccountActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,14 +31,15 @@
     <ScrollView
         android:id="@+id/scrollView_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="@dimen/m">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/m">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,7 +52,6 @@
                     android:layout_height="50dp"
                     android:background="@drawable/circle"
                     android:gravity="center"
-                    android:text="S"
                     android:textSize="@dimen/lT"
                     android:textColor="@android:color/white"/>
 
@@ -61,7 +61,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/textView_username_initial"
                     android:layout_marginStart="@dimen/m"
-                    android:text="Samantha"
                     android:textAppearance="@style/TitleText_detail"/>
 
                 <TextView
@@ -71,7 +70,7 @@
                     android:layout_toEndOf="@id/textView_username_initial"
                     android:layout_marginStart="@dimen/m"
                     android:layout_below="@id/textView_username"
-                    android:text="23 posts" />
+                />
 
             </RelativeLayout>
 
@@ -106,7 +105,7 @@
                     android:textColor="@color/PrimaryPink"/>
             </LinearLayout>
 
-            <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
+            <edu.ucsb.cs.cs190i.papertown.account.MyGridView
                 android:id="@+id/gridView_liked"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -147,7 +146,7 @@
                     android:textColor="@color/PrimaryPink"/>
             </LinearLayout>
 
-            <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
+            <edu.ucsb.cs.cs190i.papertown.account.MyGridView
                 android:id="@+id/gridView_posts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -190,7 +189,7 @@
                     android:textColor="@color/PrimaryPink"/>
             </LinearLayout>
 
-            <edu.ucsb.cs.cs190i.papertown.town.account.MyGridView
+            <edu.ucsb.cs.cs190i.papertown.account.MyGridView
                 android:id="@+id/gridView_draft"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

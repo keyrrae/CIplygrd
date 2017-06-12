@@ -6,19 +6,22 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-package edu.ucsb.cs.cs190i.papertown.town.account;
+package edu.ucsb.cs.cs190i.papertown.account;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,33 +34,33 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
 import edu.ucsb.cs.cs190i.papertown.R;
+import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
+import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
+import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 //import edu.ucsb.cs.cs190i.papertown.town.newtown.TownDatabaseHelper;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
+import edu.ucsb.cs.cs190i.papertown.town.townlist.TownListActivity;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class AccountActivity extends AppCompatActivity {
-
 
     boolean ifLikedExpanded = false;
     boolean ifDraftExpanded = false;
     boolean ifMyPostsExpanded = false;
     public List<Town> towns_liked_collapsed;
     public List<Town> towns_liked;
-    //public List<Town> towns_draft_collased;
     public List<Town> towns_draft;
     public List<Town> towns_my_posts;
 
     private Realm mRealm;
     private int postsCount = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +79,24 @@ public class AccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setTitleTextColor(Color.WHITE);
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
 
+                switch (item.getItemId()) {
+                    case R.id.sign_out:
+                        FirebaseAuth.getInstance().signOut();
+                        Intent splashIntent = new Intent(AccountActivity.this, SplashScreenActivity.class);
+                        startActivity(splashIntent);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
 
-
-
-        //towns_draft_collased = new ArrayList<>();
         towns_liked_collapsed = new ArrayList<>();
         towns_my_posts = new ArrayList<>();
 
@@ -90,8 +105,6 @@ public class AccountActivity extends AppCompatActivity {
         if(towns_draft.size()<=3) {
             findViewById(R.id.textView_draft_more).setVisibility(View.INVISIBLE);
         }
-
-
 
 //        if(towns_liked.size()>3) {
 //            towns_liked_2.add(towns_liked.get(0));
@@ -237,7 +250,6 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-
         // get username
         String userId = UserSingleton.getInstance().getUid();
         DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name");
@@ -257,8 +269,6 @@ public class AccountActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         //get user post numbers
 
@@ -283,7 +293,6 @@ public class AccountActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.textView_user_info)).setText(""+postsCount+" posts");
                 }
 
-
                 if(towns_my_posts.size()<=3) {
                     findViewById(R.id.textView_my_post_more).setVisibility(View.INVISIBLE);
                     gridview_post.setAdapter(new GridViewImageAdapter(getApplication(), towns_my_posts));
@@ -296,11 +305,6 @@ public class AccountActivity extends AppCompatActivity {
                     gridview_post.setAdapter(new GridViewImageAdapter(getApplicationContext(), towns_my_posts_collased));
                     ((TextView) findViewById(R.id.textView_my_post_more)).setText("More");
                 }
-
-
-
-
-
             }
 
             @Override
@@ -308,8 +312,6 @@ public class AccountActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         //get user likes
         DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("likes");
@@ -323,7 +325,6 @@ public class AccountActivity extends AppCompatActivity {
                     Log.d("userLikes", ds.getValue().toString());
                     likedTownId.add(ds.getValue().toString());
                 }
-
 
                 if(likedTownId!=null&&likedTownId.size()>0) {
 
@@ -367,8 +368,6 @@ public class AccountActivity extends AppCompatActivity {
                             }
 
 
-
-
                         }
 
                         @Override
@@ -379,9 +378,6 @@ public class AccountActivity extends AppCompatActivity {
 
                     //=================   end of get all towns    =============
                 }
-
-
-
             }
 
             @Override
@@ -392,62 +388,15 @@ public class AccountActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_account, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void initData() {
         towns_draft = new ArrayList<>();
         towns_liked = new ArrayList<>();
-        List<String> imgs1 = new ArrayList<>();
-        imgs1.add("https://s-media-cache-ak0.pinimg.com/564x/58/82/11/588211a82d4c688041ed5bf239c48715.jpg");
-
-        List<String> imgs2 = new ArrayList<>();
-        imgs2.add("https://s-media-cache-ak0.pinimg.com/564x/5f/d1/3b/5fd13bce0d12da1b7480b81555875c01.jpg");
-
-        List<String> imgs3 = new ArrayList<>();
-        imgs3.add("https://s-media-cache-ak0.pinimg.com/564x/8f/af/c0/8fafc02753b860c3213ffe1748d8143d.jpg");
-
-
-        Town t1 = new TownBuilder()
-                .setTitle("Mother Susanna Monument")
-                .setCategory("place")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("35.594559f,-117.899149f")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs1)
-                .setSketch("")
-                .build();
-
-        Town t2 = new TownBuilder()
-                .setTitle("Father Crowley Monument")
-                .setCategory("place")
-                //.setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("35.594559f,-117.899149f")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("theUniqueEye")
-                .setImages(imgs2)
-                .setSketch("")
-                .build();
-
-        Town t3 = new TownBuilder()
-                .setTitle("Wonder Land")
-                .setCategory("creature")
-               // .setDescription("Discription here. ipsum dolor sit amet, consectetur adipisicing elit")
-                .setAddress("35.594559f,-117.899149f")
-                .setLat(35.594559f)
-                .setLng(-117.899149f)
-                .setUserId("Sams to Go")
-                .setImages(imgs3)
-                .setSketch("")
-                .build();
-//
-//        towns_liked.add(t1);
-//        towns_liked.add(t1);
-//        towns_liked.add(t3);
-//        towns_liked.add(t2);
-//        towns_liked.add(t2);
-//        towns_liked.add(t3);
-//        towns_liked.add(t1);
 
         //read draft towns from realm
         mRealm = Realm.getInstance(getApplicationContext());
@@ -458,7 +407,5 @@ public class AccountActivity extends AppCompatActivity {
             Town t = gson.fromJson(list.get(i).getTownJson(),Town.class);
             towns_draft.add(t);
         }
-
-        //towns_my_posts = towns_draft;
     }
 }

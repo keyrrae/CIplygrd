@@ -6,7 +6,7 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-package edu.ucsb.cs.cs190i.papertown.town.account;
+package edu.ucsb.cs.cs190i.papertown.account;
 
 import android.content.Context;
 import android.util.AttributeSet;

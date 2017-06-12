@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31261632-7111-44d9-a48d-e7d2ae9db306" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/res/menu/menu_update.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/geo/GeoActivity.java" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/geo/GeoActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/newtown/NewTownActivity.java" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/newtown/NewTownActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/towndetail/TownDetailActivity.java" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/towndetail/TownDetailActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/towndetail/UpdateDescriptionActivity.java" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/java/edu/ucsb/cs/cs190i/papertown/town/towndetail/UpdateDescriptionActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/res/layout-v21/activity_town_detail.xml" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/res/layout-v21/activity_town_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaperTown/app/src/main/res/layout/activity_update_description.xml" afterPath="$PROJECT_DIR$/PaperTown/app/src/main/res/layout/activity_update_description.xml" />
-    </list>
+    <list default="true" id="31261632-7111-44d9-a48d-e7d2ae9db306" name="Default" comment="" />
     <ignored path="PaperTown.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,6 +63,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane />
       </pane>
@@ -110,7 +101,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -118,7 +108,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/PaperTown" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="Application" factoryName="Application">
@@ -205,17 +195,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="57" y="23" width="1223" height="777" extended-state="6" />
+    <frame x="57" y="23" width="1223" height="777" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Buck" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33080426" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3313783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />

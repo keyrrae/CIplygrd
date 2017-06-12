@@ -64,10 +64,7 @@ public class TownListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_town_list);
 
-
         //============   get all towns   ==========
-
-
         DatabaseReference townsDatabase;
         townsDatabase = FirebaseDatabase.getInstance().getReference().child("towns");
         townsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,7 +74,6 @@ public class TownListActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Town t = ds.getValue(Town.class);
                     allTowns.add(t);
-                    printTown(t);
                 }
 
                 if (allTowns != null && allTowns.size() > 0) {
@@ -94,7 +90,6 @@ public class TownListActivity extends AppCompatActivity {
         });
 
         //=================   end of get all towns    =============
-
 
     mRecyclerView = (RecyclerView) findViewById(R.id.list_town);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -134,33 +129,12 @@ public class TownListActivity extends AppCompatActivity {
                         startActivity(newTownIntent);
                         break;
                     case R.id.geo_view:
-                        Intent geoTownIntent = new Intent(TownListActivity.this, GeoActivity.class);
-                        startActivity(geoTownIntent);
-                        finish();
-                        break;
-                    case R.id.action_settings:
-                        SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
-                        editor.remove(TOKEN);
-                        editor.remove(TOKEN_TIME);
-                        editor.remove(USERID);
-                        editor.remove(EMAIL);
-                        editor.remove(CRED);
-                        editor.commit();
-                        Intent splashIntent = new Intent(TownListActivity.this, SplashScreenActivity.class);
-                        startActivity(splashIntent);
                         finish();
                         break;
                 }
                 return true;
             }
         });
-    }
-
-
-    void printTown(Town town) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String result = gson.toJson(town);
-        Log.d("TAG", result);
     }
 
     @Override
