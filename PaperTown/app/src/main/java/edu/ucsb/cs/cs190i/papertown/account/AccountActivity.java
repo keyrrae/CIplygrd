@@ -8,8 +8,11 @@
 
 package edu.ucsb.cs.cs190i.papertown.account;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -87,10 +90,23 @@ public class AccountActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.sign_out:
-                        FirebaseAuth.getInstance().signOut();
-                        Intent splashIntent = new Intent(AccountActivity.this, SplashScreenActivity.class);
-                        startActivity(splashIntent);
-                        finish();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AccountActivity.this);
+                        builder.setTitle("Log out")
+                            .setMessage("Are you sure you want to sign out?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Continue with signout
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent splashIntent = new Intent(AccountActivity.this, SplashScreenActivity.class);
+                                    startActivity(splashIntent);
+                                    finish();                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .show();
                         break;
                 }
                 return true;

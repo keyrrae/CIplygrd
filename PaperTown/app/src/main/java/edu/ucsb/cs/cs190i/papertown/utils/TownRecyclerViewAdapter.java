@@ -74,8 +74,6 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
     public void onBindViewHolder(TownRecyclerViewAdapter.CustomViewHolder customViewHolder, int i) {
         Town feedItem = feedItemList.get(i);
 
-
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         final int height = displayMetrics.heightPixels;
@@ -97,28 +95,25 @@ public class TownRecyclerViewAdapter extends RecyclerView.Adapter<TownRecyclerVi
                 .error(R.drawable.dummyimage)
                 .placeholder(R.drawable.dummyimage)
                 .into(customViewHolder.imageView);
-        //customViewHolder.geo_town_pick_bar.setBackgroundColor(Color.TRANSPARENT);
-        //Picasso.with(imageView.getContext()).load(Uri.parse(towns.get(position).getImageUrls().get(0))).into(imageView);
 
         //Setting text view title
         customViewHolder.textView.setText(feedItem.getTitle());
         customViewHolder.categoryTextView.setText(feedItem.getCategory());
         customViewHolder.countTextView.setText(feedItem.getNumOfLikes()+" likes");
 
-
-
-
-
         List<String> likes = UserSingleton.getInstance().getLikes();
+        boolean isLiked = false;
         for(int j = 0 ; j<likes.size();j++){
             if(likes.get(j).equals(feedItem.getId())){
-                customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
-            }
-            else{
-                customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_border_white_18dp);
+                isLiked = true;
+                break;
             }
         }
-
+        if(isLiked) {
+            customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_white_18dp);
+        } else {
+            customViewHolder.imageButton.setImageResource(R.drawable.ic_favorite_border_white_18dp);
+        }
     }
 
     @Override
