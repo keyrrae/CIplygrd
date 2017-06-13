@@ -1,14 +1,4 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.models;
-
-import android.icu.util.ULocale;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,12 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsb.cs.cs190i.papertown.GeoHash;
-import io.realm.RealmObject;
-import io.realm.annotations.Required;
-
-/**
- * Created by xuanwang on 5/4/17.
- */
 
 public class Town implements Serializable {
 

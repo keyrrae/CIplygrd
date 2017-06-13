@@ -1,20 +1,8 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
-
-/**
- * Created by Zhenyu on 2017-05-17.
- */
 
 public class WrappingGridView extends GridView {
 

@@ -1,13 +1,3 @@
-
-
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
@@ -30,9 +20,6 @@ import edu.ucsb.cs.cs190i.papertown.R;
 
 import static edu.ucsb.cs.cs190i.papertown.town.newtown.SelectImageActivity.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
-/**
- * Created by Zhenyu on 2017-05-17.
- */
 
 public class SelelctImageGrid extends BaseAdapter {
     private Context mContext;
@@ -72,7 +59,6 @@ public class SelelctImageGrid extends BaseAdapter {
 
         if (convertView == null) {
             if (position != ImageUris.length) {
-//                grid = new View(mContext);
                 grid = inflater.inflate(R.layout.grid_single_newtown_selectimage, null);
                 imageView = (ImageView) grid.findViewById(R.id.grid_image);
                 Log.i("addOnItemTouchListener", "ImageUris[" + position + "] = " + ImageUris[position]);

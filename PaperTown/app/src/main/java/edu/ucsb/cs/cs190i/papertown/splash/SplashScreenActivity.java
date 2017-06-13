@@ -1,15 +1,6 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.splash;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -21,49 +12,20 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.security.MessageDigest;
-import java.util.Calendar;
 
 import edu.ucsb.cs.cs190i.papertown.R;
-import edu.ucsb.cs.cs190i.papertown.application.AppConstants;
-import edu.ucsb.cs.cs190i.papertown.auth.BasicAuthInterceptor;
 import edu.ucsb.cs.cs190i.papertown.geo.GeoActivity;
 import edu.ucsb.cs.cs190i.papertown.login.LoginActivity;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
-import edu.ucsb.cs.cs190i.papertown.models.UserToken;
-import edu.ucsb.cs.cs190i.papertown.network.HttpClientSingleton;
 import edu.ucsb.cs.cs190i.papertown.signup.SignupActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.ENDPOINT;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.JSON_BODY;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_LIFETIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 public class SplashScreenActivity extends AppCompatActivity {
   private FirebaseAuth mAuth;
@@ -80,12 +42,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     //Remove notification bar
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     setContentView(R.layout.activity_splash_screen);
-
-    // Shimmer
-//    ShimmerFrameLayout container =
-//            (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-//    container.setDuration(5000);
-//    container.startShimmerAnimation();
 
     // Login Button
     final Button loginButton = (Button) findViewById(R.id.button_login);

@@ -1,11 +1,3 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.town.towndetail;
 
 import android.app.Activity;
@@ -14,15 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,26 +18,12 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import edu.ucsb.cs.cs190i.papertown.R;
-import edu.ucsb.cs.cs190i.papertown.models.Town;
-
-/**
- * Created by EYE on 02/06/2017.
- */
 
 public class UpdateDescriptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_description);
-
-//        Town passedInTown = (Town) getIntent().getSerializableExtra("townPassIn");
-//        String dataPassIn = passedInTown.getDescription();
-//        Log.i("ed","dataPassIn = "+dataPassIn);
-//        if(!dataPassIn.isEmpty()&&dataPassIn!=null){
-//            Log.i("ed","dataPassIn2 = "+dataPassIn);
-//            ((EditText)findViewById(R.id.editText_new_description)).setText(dataPassIn);
-//        }
-
 
         Intent intent = getIntent();
         TextView updateReference = (TextView) findViewById(R.id.update_reference);

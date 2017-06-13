@@ -1,13 +1,3 @@
-
-
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.town.newtown;
 
 import android.Manifest;
@@ -33,11 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -50,13 +35,10 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import edu.ucsb.cs.cs190i.papertown.R;
 import edu.ucsb.cs.cs190i.papertown.models.Town;
-import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
-import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
 import io.realm.Realm;
 import permissions.dispatcher.NeedsPermission;
@@ -221,27 +203,11 @@ public class NewTownActivity extends AppCompatActivity implements
                     Intent intent = new Intent(getApplicationContext(), TownDetailActivity.class);
                     intent.putExtra("town", outputTown);
                     intent.putExtra("mode", "preview");
-//                    startActivity(intent);
                     startActivityForResult(intent, DISPLAY_PREVIEW_REQUEST);
                 }
             }
         });
 
-
-        button_step_left.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Your town is saved.", Toast.LENGTH_LONG).show();
-//                Log.i("toJson", "result = " + outputTown.toJson());
-//                //save town to realm
-//                mRealm.beginTransaction();
-//                TownRealm townRealm = mRealm.createObject(TownRealm.class);
-//                townRealm.setTownId(outputTown.getId());
-//                townRealm.setTownJson(outputTown.toJson());
-//                mRealm.commitTransaction();
-                return true;
-            }
-        });
     }
 
     @Override

@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2017 - present, Xuan Wang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- *
- */
-
 package edu.ucsb.cs.cs190i.papertown;
 
 import android.content.Context;
@@ -14,10 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
-/**
- * Created by EYE on 08/05/2017.
- */
 
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
     private OnItemClickListener mListener;

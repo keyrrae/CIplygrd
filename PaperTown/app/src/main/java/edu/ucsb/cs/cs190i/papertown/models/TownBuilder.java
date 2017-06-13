@@ -1,11 +1,3 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.models;
 
 import java.util.ArrayList;
@@ -13,10 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import edu.ucsb.cs.cs190i.papertown.GeoHash;
-
-/**
- * Created by Zhenyu on 2017-05-19.
- */
 
 public class TownBuilder {
 

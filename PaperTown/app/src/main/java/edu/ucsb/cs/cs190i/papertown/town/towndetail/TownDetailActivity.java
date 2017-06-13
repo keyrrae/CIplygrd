@@ -72,7 +72,7 @@ import edu.ucsb.cs.cs190i.papertown.models.Town;
 import edu.ucsb.cs.cs190i.papertown.models.TownRealm;
 import edu.ucsb.cs.cs190i.papertown.models.TownManager;
 import edu.ucsb.cs.cs190i.papertown.models.UserSingleton;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment;
+import edu.ucsb.cs.cs190i.papertown.town.newtown.MyMapFragment;
 import edu.ucsb.cs.cs190i.papertown.utils.ImageCompressor;
 import edu.ucsb.cs.cs190i.papertown.utils.TownRecyclerViewAdapter;
 import io.realm.Realm;
@@ -150,16 +150,10 @@ public class TownDetailActivity extends AppCompatActivity {
             }
         }
 
-//        if(!alreadyLiked){
-//            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//        }
-
-
         TownManager.getInstance().setOnSingleTownChangeListener(new TownManager.SingleTownChangedListener() {
             @Override
             public void onSingleTownChanged() {
                 passedInTown = TownManager.getInstance().getTownById(passedInTown.getId());
-                //detail_town_visit_count.setText(""+passedInTown.getNumOfLikes()+" likes");
                 updateTownDetailActivityUI();
             }
         });
@@ -184,44 +178,14 @@ public class TownDetailActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.detail_favor:
 
-//                        if (item.getTitle().equals("dislike")) {
-//                            Toast.makeText(TownDetailActivity.this, "Seems you like it", Toast.LENGTH_SHORT).show();
-//                            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//                            item.setTitle("like");
-//
-////                            //change number of likes of the town
-////                            TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
-////
-////                            //change likes data of the user
-////                            if (!alreadyLiked) {
-////                                List<String> likes = UserSingleton.getInstance().getLikes();
-////                                likes.add(passedInTown.getId());
-////                                DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
-////
-////                                likeData.setValue(likes, new DatabaseReference.CompletionListener() {
-////                                    public void onComplete(DatabaseError err, DatabaseReference ref){
-////                                        if (err == null) {
-////                                            Log.d("SET_LIKES", "Setting likes succeeded");
-////                                        }
-////                                    }
-////                                });
-////                            }
-//
-//                            break;
-//                        }
                         if (item.getTitle().equals("like")) {
-                           // Toast.makeText(TownDetailActivity.this, "Heart break.", Toast.LENGTH_SHORT).show();
                             item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-//                            item.setTitle("dislike");
-
-
-
 
                             if (!alreadyLiked) {
-                            //change number of likes of the town
-                            TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
+                                //change number of likes of the town
+                                TownManager.getInstance().increaseTownLikesById(passedInTown.getId());
 
-                            //change likes data of the user
+                                //change likes data of the user
                                 List<String> likes = UserSingleton.getInstance().getLikes();
                                 likes.add(passedInTown.getId());
                                 DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
@@ -249,7 +213,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                 }
 
                                 UserSingleton.getInstance().setLikes(likes);
-                                //likes.add(passedInTown.getId());
                                 DatabaseReference likeData = FirebaseDatabase.getInstance().getReference().child("users").child(UserSingleton.getInstance().getUid()).child("likes");
 
                                 likeData.setValue(likes, new DatabaseReference.CompletionListener() {
@@ -268,16 +231,13 @@ public class TownDetailActivity extends AppCompatActivity {
                         break;
                     case R.id.detail_share:
                         Toast.makeText(TownDetailActivity.this, "Want to share it?", Toast.LENGTH_SHORT).show();
-//                        Intent townListIntent = new Intent(GeoActivity.this, TownListActivity.class);
-//                        townListIntent.putExtra("townArrayList", new ArrayList<Town>(towns));
-//                        startActivity(townListIntent);
                         break;
                 }
                 return true;
             }
         });
 
-        //Update Story button
+        // Update Story button
         TextView update = (TextView) findViewById(R.id.detail_update_text);
         // Update Gallery button
         TextView upload = (TextView) findViewById(R.id.detail_add_image_text);
@@ -320,13 +280,7 @@ public class TownDetailActivity extends AppCompatActivity {
         detail_town_visit_count = (TextView)findViewById(R.id.detail_town_visit_count);
 
         this.imageGrid = (GridView) findViewById(R.id.detail_image_grid);
-        this.uriList = new ArrayList<Uri>();
-
-
-
-
-
-//        passedInTown.setUserId(UserSingleton.getInstance().getUid());
+        this.uriList = new ArrayList<>();
 
         FirebaseApp.initializeApp(this);
         storage = FirebaseStorage.getInstance();
@@ -372,7 +326,6 @@ public class TownDetailActivity extends AppCompatActivity {
                                         if (remoteImageUrls.size() == uriList.size()) {
                                             passedInTown.setImageUrls(remoteImageUrls);
                                             DatabaseReference newTown = townRef.child(passedInTown.getId());
-                                            // Town town = townBuilder.build();
                                             newTown.setValue(passedInTown, new DatabaseReference.CompletionListener() {
                                                 @Override
                                                 public void onComplete(DatabaseError databaseError,
@@ -433,7 +386,7 @@ public class TownDetailActivity extends AppCompatActivity {
         updateTownDetailActivityUI();
 
         //handle the google Maps
-        myMapFragment mapFragment = ((myMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
+        MyMapFragment mapFragment = ((MyMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map));
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -443,7 +396,6 @@ public class TownDetailActivity extends AppCompatActivity {
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         map.setMyLocationEnabled(true);
-                        //map.getUiSettings().setMyLocationButtonEnabled(true);
                     } else {
                         Log.i("manu", "Error - checkSelfPermission!!");
                     }
@@ -465,7 +417,7 @@ public class TownDetailActivity extends AppCompatActivity {
                 }
             });
 
-            mapFragment.setListener(new myMapFragment.OnTouchListener() {
+            mapFragment.setListener(new MyMapFragment.OnTouchListener() {
                 @Override
                 public void onTouch() {
                     ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollView_detail);
@@ -585,11 +537,6 @@ public class TownDetailActivity extends AppCompatActivity {
     public void updateTownDetailActivityUI(){
         if (passedInTown != null) {
             Log.i("dataToD", "passedInTown getDescription = " + passedInTown.getTitle().toString());
-            //title = passedInTown.getTitle();
-            //address = passedInTown.getLatLng();
-            //description = passedInTown.getDescription().get(0);
-            //category = passedInTown.getCategory();
-            //information = passedInTown.getUserAlias();
             uriStringArrayList = new ArrayList<String>(passedInTown.getImageUrls());
         }
 
@@ -623,7 +570,6 @@ public class TownDetailActivity extends AppCompatActivity {
         if (passedInTown.getTitle() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_title);
             detail_town_description.setText(passedInTown.getTitle());
-            // townBuilder.setTitle(title);
         }
 
         //load address and physical address
@@ -635,11 +581,9 @@ public class TownDetailActivity extends AppCompatActivity {
             if (separated.length > 0) {
                 lat = Float.parseFloat(separated[0]);
                 lng = Float.parseFloat(separated[1]);
-                //   townBuilder.setLatLng(lat, lng);
             }
 
             detail_town_coordinates.setText("latitude "+ String.format("%.7f", lat)+" / longitude "+String.format("%.7f", lng));
-            //detail_town_coordinates.setText(passedInTown.getLatLng());
 
             TextView detail_physical_address = (TextView) findViewById(R.id.detail_physical_address);
             Geocoder geocoder;
@@ -677,21 +621,18 @@ public class TownDetailActivity extends AppCompatActivity {
         if (passedInTown.getDescription()!=null&&passedInTown.getDescription().get(0) != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_description);
             detail_town_description.setText(passedInTown.getDescriptionListString());
-            //   townBuilder.setDescription(description);
         }
 
         //load category
         if (passedInTown.getCategory() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_category);
             detail_town_description.setText(passedInTown.getCategory());
-            //  townBuilder.setCategory(category);
         }
 
         //load information
         if (passedInTown.getUserAlias() != null) {
             TextView detail_town_description = (TextView) findViewById(R.id.detail_town_information);
             detail_town_description.setText(passedInTown.getAuthor());
-            //   townBuilder.setUserAlias(information);
         }
 
         //load uriStringArrayList
@@ -711,7 +652,6 @@ public class TownDetailActivity extends AppCompatActivity {
                 });
             }
         }
-
 
         //update gridView
         imageAdapter.setUriList(passedInTown.getImageUrls());

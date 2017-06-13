@@ -1,15 +1,6 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.town.townlist;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,8 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,13 +34,6 @@ import edu.ucsb.cs.cs190i.papertown.models.TownBuilder;
 import edu.ucsb.cs.cs190i.papertown.splash.SplashScreenActivity;
 import edu.ucsb.cs.cs190i.papertown.town.newtown.NewTownActivity;
 import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
-
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.CRED;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.EMAIL;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.PREF_NAME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.TOKEN_TIME;
-import static edu.ucsb.cs.cs190i.papertown.application.AppConstants.USERID;
 
 public class TownListActivity extends AppCompatActivity {
     public List<Town> allTowns = new ArrayList<>();
@@ -114,8 +96,6 @@ public class TownListActivity extends AppCompatActivity {
                 })
         );
 
-
-        //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");

@@ -1,17 +1,8 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.models;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,15 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import edu.ucsb.cs.cs190i.papertown.ListTownAdapter;
-import edu.ucsb.cs.cs190i.papertown.town.towndetail.TownDetailActivity;
-import io.realm.Realm;
-import io.realm.RealmResults;
-
-/**
- * Created by xuanwang on 6/2/17.
- */
 
 public class TownManager {
     private SortedMap<String, Town> townMap = new TreeMap<>();

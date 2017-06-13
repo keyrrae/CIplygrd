@@ -1,11 +1,3 @@
-/*
- *  Copyright (c) 2017 - present, Zhenyu Yang
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree.
- */
-
 package edu.ucsb.cs.cs190i.papertown.utils;
 
 import android.app.Activity;
@@ -19,23 +11,12 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.zhihu.matisse.Matisse;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import edu.ucsb.cs.cs190i.papertown.models.Town;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.SelectImageActivity;
-import edu.ucsb.cs.cs190i.papertown.town.newtown.SelelctImageGrid;
-
-/**
- * Created by Zhenyu on 2017-06-08.
- */
 
 public class ImageCompressor {
     private CompressFinishedListener compressFinishedListener = null;

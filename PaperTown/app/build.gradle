@@ -43,70 +43,28 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    // Shimmer for splash screen
-
-    // Stetho for debugging
-
-    // OkHttp for http requests
-
-    // Picasso for loading images
-
-    // Because RxAndroid releases are few and far between, it is recommended you also
-
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-
-    //annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
-
-    // SoLoader
-
-    // SoLoader
-
-    // Optional
-
-    // For debugging
-
-    // For integration with Fresco
-
-    // For testin
     compile 'io.realm:realm-android:0.87.4'
-    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
-    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
-    compile 'com.facebook.soloader:soloader:0.2.0'
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
-    compile 'com.facebook.stetho:stetho:1.5.0'
-    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android.gms:play-services-maps:10.2.4'
-    compile 'com.airbnb.android:airmapview:1.4.0'
     compile 'com.google.android.gms:play-services-location:10.2.4'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.9'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.facebook.litho:litho-core:0.2.0'
-    compile 'com.facebook.litho:litho-widget:0.2.0'
-    compile 'com.facebook.litho:litho-fresco:0.2.0'
     compile 'com.google.firebase:firebase-auth:10.2.4'
     compile 'com.google.firebase:firebase-core:10.2.4'
     compile 'com.google.firebase:firebase-storage:10.2.4'
     compile 'com.google.firebase:firebase-database:10.2.4'
     compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
     testCompile 'junit:junit:4.12'
-    testCompile 'com.facebook.litho:litho-testing:0.2.0'
-    annotationProcessor 'com.facebook.litho:litho-processor:0.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
-    debugCompile 'com.facebook.litho:litho-stetho:0.2.0'
-    provided 'com.facebook.litho:litho-annotations:0.2.0'
     compile 'com.zhihu.android:matisse:0.4.3'
 }
 

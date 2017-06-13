@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (c) 2017 - present, Zhenyu Yang
-  ~  All rights reserved.
-  ~
-  ~  This source code is licensed under the BSD-style license found in the
-  ~  LICENSE file in the root directory of this source tree.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -172,14 +166,6 @@
                 android:text="Description here. ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "
                 android:textAppearance="@style/MainText_list" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/detail_town_upd"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="@dimen/m"-->
-            <!--android:text="Update"-->
-            <!--android:textAppearance="@style/MainTextBold_detail" />-->
-
             <TextView
                 android:id="@+id/detail_town_update"
                 android:layout_width="match_parent"
@@ -192,9 +178,9 @@
 
             <fragment
                 android:id="@+id/detail_map"
-                class="edu.ucsb.cs.cs190i.papertown.town.newtown.myMapFragment"
+                class="edu.ucsb.cs.cs190i.papertown.town.newtown.MyMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="@dimen/m" />
 
             <TextView
