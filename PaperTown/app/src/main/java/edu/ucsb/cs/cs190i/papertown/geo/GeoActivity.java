@@ -492,7 +492,7 @@ public class GeoActivity extends AppCompatActivity implements
                     double lng = map.getCameraPosition().target.longitude;
                     String centerGeoHash = GeoHash.genGeoHash(lat, lng);
 
-                    if(!centerGeoHash.equals(lastSnapId)) {
+                    if(!centerGeoHash.equals(lastSnapId) || TownManager.getInstance().getAllTowns().isEmpty()) {
                         List<String> allGeoCodes = GeoHash.genAllGeoHash(neLat, swLat, neLng, swLng);
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
